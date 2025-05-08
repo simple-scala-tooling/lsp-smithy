@@ -1,12 +1,12 @@
 package org.scala.abusers.lspsmithy
 
 import langoustine.meta.*
-import software.amazon.smithy.model.Model
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
 import software.amazon.smithy.model.traits.EnumValueTrait
 import software.amazon.smithy.model.traits.RequiredTrait
+import software.amazon.smithy.model.Model
 
 import java.nio.file.Path
 import java.util
@@ -20,11 +20,10 @@ object SmithySerializer:
     // Type Aliases
     for alias <- meta.typeAliases do
       val shapeId  = ShapeId.fromParts(namespace, alias.name.value)
-      val targetId = smithyType(alias.`type`, namespace, shapes)
+      // val targetId = smithyType(alias.`type`, namespace, shapes)
       val aliasShape = StringShape
         .builder()
         .id(shapeId)
-        // .addTrait(Node.objectNode()) // just placeholder for demonstration
         .build()
       shapes.add(aliasShape)
 
@@ -69,6 +68,34 @@ object SmithySerializer:
     val model     = Model.builder().addShapes(shapes).build()
     val outputMap = SmithyIdlModelSerializer.builder().build().serialize(model)
     outputMap.asScala.toMap
+
+  private def unionNameFor(types: Vector[Type]): String =
+    val names = types.map(extractTypeName).filter(_.nonEmpty).distinct
+
+    val commonSeq = longestCommonPascalSubsequence(names)
+    if commonSeq.nonEmpty then commonSeq.mkString + "Union"
+    else
+      names match
+        case Seq(a, b) => s"${a}Or${b}"
+        case _         => "AnonymousUnion"
+
+  private def extractTypeName(t: Type): String = t match
+    case Type.ReferenceType(name)                               => name.value
+    case Type.BaseType(base)                                    => base.toString.capitalize
+    case Type.ArrayType(inner)                                  => s"ListOf${extractTypeName(inner)}"
+    case Type.MapType(k, v)                                     => s"MapOf${extractTypeName(k)}To${extractTypeName(v)}"
+    case Type.StringLiteralType(_) | Type.BooleanLiteralType(_) => "Literal"
+    case _                                                      => ""
+
+  private def splitPascal(s: String): List[String] =
+    s.split("(?=[A-Z])").filter(_.nonEmpty).toList
+
+  private def longestCommonPascalSubsequence(strings: Seq[String]): List[String] =
+    if strings.isEmpty then return Nil
+    val tokenLists = strings.map(splitPascal)
+    tokenLists.reduceLeft { (acc, next) =>
+      acc.intersect(next)
+    }
 
   private def smithyType(t: Type, namespace: String, shapes: util.List[Shape]): ShapeId =
     import Type.*
@@ -121,7 +148,7 @@ object SmithySerializer:
         val unifiedType = items.map(t => smithyType(t, namespace, shapes)).distinct match
           case Seq(one) => one
           case _        => ShapeId.from("smithy.api#String") // fallback
-        val listId = ShapeId.fromParts(namespace, s"Tuple_${UUID.randomUUID().toString.replace("-", "")}")
+        val listId = ShapeId.fromParts(namespace, s"Tuple_of_${unifiedType.getName}")
         val listShape = ListShape
           .builder()
           .id(listId)
@@ -131,7 +158,7 @@ object SmithySerializer:
         listId
 
       case OrType(items) =>
-        val id      = uniqueShapeId("UnionOf")
+        val id      = ShapeId.fromParts(namespace, unionNameFor(items))
         val builder = UnionShape.builder().id(id)
         items.zipWithIndex.foreach { case (tpe, idx) =>
           val target = smithyType(tpe, namespace, shapes)

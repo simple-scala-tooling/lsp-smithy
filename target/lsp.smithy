@@ -4,12 +4,12 @@ namespace lsp
 
 structure _InitializeParams {
     @required()
-    processId: UnionOf_940a8a9c987642058f7caa1f75da79f2
+    processId: IntegerOrNULL
     clientInfo: ClientInfo
     locale: String
-    rootPath: UnionOf_4b91e6fa394d43c1a7676b7dbde9e0e0
+    rootPath: StringOrNULL
     @required()
-    rootUri: UnionOf_ad8b5630a5784e07bb7606743c30a0ff
+    rootUri: DocumentUriOrNULL
     @required()
     capabilities: ClientCapabilities
     initializationOptions: LSPAny
@@ -96,7 +96,7 @@ structure CallHierarchyRegistrationOptions {}
 
 structure CancelParams {
     @required()
-    id: UnionOf_06ff19f37aee48f1a8ba1858c59eb084
+    id: IntegerOrString
 }
 
 structure ChangeAnnotation {
@@ -195,8 +195,8 @@ structure ClientSemanticTokensRequestFullDelta {
 }
 
 structure ClientSemanticTokensRequestOptions {
-    range: UnionOf_9dfbbeaab1ee472db1f87997d5605e83
-    full: UnionOf_628b33a1d7204257910e7a593ded1977
+    range: BooleanUnion
+    full: BooleanOrClientSemanticTokensRequestFullDelta
 }
 
 structure ClientShowMessageActionItemOptions {
@@ -391,7 +391,7 @@ structure CompletionItem {
     kind: CompletionItemKind
     tags: ListOf_CompletionItemTag
     detail: String
-    documentation: UnionOf_00f09571c4f94c2fbb1a879c51bd6e02
+    documentation: StringOrMarkupContent
     deprecated: Boolean
     preselect: Boolean
     sortText: String
@@ -399,7 +399,7 @@ structure CompletionItem {
     insertText: String
     insertTextFormat: InsertTextFormat
     insertTextMode: InsertTextMode
-    textEdit: UnionOf_f81f20eea5ff4910ac8cbe6e7e0f125a
+    textEdit: EditUnion
     textEditText: String
     additionalTextEdits: ListOf_TextEdit
     commitCharacters: ListOf_String
@@ -414,7 +414,7 @@ structure CompletionItemApplyKinds {
 
 structure CompletionItemDefaults {
     commitCharacters: ListOf_String
-    editRange: UnionOf_5e547248101d4b7bb393d2b0798fba06
+    editRange: RangeUnion
     insertTextFormat: InsertTextFormat
     insertTextMode: InsertTextMode
     data: LSPAny
@@ -529,7 +529,7 @@ structure Diagnostic {
     @required()
     range: Range
     severity: DiagnosticSeverity
-    code: UnionOf_aac21a0910194f2099715c9d51342fd1
+    code: IntegerOrString
     codeDescription: CodeDescription
     source: String
     @required()
@@ -587,7 +587,7 @@ structure DidChangeConfigurationParams {
 }
 
 structure DidChangeConfigurationRegistrationOptions {
-    section: UnionOf_9c83995f4ff44f03a2796bd72daf6330
+    section: StringUnion
 }
 
 structure DidChangeNotebookDocumentParams {
@@ -681,7 +681,7 @@ structure DocumentDiagnosticParams {
 
 structure DocumentDiagnosticReportPartialResult {
     @required()
-    relatedDocuments: MapOf_String_to_UnionOf_441c67eccede401e8a8f46ce7ec4db04
+    relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
 }
 
 structure DocumentFormattingClientCapabilities {
@@ -985,7 +985,7 @@ structure GeneralClientCapabilities {
 
 structure Hover {
     @required()
-    contents: UnionOf_cb6e124bdf6c4c7aa6e3b46bb886cf06
+    contents: AnonymousUnion
     range: Range
 }
 
@@ -1030,10 +1030,10 @@ structure InlayHint {
     @required()
     position: Position
     @required()
-    label: UnionOf_d165a8faabe443dc92a3e66d00a1fefa
+    label: StringOrListOfInlayHintLabelPart
     kind: InlayHintKind
     textEdits: ListOf_TextEdit
-    tooltip: UnionOf_bcec19e3fcc148619d750ddd779b99c7
+    tooltip: StringOrMarkupContent
     paddingLeft: Boolean
     paddingRight: Boolean
     data: LSPAny
@@ -1047,7 +1047,7 @@ structure InlayHintClientCapabilities {
 structure InlayHintLabelPart {
     @required()
     value: String
-    tooltip: UnionOf_c5932c2956134aa1b2d526c594cd3ade
+    tooltip: StringOrMarkupContent
     location: Location
     command: Command
 }
@@ -1081,7 +1081,7 @@ structure InlineCompletionContext {
 
 structure InlineCompletionItem {
     @required()
-    insertText: UnionOf_0d8c94227b314bd690b83bb84bad8ac9
+    insertText: StringUnion
     filterText: String
     range: Range
     command: Command
@@ -1101,9 +1101,9 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_6776bbbe4d4c4ce59bcdc15fcd8c002a {}
+structure InlineStruct_9b7853a7af17442f9224a2880e2ed4f5 {}
 
-structure InlineStruct_b2d0e496bea24683bfa679e886cf477f {}
+structure InlineStruct_a7b75af8bc8b4688814ab3c172d6bbec {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
@@ -1284,7 +1284,7 @@ structure NotebookCellLanguage {
 
 structure NotebookCellTextDocumentFilter {
     @required()
-    notebook: UnionOf_fb5059a6789144188bace367e0bcab9b
+    notebook: StringOrNotebookDocumentFilter
     language: String
 }
 
@@ -1352,14 +1352,14 @@ structure NotebookDocumentFilterScheme {
 }
 
 structure NotebookDocumentFilterWithCells {
-    notebook: UnionOf_c5488d08314540ccb2dc79949bedd1da
+    notebook: StringOrNotebookDocumentFilter
     @required()
     cells: ListOf_NotebookCellLanguage
 }
 
 structure NotebookDocumentFilterWithNotebook {
     @required()
-    notebook: UnionOf_55de74049a474d45991f499035b9cb01
+    notebook: StringOrNotebookDocumentFilter
     cells: ListOf_NotebookCellLanguage
 }
 
@@ -1375,7 +1375,7 @@ structure NotebookDocumentSyncClientCapabilities {
 
 structure NotebookDocumentSyncOptions {
     @required()
-    notebookSelector: ListOf_UnionOf_dc2e393d783249ff88d33c439c263ae9
+    notebookSelector: ListOf_NotebookDocumentFilterWithUnion
     save: Boolean
 }
 
@@ -1383,13 +1383,13 @@ structure NotebookDocumentSyncRegistrationOptions {}
 
 structure OptionalVersionedTextDocumentIdentifier {
     @required()
-    version: UnionOf_20fedab59d1c440a8bf2d6afa6a385af
+    version: IntegerOrNULL
 }
 
 structure ParameterInformation {
     @required()
-    label: UnionOf_c6a660a7d20044ac9b41b47f3a23a983
-    documentation: UnionOf_fb00a80309fa47b2989814cb7c957445
+    label: StringUnion
+    documentation: StringOrMarkupContent
 }
 
 structure PartialResultParams {
@@ -1488,16 +1488,16 @@ structure RegularExpressionsClientCapabilities {
 }
 
 structure RelatedFullDocumentDiagnosticReport {
-    relatedDocuments: MapOf_String_to_UnionOf_5e10ead40d80436999fe0f05ccd901e1
+    relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
 }
 
 structure RelatedUnchangedDocumentDiagnosticReport {
-    relatedDocuments: MapOf_String_to_UnionOf_e9cdc108e3a544a2a7a0797e96f66768
+    relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
 }
 
 structure RelativePattern {
     @required()
-    baseUri: UnionOf_d468e6f89b6a47a09189b77f3c61eb8c
+    baseUri: WorkspaceFolderOrUri
     @required()
     pattern: Pattern
 }
@@ -1644,8 +1644,8 @@ structure SemanticTokensLegend {
 structure SemanticTokensOptions {
     @required()
     legend: SemanticTokensLegend
-    range: UnionOf_7d3e56dfd3e74de7b6b54e04b09e0db0
-    full: UnionOf_c94200ce23434afabab6b8ff47956fc7
+    range: BooleanUnion
+    full: BooleanOrSemanticTokensFullDelta
 }
 
 structure SemanticTokensParams {
@@ -1673,39 +1673,39 @@ structure SemanticTokensWorkspaceClientCapabilities {
 
 structure ServerCapabilities {
     positionEncoding: PositionEncodingKind
-    textDocumentSync: UnionOf_943575b9c30e45c48d72382453938ac2
-    notebookDocumentSync: UnionOf_de3f5df6660546d6a1da8182ba4ab528
+    textDocumentSync: TextDocumentSyncUnion
+    notebookDocumentSync: NotebookDocumentSyncOptionsUnion
     completionProvider: CompletionOptions
-    hoverProvider: UnionOf_68705b0cd32e4da7a38c5bc1ff56f0a5
+    hoverProvider: BooleanOrHoverOptions
     signatureHelpProvider: SignatureHelpOptions
-    declarationProvider: UnionOf_20920aaba71148a0a6ce865af74e5091
-    definitionProvider: UnionOf_dd42f83265e54f01835e7b8f7fce8fbf
-    typeDefinitionProvider: UnionOf_015b455feaf64d3d804bc2183aa594d3
-    implementationProvider: UnionOf_97d3dd9b05aa428883237737e4baeaad
-    referencesProvider: UnionOf_515cfd1e50bf47fc810f7d613cbe89d2
-    documentHighlightProvider: UnionOf_00b58b14a1e84ec3872a8ac9eb6d74db
-    documentSymbolProvider: UnionOf_67170941b101472a9187b3fe59ffc24c
-    codeActionProvider: UnionOf_708eea1f8d854c41afe02b5ba5a5ddca
+    declarationProvider: AnonymousUnion
+    definitionProvider: BooleanOrDefinitionOptions
+    typeDefinitionProvider: AnonymousUnion
+    implementationProvider: AnonymousUnion
+    referencesProvider: BooleanOrReferenceOptions
+    documentHighlightProvider: BooleanOrDocumentHighlightOptions
+    documentSymbolProvider: BooleanOrDocumentSymbolOptions
+    codeActionProvider: BooleanOrCodeActionOptions
     codeLensProvider: CodeLensOptions
     documentLinkProvider: DocumentLinkOptions
-    colorProvider: UnionOf_65838f3f29b14ad88a481d2c170dd90a
-    workspaceSymbolProvider: UnionOf_9c4eb4951ba54866a43d9db62b1fce0e
-    documentFormattingProvider: UnionOf_267bb8bad3624e9f816ed67a3fdc33f6
-    documentRangeFormattingProvider: UnionOf_893adc836f7f4fa59374b253bca4c6bd
+    colorProvider: AnonymousUnion
+    workspaceSymbolProvider: BooleanOrWorkspaceSymbolOptions
+    documentFormattingProvider: BooleanOrDocumentFormattingOptions
+    documentRangeFormattingProvider: BooleanOrDocumentRangeFormattingOptions
     documentOnTypeFormattingProvider: DocumentOnTypeFormattingOptions
-    renameProvider: UnionOf_bf8820a3ec7742a6873881a6c137923b
-    foldingRangeProvider: UnionOf_aac179b6b77b4e4a988577a18ff9e1cc
-    selectionRangeProvider: UnionOf_9418e5a049144f47bc36759cee755c48
+    renameProvider: BooleanOrRenameOptions
+    foldingRangeProvider: AnonymousUnion
+    selectionRangeProvider: AnonymousUnion
     executeCommandProvider: ExecuteCommandOptions
-    callHierarchyProvider: UnionOf_d446ded47537497d8f17098be0013444
-    linkedEditingRangeProvider: UnionOf_a04fd9a490284650af797fc18d5c7391
-    semanticTokensProvider: UnionOf_043cdadb61744c03be1d4fd30054d12f
-    monikerProvider: UnionOf_4bdf1d4b6ee240c6aa46a905e007dc9b
-    typeHierarchyProvider: UnionOf_47b4ca317ecc44378fec96476323c664
-    inlineValueProvider: UnionOf_9a209a9d16ff4f0a8ff822ce04d41cc6
-    inlayHintProvider: UnionOf_2cd74b72be654b099d5b9e1b90734cbd
-    diagnosticProvider: UnionOf_4b679ff9966948348e1217e53c572e12
-    inlineCompletionProvider: UnionOf_1879a715ffc94353ba28eb1517e32eca
+    callHierarchyProvider: AnonymousUnion
+    linkedEditingRangeProvider: AnonymousUnion
+    semanticTokensProvider: SemanticTokensOptionsUnion
+    monikerProvider: AnonymousUnion
+    typeHierarchyProvider: AnonymousUnion
+    inlineValueProvider: AnonymousUnion
+    inlayHintProvider: AnonymousUnion
+    diagnosticProvider: DiagnosticOptionsUnion
+    inlineCompletionProvider: BooleanOrInlineCompletionOptions
     workspace: WorkspaceOptions
     experimental: LSPAny
 }
@@ -1766,7 +1766,7 @@ structure SignatureHelp {
     @required()
     signatures: ListOf_SignatureInformation
     activeSignature: Integer
-    activeParameter: UnionOf_82b063fdd2734bbfbb9ad4bf1cc016df
+    activeParameter: UintegerOrNULL
 }
 
 structure SignatureHelpClientCapabilities {
@@ -1798,9 +1798,9 @@ structure SignatureHelpRegistrationOptions {}
 structure SignatureInformation {
     @required()
     label: String
-    documentation: UnionOf_31a19891e9f443c6bab31b1c5831c2ba
+    documentation: StringOrMarkupContent
     parameters: ListOf_ParameterInformation
-    activeParameter: UnionOf_f8f26bcebda84c7ab026aebb07f03e0f
+    activeParameter: UintegerOrNULL
 }
 
 structure SnippetTextEdit {
@@ -1918,7 +1918,7 @@ structure TextDocumentEdit {
     @required()
     textDocument: OptionalVersionedTextDocumentIdentifier
     @required()
-    edits: ListOf_UnionOf_bfb6449e6709465c80e2264d06848b4c
+    edits: ListOf_TextEditUnion
 }
 
 structure TextDocumentFilterClientCapabilities {
@@ -1971,7 +1971,7 @@ structure TextDocumentPositionParams {
 
 structure TextDocumentRegistrationOptions {
     @required()
-    documentSelector: UnionOf_37c064d3bc9541a8a48a604345b5fede
+    documentSelector: DocumentSelectorOrNULL
 }
 
 structure TextDocumentSaveRegistrationOptions {}
@@ -1988,7 +1988,7 @@ structure TextDocumentSyncOptions {
     change: TextDocumentSyncKind
     willSave: Boolean
     willSaveWaitUntil: Boolean
-    save: UnionOf_5909ab4ab0674aab9b04269f80bc123b
+    save: BooleanOrSaveOptions
 }
 
 structure TextEdit {
@@ -2168,7 +2168,7 @@ structure WorkspaceDiagnosticReportPartialResult {
 
 structure WorkspaceEdit {
     changes: MapOf_String_to_ListOf_TextEdit
-    documentChanges: ListOf_UnionOf_f1e6591f82854e8f8d73df886a9a0da8
+    documentChanges: ListOf_AnonymousUnion
     changeAnnotations: MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation
 }
 
@@ -2201,30 +2201,30 @@ structure WorkspaceFoldersChangeEvent {
 }
 
 structure WorkspaceFoldersInitializeParams {
-    workspaceFolders: UnionOf_cb13ac5b6875440d9091839dda93e5f4
+    workspaceFolders: ListOfWorkspaceFolderOrNULL
 }
 
 structure WorkspaceFoldersServerCapabilities {
     supported: Boolean
-    changeNotifications: UnionOf_882ce0cbbc054cb0a9ca35975d6064af
+    changeNotifications: StringOrBoolean
 }
 
 structure WorkspaceFullDocumentDiagnosticReport {
     @required()
     uri: String
     @required()
-    version: UnionOf_93c46c9fb7f546fb86da1810a8cd0c4f
+    version: IntegerOrNULL
 }
 
 structure WorkspaceOptions {
     workspaceFolders: WorkspaceFoldersServerCapabilities
     fileOperations: FileOperationOptions
-    textDocumentContent: UnionOf_2edb38765a0d4114b51932bd5f0f3bd4
+    textDocumentContent: TextDocumentContentOptionsUnion
 }
 
 structure WorkspaceSymbol {
     @required()
-    location: UnionOf_ecf2c8d2c0d74cdabb34091f3b540b37
+    location: LocationUnion
     data: LSPAny
 }
 
@@ -2250,448 +2250,251 @@ structure WorkspaceUnchangedDocumentDiagnosticReport {
     @required()
     uri: String
     @required()
-    version: UnionOf_5aa012a324354e99b44f6e8180885344
+    version: IntegerOrNULL
 }
 
-union UnionOf_00b58b14a1e84ec3872a8ac9eb6d74db {
-    case0: Boolean
-    case1: DocumentHighlightOptions
-}
-
-union UnionOf_00f09571c4f94c2fbb1a879c51bd6e02 {
-    case0: String
-    case1: MarkupContent
-}
-
-union UnionOf_015b455feaf64d3d804bc2183aa594d3 {
-    case0: Boolean
-    case1: TypeDefinitionOptions
-    case2: TypeDefinitionRegistrationOptions
-}
-
-union UnionOf_043cdadb61744c03be1d4fd30054d12f {
-    case0: SemanticTokensOptions
-    case1: SemanticTokensRegistrationOptions
-}
-
-union UnionOf_06ff19f37aee48f1a8ba1858c59eb084 {
-    case0: Integer
-    case1: String
-}
-
-union UnionOf_0d8c94227b314bd690b83bb84bad8ac9 {
-    case0: String
-    case1: StringValue
-}
-
-union UnionOf_140fbf9e3d084fad84d70fa186c277f2 {
-    case0: String
-    case1: MarkedStringWithLanguage
-}
-
-union UnionOf_1879a715ffc94353ba28eb1517e32eca {
-    case0: Boolean
-    case1: InlineCompletionOptions
-}
-
-union UnionOf_20920aaba71148a0a6ce865af74e5091 {
-    case0: Boolean
-    case1: DeclarationOptions
-    case2: DeclarationRegistrationOptions
-}
-
-union UnionOf_20fedab59d1c440a8bf2d6afa6a385af {
-    case0: Integer
-    case1: Unit
-}
-
-union UnionOf_267bb8bad3624e9f816ed67a3fdc33f6 {
-    case0: Boolean
-    case1: DocumentFormattingOptions
-}
-
-union UnionOf_26c5eadf09c34db482971c2c23838b1f {
-    case0: TextDocumentFilter
-    case1: NotebookCellTextDocumentFilter
-}
-
-union UnionOf_29f1b8e8fbf741ff93f0c0cfeaed4546 {
-    case0: WorkspaceFullDocumentDiagnosticReport
-    case1: WorkspaceUnchangedDocumentDiagnosticReport
-}
-
-union UnionOf_2cd74b72be654b099d5b9e1b90734cbd {
+union AnonymousUnion {
     case0: Boolean
     case1: InlayHintOptions
     case2: InlayHintRegistrationOptions
 }
 
-union UnionOf_2edb38765a0d4114b51932bd5f0f3bd4 {
-    case0: TextDocumentContentOptions
-    case1: TextDocumentContentRegistrationOptions
-}
-
-union UnionOf_31a19891e9f443c6bab31b1c5831c2ba {
-    case0: String
-    case1: MarkupContent
-}
-
-union UnionOf_324faa152cf74e31a98f41b2c6f987cd {
-    case0: TextDocumentFilterLanguage
-    case1: TextDocumentFilterScheme
-    case2: TextDocumentFilterPattern
-}
-
-union UnionOf_37c064d3bc9541a8a48a604345b5fede {
-    case0: DocumentSelector
-    case1: Unit
-}
-
-union UnionOf_42bb7f578e4f450a9974c4f58c18ff82 {
-    case0: Location
-    case1: ListOf_Location
-}
-
-union UnionOf_441c67eccede401e8a8f46ce7ec4db04 {
-    case0: FullDocumentDiagnosticReport
-    case1: UnchangedDocumentDiagnosticReport
-}
-
-union UnionOf_47b4ca317ecc44378fec96476323c664 {
+union BooleanOrClientSemanticTokensRequestFullDelta {
     case0: Boolean
-    case1: TypeHierarchyOptions
-    case2: TypeHierarchyRegistrationOptions
+    case1: ClientSemanticTokensRequestFullDelta
 }
 
-union UnionOf_4b679ff9966948348e1217e53c572e12 {
-    case0: DiagnosticOptions
-    case1: DiagnosticRegistrationOptions
-}
-
-union UnionOf_4b91e6fa394d43c1a7676b7dbde9e0e0 {
-    case0: String
-    case1: Unit
-}
-
-union UnionOf_4bdf1d4b6ee240c6aa46a905e007dc9b {
+union BooleanOrCodeActionOptions {
     case0: Boolean
-    case1: MonikerOptions
-    case2: MonikerRegistrationOptions
+    case1: CodeActionOptions
 }
 
-union UnionOf_50cd06e62b2e4abe97de1df3c70f56ee {
-    case0: NotebookDocumentFilterNotebookType
-    case1: NotebookDocumentFilterScheme
-    case2: NotebookDocumentFilterPattern
+union BooleanOrDefinitionOptions {
+    case0: Boolean
+    case1: DefinitionOptions
 }
 
-union UnionOf_515cfd1e50bf47fc810f7d613cbe89d2 {
+union BooleanOrDocumentFormattingOptions {
+    case0: Boolean
+    case1: DocumentFormattingOptions
+}
+
+union BooleanOrDocumentHighlightOptions {
+    case0: Boolean
+    case1: DocumentHighlightOptions
+}
+
+union BooleanOrDocumentRangeFormattingOptions {
+    case0: Boolean
+    case1: DocumentRangeFormattingOptions
+}
+
+union BooleanOrDocumentSymbolOptions {
+    case0: Boolean
+    case1: DocumentSymbolOptions
+}
+
+union BooleanOrHoverOptions {
+    case0: Boolean
+    case1: HoverOptions
+}
+
+union BooleanOrInlineCompletionOptions {
+    case0: Boolean
+    case1: InlineCompletionOptions
+}
+
+union BooleanOrReferenceOptions {
     case0: Boolean
     case1: ReferenceOptions
 }
 
-union UnionOf_55de74049a474d45991f499035b9cb01 {
-    case0: String
-    case1: NotebookDocumentFilter
+union BooleanOrRenameOptions {
+    case0: Boolean
+    case1: RenameOptions
 }
 
-union UnionOf_58ef042db5554c9e802ad20abdc98ff0 {
+union BooleanOrSaveOptions {
+    case0: Boolean
+    case1: SaveOptions
+}
+
+union BooleanOrSemanticTokensFullDelta {
+    case0: Boolean
+    case1: SemanticTokensFullDelta
+}
+
+union BooleanOrWorkspaceSymbolOptions {
+    case0: Boolean
+    case1: WorkspaceSymbolOptions
+}
+
+union BooleanUnion {
+    case0: Boolean
+    case1: InlineStruct_9b7853a7af17442f9224a2880e2ed4f5
+}
+
+union DiagnosticOptionsUnion {
+    case0: DiagnosticOptions
+    case1: DiagnosticRegistrationOptions
+}
+
+union DocumentDiagnosticReportUnion {
+    case0: FullDocumentDiagnosticReport
+    case1: UnchangedDocumentDiagnosticReport
+}
+
+union DocumentSelectorOrNULL {
+    case0: DocumentSelector
+    case1: Unit
+}
+
+union DocumentUriOrNULL {
+    case0: String
+    case1: Unit
+}
+
+union EditUnion {
+    case0: TextEdit
+    case1: InsertReplaceEdit
+}
+
+union InlineValueUnion {
     case0: InlineValueText
     case1: InlineValueVariableLookup
     case2: InlineValueEvaluatableExpression
 }
 
-union UnionOf_5909ab4ab0674aab9b04269f80bc123b {
-    case0: Boolean
-    case1: SaveOptions
-}
-
-union UnionOf_5aa012a324354e99b44f6e8180885344 {
+union IntegerOrNULL {
     case0: Integer
     case1: Unit
 }
 
-union UnionOf_5e10ead40d80436999fe0f05ccd901e1 {
-    case0: FullDocumentDiagnosticReport
-    case1: UnchangedDocumentDiagnosticReport
+union IntegerOrString {
+    case0: Integer
+    case1: String
 }
 
-union UnionOf_5e547248101d4b7bb393d2b0798fba06 {
+union ListOfWorkspaceFolderOrNULL {
+    case0: ListOf_WorkspaceFolder
+    case1: Unit
+}
+
+union LocationUnion {
+    case0: Location
+    case1: LocationUriOnly
+}
+
+union NotebookDocumentFilterUnion {
+    case0: NotebookDocumentFilterNotebookType
+    case1: NotebookDocumentFilterScheme
+    case2: NotebookDocumentFilterPattern
+}
+
+union NotebookDocumentFilterWithUnion {
+    case0: NotebookDocumentFilterWithNotebook
+    case1: NotebookDocumentFilterWithCells
+}
+
+union NotebookDocumentSyncOptionsUnion {
+    case0: NotebookDocumentSyncOptions
+    case1: NotebookDocumentSyncRegistrationOptions
+}
+
+union PatternUnion {
+    case0: Pattern
+    case1: RelativePattern
+}
+
+union RangeUnion {
     case0: Range
     case1: EditRangeWithInsertReplace
 }
 
-union UnionOf_628b33a1d7204257910e7a593ded1977 {
-    case0: Boolean
-    case1: ClientSemanticTokensRequestFullDelta
-}
-
-union UnionOf_65838f3f29b14ad88a481d2c170dd90a {
-    case0: Boolean
-    case1: DocumentColorOptions
-    case2: DocumentColorRegistrationOptions
-}
-
-union UnionOf_65a2e1b0cb9341a9a3ef17a66010a2f4 {
-    case0: Integer
-    case1: String
-}
-
-union UnionOf_67170941b101472a9187b3fe59ffc24c {
-    case0: Boolean
-    case1: DocumentSymbolOptions
-}
-
-union UnionOf_68705b0cd32e4da7a38c5bc1ff56f0a5 {
-    case0: Boolean
-    case1: HoverOptions
-}
-
-union UnionOf_708eea1f8d854c41afe02b5ba5a5ddca {
-    case0: Boolean
-    case1: CodeActionOptions
-}
-
-union UnionOf_7a286274323a4c65839692f1631e32b0 {
-    case0: Range
-    case1: PrepareRenamePlaceholder
-    case2: PrepareRenameDefaultBehavior
-}
-
-union UnionOf_7d3e56dfd3e74de7b6b54e04b09e0db0 {
-    case0: Boolean
-    case1: InlineStruct_b2d0e496bea24683bfa679e886cf477f
-}
-
-union UnionOf_82aef3eaa00140cf822cf1fd1fa48682 {
+union RelatedDocumentDiagnosticReportUnion {
     case0: RelatedFullDocumentDiagnosticReport
     case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
-union UnionOf_82b063fdd2734bbfbb9ad4bf1cc016df {
-    case0: Integer
-    case1: Unit
+union SemanticTokensOptionsUnion {
+    case0: SemanticTokensOptions
+    case1: SemanticTokensRegistrationOptions
 }
 
-union UnionOf_882ce0cbbc054cb0a9ca35975d6064af {
+union StringOrBoolean {
     case0: String
     case1: Boolean
 }
 
-union UnionOf_893adc836f7f4fa59374b253bca4c6bd {
-    case0: Boolean
-    case1: DocumentRangeFormattingOptions
-}
-
-union UnionOf_93c46c9fb7f546fb86da1810a8cd0c4f {
-    case0: Integer
-    case1: Unit
-}
-
-union UnionOf_940a8a9c987642058f7caa1f75da79f2 {
-    case0: Integer
-    case1: Unit
-}
-
-union UnionOf_9418e5a049144f47bc36759cee755c48 {
-    case0: Boolean
-    case1: SelectionRangeOptions
-    case2: SelectionRangeRegistrationOptions
-}
-
-union UnionOf_943575b9c30e45c48d72382453938ac2 {
-    case0: TextDocumentSyncOptions
-    case1: TextDocumentSyncKind
-}
-
-union UnionOf_97d3dd9b05aa428883237737e4baeaad {
-    case0: Boolean
-    case1: ImplementationOptions
-    case2: ImplementationRegistrationOptions
-}
-
-union UnionOf_9a209a9d16ff4f0a8ff822ce04d41cc6 {
-    case0: Boolean
-    case1: InlineValueOptions
-    case2: InlineValueRegistrationOptions
-}
-
-union UnionOf_9c4eb4951ba54866a43d9db62b1fce0e {
-    case0: Boolean
-    case1: WorkspaceSymbolOptions
-}
-
-union UnionOf_9c83995f4ff44f03a2796bd72daf6330 {
+union StringOrListOfInlayHintLabelPart {
     case0: String
-    case1: ListOf_String
+    case1: ListOf_InlayHintLabelPart
 }
 
-union UnionOf_9cf1b1bbb4c34ffc9f9c7eb2ff5fdf70 {
-    case0: TextDocumentContentChangePartial
-    case1: TextDocumentContentChangeWholeDocument
-}
-
-union UnionOf_9dfbbeaab1ee472db1f87997d5605e83 {
-    case0: Boolean
-    case1: InlineStruct_6776bbbe4d4c4ce59bcdc15fcd8c002a
-}
-
-union UnionOf_a04fd9a490284650af797fc18d5c7391 {
-    case0: Boolean
-    case1: LinkedEditingRangeOptions
-    case2: LinkedEditingRangeRegistrationOptions
-}
-
-union UnionOf_a051c4039717409aadbeb5252d61fb3d {
-    case0: Location
-    case1: ListOf_Location
-}
-
-union UnionOf_aac179b6b77b4e4a988577a18ff9e1cc {
-    case0: Boolean
-    case1: FoldingRangeOptions
-    case2: FoldingRangeRegistrationOptions
-}
-
-union UnionOf_aac21a0910194f2099715c9d51342fd1 {
-    case0: Integer
-    case1: String
-}
-
-union UnionOf_ad8b5630a5784e07bb7606743c30a0ff {
-    case0: String
-    case1: Unit
-}
-
-union UnionOf_bcec19e3fcc148619d750ddd779b99c7 {
+union StringOrMarkupContent {
     case0: String
     case1: MarkupContent
 }
 
-union UnionOf_bf8820a3ec7742a6873881a6c137923b {
-    case0: Boolean
-    case1: RenameOptions
+union StringOrNotebookDocumentFilter {
+    case0: String
+    case1: NotebookDocumentFilter
 }
 
-union UnionOf_bfb6449e6709465c80e2264d06848b4c {
+union StringOrNULL {
+    case0: String
+    case1: Unit
+}
+
+union StringUnion {
+    case0: String
+    case1: Tuple_of_Integer
+}
+
+union TextDocumentContentChangeUnion {
+    case0: TextDocumentContentChangePartial
+    case1: TextDocumentContentChangeWholeDocument
+}
+
+union TextDocumentContentOptionsUnion {
+    case0: TextDocumentContentOptions
+    case1: TextDocumentContentRegistrationOptions
+}
+
+union TextDocumentFilterUnion {
+    case0: TextDocumentFilterLanguage
+    case1: TextDocumentFilterScheme
+    case2: TextDocumentFilterPattern
+}
+
+union TextDocumentSyncUnion {
+    case0: TextDocumentSyncOptions
+    case1: TextDocumentSyncKind
+}
+
+union TextEditUnion {
     case0: TextEdit
     case1: AnnotatedTextEdit
     case2: SnippetTextEdit
 }
 
-union UnionOf_c5488d08314540ccb2dc79949bedd1da {
-    case0: String
-    case1: NotebookDocumentFilter
-}
-
-union UnionOf_c57ea50076d24b5ebb4073341fff42cd {
-    case0: LSPObject
-    case1: LSPArray
-    case2: String
-    case3: Integer
-    case4: Integer
-    case5: Float
-    case6: Boolean
-    case7: Unit
-}
-
-union UnionOf_c5932c2956134aa1b2d526c594cd3ade {
-    case0: String
-    case1: MarkupContent
-}
-
-union UnionOf_c6a660a7d20044ac9b41b47f3a23a983 {
-    case0: String
-    case1: Tuple_ee3f0e041ae845eb82ddf1012ed79e0f
-}
-
-union UnionOf_c94200ce23434afabab6b8ff47956fc7 {
-    case0: Boolean
-    case1: SemanticTokensFullDelta
-}
-
-union UnionOf_cb13ac5b6875440d9091839dda93e5f4 {
-    case0: ListOf_WorkspaceFolder
-    case1: Unit
-}
-
-union UnionOf_cb6e124bdf6c4c7aa6e3b46bb886cf06 {
-    case0: MarkupContent
-    case1: MarkedString
-    case2: ListOf_MarkedString
-}
-
-union UnionOf_d165a8faabe443dc92a3e66d00a1fefa {
-    case0: String
-    case1: ListOf_InlayHintLabelPart
-}
-
-union UnionOf_d446ded47537497d8f17098be0013444 {
-    case0: Boolean
-    case1: CallHierarchyOptions
-    case2: CallHierarchyRegistrationOptions
-}
-
-union UnionOf_d468e6f89b6a47a09189b77f3c61eb8c {
-    case0: WorkspaceFolder
-    case1: String
-}
-
-union UnionOf_dc2e393d783249ff88d33c439c263ae9 {
-    case0: NotebookDocumentFilterWithNotebook
-    case1: NotebookDocumentFilterWithCells
-}
-
-union UnionOf_dd42f83265e54f01835e7b8f7fce8fbf {
-    case0: Boolean
-    case1: DefinitionOptions
-}
-
-union UnionOf_de3f5df6660546d6a1da8182ba4ab528 {
-    case0: NotebookDocumentSyncOptions
-    case1: NotebookDocumentSyncRegistrationOptions
-}
-
-union UnionOf_e9cdc108e3a544a2a7a0797e96f66768 {
-    case0: FullDocumentDiagnosticReport
-    case1: UnchangedDocumentDiagnosticReport
-}
-
-union UnionOf_ecf2c8d2c0d74cdabb34091f3b540b37 {
-    case0: Location
-    case1: LocationUriOnly
-}
-
-union UnionOf_f1e6591f82854e8f8d73df886a9a0da8 {
-    case0: TextDocumentEdit
-    case1: CreateFile
-    case2: RenameFile
-    case3: DeleteFile
-}
-
-union UnionOf_f2cec0575f0e4663aa8ed0acb2af86e7 {
-    case0: Pattern
-    case1: RelativePattern
-}
-
-union UnionOf_f81f20eea5ff4910ac8cbe6e7e0f125a {
-    case0: TextEdit
-    case1: InsertReplaceEdit
-}
-
-union UnionOf_f8f26bcebda84c7ab026aebb07f03e0f {
+union UintegerOrNULL {
     case0: Integer
     case1: Unit
 }
 
-union UnionOf_fb00a80309fa47b2989814cb7c957445 {
-    case0: String
-    case1: MarkupContent
+union WorkspaceDocumentDiagnosticReportUnion {
+    case0: WorkspaceFullDocumentDiagnosticReport
+    case1: WorkspaceUnchangedDocumentDiagnosticReport
 }
 
-union UnionOf_fb5059a6789144188bace367e0bcab9b {
-    case0: String
-    case1: NotebookDocumentFilter
+union WorkspaceFolderOrUri {
+    case0: WorkspaceFolder
+    case1: String
+}
+
+list ListOf_AnonymousUnion {
+    member: AnonymousUnion
 }
 
 list ListOf_CodeActionKind {
@@ -2818,6 +2621,10 @@ list ListOf_NotebookDocumentCellContentChanges {
     member: NotebookDocumentCellContentChanges
 }
 
+list ListOf_NotebookDocumentFilterWithUnion {
+    member: NotebookDocumentFilterWithUnion
+}
+
 list ListOf_ParameterInformation {
     member: ParameterInformation
 }
@@ -2882,20 +2689,12 @@ list ListOf_TextEdit {
     member: TextEdit
 }
 
+list ListOf_TextEditUnion {
+    member: TextEditUnion
+}
+
 list ListOf_TokenFormat {
     member: TokenFormat
-}
-
-list ListOf_UnionOf_bfb6449e6709465c80e2264d06848b4c {
-    member: UnionOf_bfb6449e6709465c80e2264d06848b4c
-}
-
-list ListOf_UnionOf_dc2e393d783249ff88d33c439c263ae9 {
-    member: UnionOf_dc2e393d783249ff88d33c439c263ae9
-}
-
-list ListOf_UnionOf_f1e6591f82854e8f8d73df886a9a0da8 {
-    member: UnionOf_f1e6591f82854e8f8d73df886a9a0da8
 }
 
 list ListOf_Unregistration {
@@ -2910,13 +2709,18 @@ list ListOf_WorkspaceFolder {
     member: WorkspaceFolder
 }
 
-list Tuple_ee3f0e041ae845eb82ddf1012ed79e0f {
+list Tuple_of_Integer {
     member: Integer
 }
 
 map MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation {
     key: ChangeAnnotationIdentifier
     value: ChangeAnnotation
+}
+
+map MapOf_String_to_DocumentDiagnosticReportUnion {
+    key: String
+    value: DocumentDiagnosticReportUnion
 }
 
 map MapOf_String_to_ListOf_TextEdit {
@@ -2929,22 +2733,7 @@ map MapOf_String_to_LSPAny {
     value: LSPAny
 }
 
-map MapOf_String_to_UnionOf_441c67eccede401e8a8f46ce7ec4db04 {
-    key: String
-    value: UnionOf_441c67eccede401e8a8f46ce7ec4db04
-}
-
-map MapOf_String_to_UnionOf_5e10ead40d80436999fe0f05ccd901e1 {
-    key: String
-    value: UnionOf_5e10ead40d80436999fe0f05ccd901e1
-}
-
-map MapOf_String_to_UnionOf_e9cdc108e3a544a2a7a0797e96f66768 {
-    key: String
-    value: UnionOf_e9cdc108e3a544a2a7a0797e96f66768
-}
-
-intEnum ApplyKind {
+enum ApplyKind {
     Replace = 1
     Merge = 2
 }
