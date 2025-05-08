@@ -1,0 +1,40 @@
+import com.goyeau.mill.scalafix.ScalafixModule
+import coursier.core.Repository
+import coursier.maven.MavenRepository
+import mill._
+import mill.define.Sources
+import scalalib._
+
+import $ivy.`com.goyeau::mill-scalafix::0.5.0`
+
+trait CommonScalaModule extends ScalaModule with ScalafixModule {
+  override def repositoriesTask: Task[Seq[Repository]] = T.task {
+    Seq(
+      MavenRepository("https://s01.oss.sonatype.org/content/repositories/snapshots"),
+      MavenRepository("https://s01.oss.sonatype.org/content/repositories/releases"),
+    ) ++ super.repositoriesTask()
+  }
+
+  def scalaVersion = "3.7.0"
+}
+
+object lspSmithy extends CommonScalaModule {
+
+  def mainClass = Some("org.scala.abusers.sls.SimpleScalaServer")
+
+  def ivyDeps = Agg(
+    ivy"tech.neander::langoustine-meta::0.0.22",
+    ivy"com.lihaoyi::os-lib:0.11.4",
+  )
+
+  def scalacOptions = Seq(
+    "-Wunused:all"
+  )
+
+  object test extends ScalaTests {
+    def ivyDeps = Agg(
+      ivy"com.disneystreaming::weaver-cats:0.8.4"
+    )
+    def testFramework = "weaver.framework.CatsEffect"
+  }
+}
