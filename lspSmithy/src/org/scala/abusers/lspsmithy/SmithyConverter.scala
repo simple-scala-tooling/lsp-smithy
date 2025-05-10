@@ -27,17 +27,7 @@ object SmithyConverter:
     // Structures
     for struct <- meta.structures do
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
-      val builder = StructureShape.builder().id(shapeId)
-      for prop <- struct.properties do
-        val memberId = shapeId.withMember(prop.name.value)
-        val member = MemberShape
-          .builder()
-          .id(memberId)
-          .target(smithyType(prop.tpe, namespace, shapes))
-        if prop.optional.no then
-          member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-        builder.addMember(member.build())
-      shapes.addOne(builder.build())
+      structure(shapeId, struct.properties, shapes)
 
     // Enums
     for enum_ <- meta.enumerations do
@@ -171,23 +161,25 @@ object SmithyConverter:
         id
 
       case StructureLiteralType(StructureLiteral(properties, _)) =>
-        val id      = uniqueShapeId("InlineStruct")
-        val builder = StructureShape.builder().id(id)
-        for prop <- properties do
-          builder.addMember(
-            prop.name.value,
-            smithyType(prop.tpe, namespace, shapes),
-            if prop.optional.no then
-              _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-            else identity,
-          )
-        val structShape = builder.build()
-        shapes.addOne(structShape)
-        id
+        val id = uniqueShapeId("InlineStruct")
+        structure(id, properties, shapes)
 
       case AndType(_) =>
         // No Smithy equivalent — fallback to string
         ShapeId.from("smithy.api#String")
+
+  private def structure(id: ShapeId, properties: Vector[Property], shapes: ListBuffer[Shape]): ShapeId =
+    val builder = StructureShape.builder().id(id)
+    for prop <- properties do
+      builder.addMember(
+        prop.name.value,
+        smithyType(prop.tpe, namespace, shapes),
+        if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+        else identity,
+      )
+    val result = builder.build()
+    shapes.addOne(result)
+    result.getId()
 
   def convertTypeAliases(typeAliases: Vector[TypeAlias]) =
     typeAliases.map { alias =>
