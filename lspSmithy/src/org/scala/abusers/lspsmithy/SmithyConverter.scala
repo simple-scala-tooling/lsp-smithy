@@ -3,16 +3,20 @@ package org.scala.abusers.lspsmithy
 import langoustine.meta.*
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
-import software.amazon.smithy.model.traits.EnumValueTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
+import java.util.UUID
 import scala.collection.mutable.ListBuffer
+import scala.util.Random
 
 object SmithyConverter:
 
   private val namespace: String = "lsp"
+
+  private val deterministicRandom = new Random(0)
+  private def nextUUID()          = new UUID(deterministicRandom.nextLong(), deterministicRandom.nextLong())
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val shapes = ListBuffer[Shape]()
@@ -35,19 +39,6 @@ object SmithyConverter:
         builder.addMember(member.build())
       shapes.addOne(builder.build())
 
-    def convertEnumValues(shapeId: ShapeId, entry: EnumerationEntry) =
-      val memberId = shapeId.withMember(entry.name.value)
-      val memberBuilder = MemberShape
-        .builder()
-        .id(memberId)
-        .target("smithy.api#Unit")
-
-      val enumValueTrait = entry.value match
-        case i: Int    => EnumValueTrait.builder().intValue(i).build()
-        case s: String => EnumValueTrait.builder().stringValue(s).build()
-
-      memberBuilder.addTrait(enumValueTrait)
-      memberBuilder.build()
     // Enums
     for enum_ <- meta.enumerations do
       val shapeId = ShapeId.fromParts(namespace, enum_.name.value)
@@ -55,21 +46,18 @@ object SmithyConverter:
       val enumShape = enum_.values.map(t => t.value).head match
         case _: Int =>
           val builder = IntEnumShape.builder().id(shapeId)
-          for entry <- enum_.values.distinctBy(_.value) do
-            val member = convertEnumValues(shapeId, entry)
-            builder.addMember(member)
+          for entry <- enum_.values.distinctBy(_.value) do builder.addMember(entry.name.value, entry.value.intValue)
           builder.build()
         case _: String =>
           val builder = EnumShape.builder().id(shapeId)
-          enum_.values
-            .distinctBy(_.value)
-            .filter {
-              _.value match
-                case _: Int      => true
-                case str: String => str.nonEmpty
-            }
-            .map(convertEnumValues(shapeId, _))
-            .foreach(m => builder.addMember(m))
+          for entry <- enum_.values
+              .distinctBy(_.value)
+              .filter {
+                _.value match
+                  case _: Int      => true
+                  case str: String => str.nonEmpty
+              }
+          do builder.addMember(entry.name.value, entry.value.stringValue)
           builder.build()
 
       shapes.addOne(enumShape)
@@ -111,10 +99,9 @@ object SmithyConverter:
 
   private def smithyType(t: Type, namespace: String, shapes: ListBuffer[Shape]): ShapeId =
     import Type.*
-    import java.util.UUID
 
     def uniqueShapeId(prefix: String): ShapeId =
-      ShapeId.fromParts(namespace, s"${prefix}_${UUID.randomUUID().toString.replace("-", "")}")
+      ShapeId.fromParts(namespace, s"${prefix}_${nextUUID().toString.replace("-", "")}")
 
     t match
       case BaseType(BaseTypes.string)   => ShapeId.from("smithy.api#String")
@@ -134,7 +121,7 @@ object SmithyConverter:
           val listShape = ListShape
             .builder()
             .id(listId)
-            .member(MemberShape.builder().id(listId.withMember("member")).target(innerId).build())
+            .member(innerId)
             .build()
           shapes.addOne(listShape)
         listId
@@ -147,8 +134,8 @@ object SmithyConverter:
           val mapShape = MapShape
             .builder()
             .id(mapId)
-            .key(MemberShape.builder().id(mapId.withMember("key")).target(keyId).build())
-            .value(MemberShape.builder().id(mapId.withMember("value")).target(valueId).build())
+            .key(keyId)
+            .value(valueId)
             .build()
           shapes.addOne(mapShape)
         mapId
@@ -164,7 +151,7 @@ object SmithyConverter:
         val listShape = ListShape
           .builder()
           .id(listId)
-          .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
+          .member(unifiedType)
           .build()
         shapes.addOne(listShape)
         listId
@@ -175,11 +162,8 @@ object SmithyConverter:
         items.zipWithIndex.foreach { case (tpe, idx) =>
           val target = smithyType(tpe, namespace, shapes)
           builder.addMember(
-            MemberShape
-              .builder()
-              .id(id.withMember(s"case$idx"))
-              .target(target)
-              .build()
+            s"case$idx",
+            target,
           )
         }
         val unionShape = builder.build()
@@ -190,14 +174,13 @@ object SmithyConverter:
         val id      = uniqueShapeId("InlineStruct")
         val builder = StructureShape.builder().id(id)
         for prop <- properties do
-          val memberId = id.withMember(prop.name.value)
-          val member = MemberShape
-            .builder()
-            .id(memberId)
-            .target(smithyType(prop.tpe, namespace, shapes))
-          if prop.optional.no then
-            member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-          builder.addMember(member.build())
+          builder.addMember(
+            prop.name.value,
+            smithyType(prop.tpe, namespace, shapes),
+            if prop.optional.no then
+              _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+            else identity,
+          )
         val structShape = builder.build()
         shapes.addOne(structShape)
         id
