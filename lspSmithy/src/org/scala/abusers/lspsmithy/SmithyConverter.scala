@@ -3,14 +3,16 @@ package org.scala.abusers.lspsmithy
 import langoustine.meta.*
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
+import software.amazon.smithy.model.traits.DocumentationTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
 import java.util.UUID
 import scala.collection.mutable.ListBuffer
+import scala.jdk.CollectionConverters.*
+import scala.util.chaining.*
 import scala.util.Random
-
 object SmithyConverter:
 
   private val namespace: String = "lsp"
@@ -27,7 +29,7 @@ object SmithyConverter:
     // Structures
     for struct <- meta.structures do
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
-      structure(shapeId, struct.properties, shapes)
+      structure(shapeId, struct.properties, struct.documentation, shapes)
 
     // Enums
     for enum_ <- meta.enumerations do
@@ -162,24 +164,42 @@ object SmithyConverter:
 
       case StructureLiteralType(StructureLiteral(properties, _)) =>
         val id = uniqueShapeId("InlineStruct")
-        structure(id, properties, shapes)
+        structure(
+          id,
+          properties,
+          docs = Opt.empty,
+          shapes,
+        )
 
       case AndType(_) =>
         // No Smithy equivalent — fallback to string
         ShapeId.from("smithy.api#String")
 
-  private def structure(id: ShapeId, properties: Vector[Property], shapes: ListBuffer[Shape]): ShapeId =
-    val builder = StructureShape.builder().id(id)
+  private def structure(
+      id: ShapeId,
+      properties: Vector[Property],
+      docs: Opt[StructureDescription],
+      shapes: ListBuffer[Shape],
+  ): ShapeId =
+    val builder = StructureShape.builder().id(id).pipe(maybeAddDocs(docs.toOption.map(_.value)))
+
+    def makeRequired(prop: Property): MemberShape.Builder => MemberShape.Builder =
+      if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+      else identity
+
     for prop <- properties do
       builder.addMember(
         prop.name.value,
         smithyType(prop.tpe, namespace, shapes),
-        if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-        else identity,
+        _.pipe(makeRequired(prop))
+          .pipe(maybeAddDocs(prop.documentation.toOption.map(_.value))),
       )
     val result = builder.build()
     shapes.addOne(result)
     result.getId()
+
+  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](text: Option[String])(b: B): B =
+    b.addTraits(text.map(new DocumentationTrait(_)).toList.asJava)
 
   def convertTypeAliases(typeAliases: Vector[TypeAlias]) =
     typeAliases.map { alias =>
