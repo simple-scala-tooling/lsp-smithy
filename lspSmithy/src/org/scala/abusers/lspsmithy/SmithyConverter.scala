@@ -3,29 +3,22 @@ package org.scala.abusers.lspsmithy
 import langoustine.meta.*
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
-import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
 import software.amazon.smithy.model.traits.EnumValueTrait
 import software.amazon.smithy.model.traits.RequiredTrait
+import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
-import java.nio.file.Path
-import java.util
-import scala.jdk.CollectionConverters.*
+import scala.collection.mutable.ListBuffer
 
-object SmithySerializer:
+object SmithyConverter:
 
-  def render(meta: MetaModel, namespace: String = "lsp"): Map[Path, String] =
-    val shapes = new util.ArrayList[Shape]()
+  private val namespace: String = "lsp"
+
+  def apply(meta: MetaModel): ValidatedResult[Model] =
+    val shapes = ListBuffer[Shape]()
 
     // Type Aliases
-    for alias <- meta.typeAliases do
-      val shapeId  = ShapeId.fromParts(namespace, alias.name.value)
-      // val targetId = smithyType(alias.`type`, namespace, shapes)
-      val aliasShape = StringShape
-        .builder()
-        .id(shapeId)
-        .build()
-      shapes.add(aliasShape)
+    shapes.addAll(convertTypeAliases(meta.typeAliases))
 
     // Structures
     for struct <- meta.structures do
@@ -40,34 +33,53 @@ object SmithySerializer:
         if prop.optional.no then
           member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
         builder.addMember(member.build())
-      shapes.add(builder.build())
+      shapes.addOne(builder.build())
 
+    def convertEnumValues(shapeId: ShapeId, entry: EnumerationEntry) =
+      val memberId = shapeId.withMember(entry.name.value)
+      val memberBuilder = MemberShape
+        .builder()
+        .id(memberId)
+        .target("smithy.api#Unit")
+
+      val enumValueTrait = entry.value match
+        case i: Int    => EnumValueTrait.builder().intValue(i).build()
+        case s: String => EnumValueTrait.builder().stringValue(s).build()
+
+      memberBuilder.addTrait(enumValueTrait)
+      memberBuilder.build()
     // Enums
     for enum_ <- meta.enumerations do
       val shapeId = ShapeId.fromParts(namespace, enum_.name.value)
-      val builder = EnumShape.builder().id(shapeId)
 
-      for entry <- enum_.values do
-        val memberId = shapeId.withMember(entry.name.value)
-        val memberBuilder = MemberShape
-          .builder()
-          .id(memberId)
-          .target("smithy.api#Unit")
+      val enumShape = enum_.values.map(t => t.value).head match
+        case _: Int =>
+          val builder = IntEnumShape.builder().id(shapeId)
+          for entry <- enum_.values.distinctBy(_.value) do
+            val member = convertEnumValues(shapeId, entry)
+            builder.addMember(member)
+          builder.build()
+        case _: String =>
+          val builder = EnumShape.builder().id(shapeId)
+          enum_.values
+            .distinctBy(_.value)
+            .filter {
+              _.value match
+                case _: Int      => true
+                case str: String => str.nonEmpty
+            }
+            .map(convertEnumValues(shapeId, _))
+            .foreach(m => builder.addMember(m))
+          builder.build()
 
-        val enumValueTrait = entry.value match
-          case i: Int    => EnumValueTrait.builder().intValue(i).build()
-          case s: String => EnumValueTrait.builder().stringValue(s).build()
-
-        memberBuilder.addTrait(enumValueTrait)
-
-        builder.addMember(memberBuilder.build())
-
-      shapes.add(builder.build())
+      shapes.addOne(enumShape)
 
     // Final model and serialization
-    val model     = Model.builder().addShapes(shapes).build()
-    val outputMap = SmithyIdlModelSerializer.builder().build().serialize(model)
-    outputMap.asScala.toMap
+    val assembler = Model.assembler()
+
+    shapes.foreach(assembler.addShape)
+
+    assembler.assemble()
 
   private def unionNameFor(types: Vector[Type]): String =
     val names = types.map(extractTypeName).filter(_.nonEmpty).distinct
@@ -97,7 +109,7 @@ object SmithySerializer:
       acc.intersect(next)
     }
 
-  private def smithyType(t: Type, namespace: String, shapes: util.List[Shape]): ShapeId =
+  private def smithyType(t: Type, namespace: String, shapes: ListBuffer[Shape]): ShapeId =
     import Type.*
     import java.util.UUID
 
@@ -118,27 +130,27 @@ object SmithySerializer:
       case ArrayType(element) =>
         val innerId = smithyType(element, namespace, shapes)
         val listId  = ShapeId.fromParts(namespace, s"ListOf_${innerId.getName}")
-        if !shapes.asScala.exists(_.getId == listId) then
+        if !shapes.exists(_.getId == listId) then
           val listShape = ListShape
             .builder()
             .id(listId)
             .member(MemberShape.builder().id(listId.withMember("member")).target(innerId).build())
             .build()
-          shapes.add(listShape)
+          shapes.addOne(listShape)
         listId
 
       case MapType(key, value) =>
         val keyId   = smithyType(key, namespace, shapes)
         val valueId = smithyType(value, namespace, shapes)
         val mapId   = ShapeId.fromParts(namespace, s"MapOf_${keyId.getName}_to_${valueId.getName}")
-        if !shapes.asScala.exists(_.getId == mapId) then
+        if !shapes.exists(_.getId == mapId) then
           val mapShape = MapShape
             .builder()
             .id(mapId)
             .key(MemberShape.builder().id(mapId.withMember("key")).target(keyId).build())
             .value(MemberShape.builder().id(mapId.withMember("value")).target(valueId).build())
             .build()
-          shapes.add(mapShape)
+          shapes.addOne(mapShape)
         mapId
 
       case StringLiteralType(_) | BooleanLiteralType(_) =>
@@ -147,14 +159,14 @@ object SmithySerializer:
       case TupleType(items) =>
         val unifiedType = items.map(t => smithyType(t, namespace, shapes)).distinct match
           case Seq(one) => one
-          case _        => ShapeId.from("smithy.api#String") // fallback
+          case _        => ShapeId.from("smithy.api#String") // TODO: fallback
         val listId = ShapeId.fromParts(namespace, s"Tuple_of_${unifiedType.getName}")
         val listShape = ListShape
           .builder()
           .id(listId)
           .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
           .build()
-        shapes.add(listShape)
+        shapes.addOne(listShape)
         listId
 
       case OrType(items) =>
@@ -171,7 +183,7 @@ object SmithySerializer:
           )
         }
         val unionShape = builder.build()
-        shapes.add(unionShape)
+        shapes.addOne(unionShape)
         id
 
       case StructureLiteralType(StructureLiteral(properties, _)) =>
@@ -187,9 +199,20 @@ object SmithySerializer:
             member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
           builder.addMember(member.build())
         val structShape = builder.build()
-        shapes.add(structShape)
+        shapes.addOne(structShape)
         id
 
       case AndType(_) =>
         // No Smithy equivalent — fallback to string
         ShapeId.from("smithy.api#String")
+
+  def convertTypeAliases(typeAliases: Vector[TypeAlias]) =
+    typeAliases.map { alias =>
+      val shapeId = ShapeId.fromParts(namespace, alias.name.value)
+      // val targetId = smithyType(alias.`type`, namespace, shapes)
+      val aliasShape = StringShape
+        .builder()
+        .id(shapeId)
+        .build()
+      aliasShape
+    }

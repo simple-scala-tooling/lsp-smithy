@@ -3,42 +3,42 @@ $version: "2.0"
 namespace lsp
 
 structure _InitializeParams {
-    @required()
+    @required
     processId: IntegerOrNULL
     clientInfo: ClientInfo
     locale: String
     rootPath: StringOrNULL
-    @required()
+    @required
     rootUri: DocumentUriOrNULL
-    @required()
+    @required
     capabilities: ClientCapabilities
     initializationOptions: LSPAny
     trace: TraceValue
 }
 
 structure AnnotatedTextEdit {
-    @required()
+    @required
     annotationId: ChangeAnnotationIdentifier
 }
 
 structure ApplyWorkspaceEditParams {
     label: String
-    @required()
+    @required
     edit: WorkspaceEdit
     metadata: WorkspaceEditMetadata
 }
 
 structure ApplyWorkspaceEditResult {
-    @required()
+    @required
     applied: Boolean
     failureReason: String
     failedChange: Integer
 }
 
 structure BaseSymbolInformation {
-    @required()
+    @required
     name: String
-    @required()
+    @required
     kind: SymbolKind
     tags: ListOf_SymbolTag
     containerName: String
@@ -49,29 +49,29 @@ structure CallHierarchyClientCapabilities {
 }
 
 structure CallHierarchyIncomingCall {
-    @required()
+    @required
     from: CallHierarchyItem
-    @required()
+    @required
     fromRanges: ListOf_Range
 }
 
 structure CallHierarchyIncomingCallsParams {
-    @required()
+    @required
     item: CallHierarchyItem
 }
 
 structure CallHierarchyItem {
-    @required()
+    @required
     name: String
-    @required()
+    @required
     kind: SymbolKind
     tags: ListOf_SymbolTag
     detail: String
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     selectionRange: Range
     data: LSPAny
 }
@@ -79,14 +79,14 @@ structure CallHierarchyItem {
 structure CallHierarchyOptions {}
 
 structure CallHierarchyOutgoingCall {
-    @required()
+    @required
     to: CallHierarchyItem
-    @required()
+    @required
     fromRanges: ListOf_Range
 }
 
 structure CallHierarchyOutgoingCallsParams {
-    @required()
+    @required
     item: CallHierarchyItem
 }
 
@@ -95,12 +95,12 @@ structure CallHierarchyPrepareParams {}
 structure CallHierarchyRegistrationOptions {}
 
 structure CancelParams {
-    @required()
+    @required
     id: IntegerOrString
 }
 
 structure ChangeAnnotation {
-    @required()
+    @required
     label: String
     needsConfirmation: Boolean
     description: String
@@ -120,27 +120,27 @@ structure ClientCapabilities {
 }
 
 structure ClientCodeActionKindOptions {
-    @required()
+    @required
     valueSet: ListOf_CodeActionKind
 }
 
 structure ClientCodeActionLiteralOptions {
-    @required()
+    @required
     codeActionKind: ClientCodeActionKindOptions
 }
 
 structure ClientCodeActionResolveOptions {
-    @required()
+    @required
     properties: ListOf_String
 }
 
 structure ClientCodeLensResolveOptions {
-    @required()
+    @required
     properties: ListOf_String
 }
 
 structure ClientCompletionItemInsertTextModeOptions {
-    @required()
+    @required
     valueSet: ListOf_InsertTextMode
 }
 
@@ -162,12 +162,12 @@ structure ClientCompletionItemOptionsKind {
 }
 
 structure ClientCompletionItemResolveOptions {
-    @required()
+    @required
     properties: ListOf_String
 }
 
 structure ClientDiagnosticsTagOptions {
-    @required()
+    @required
     valueSet: ListOf_DiagnosticTag
 }
 
@@ -180,13 +180,13 @@ structure ClientFoldingRangeOptions {
 }
 
 structure ClientInfo {
-    @required()
+    @required
     name: String
     version: String
 }
 
 structure ClientInlayHintResolveOptions {
-    @required()
+    @required
     properties: ListOf_String
 }
 
@@ -219,17 +219,17 @@ structure ClientSymbolKindOptions {
 }
 
 structure ClientSymbolResolveOptions {
-    @required()
+    @required
     properties: ListOf_String
 }
 
 structure ClientSymbolTagOptions {
-    @required()
+    @required
     valueSet: ListOf_SymbolTag
 }
 
 structure CodeAction {
-    @required()
+    @required
     title: String
     kind: CodeActionKind
     diagnostics: ListOf_Diagnostic
@@ -254,21 +254,21 @@ structure CodeActionClientCapabilities {
 }
 
 structure CodeActionContext {
-    @required()
+    @required
     diagnostics: ListOf_Diagnostic
     only: ListOf_CodeActionKind
     triggerKind: CodeActionTriggerKind
 }
 
 structure CodeActionDisabled {
-    @required()
+    @required
     reason: String
 }
 
 structure CodeActionKindDocumentation {
-    @required()
+    @required
     kind: CodeActionKind
-    @required()
+    @required
     command: Command
 }
 
@@ -279,28 +279,28 @@ structure CodeActionOptions {
 }
 
 structure CodeActionParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     context: CodeActionContext
 }
 
 structure CodeActionRegistrationOptions {}
 
 structure CodeActionTagOptions {
-    @required()
+    @required
     valueSet: ListOf_CodeActionTag
 }
 
 structure CodeDescription {
-    @required()
+    @required
     href: String
 }
 
 structure CodeLens {
-    @required()
+    @required
     range: Range
     command: Command
     data: LSPAny
@@ -316,7 +316,7 @@ structure CodeLensOptions {
 }
 
 structure CodeLensParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
@@ -327,44 +327,44 @@ structure CodeLensWorkspaceClientCapabilities {
 }
 
 structure Color {
-    @required()
+    @required
     red: Float
-    @required()
+    @required
     green: Float
-    @required()
+    @required
     blue: Float
-    @required()
+    @required
     alpha: Float
 }
 
 structure ColorInformation {
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     color: Color
 }
 
 structure ColorPresentation {
-    @required()
+    @required
     label: String
     textEdit: TextEdit
     additionalTextEdits: ListOf_TextEdit
 }
 
 structure ColorPresentationParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     color: Color
-    @required()
+    @required
     range: Range
 }
 
 structure Command {
-    @required()
+    @required
     title: String
     tooltip: String
-    @required()
+    @required
     command: String
     arguments: ListOf_LSPAny
 }
@@ -379,13 +379,13 @@ structure CompletionClientCapabilities {
 }
 
 structure CompletionContext {
-    @required()
+    @required
     triggerKind: CompletionTriggerKind
     triggerCharacter: String
 }
 
 structure CompletionItem {
-    @required()
+    @required
     label: String
     labelDetails: CompletionItemLabelDetails
     kind: CompletionItemKind
@@ -426,16 +426,16 @@ structure CompletionItemLabelDetails {
 }
 
 structure CompletionItemTagOptions {
-    @required()
+    @required
     valueSet: ListOf_CompletionItemTag
 }
 
 structure CompletionList {
-    @required()
+    @required
     isIncomplete: Boolean
     itemDefaults: CompletionItemDefaults
     applyKind: CompletionItemApplyKinds
-    @required()
+    @required
     items: ListOf_CompletionItem
 }
 
@@ -463,14 +463,14 @@ structure ConfigurationItem {
 }
 
 structure ConfigurationParams {
-    @required()
+    @required
     items: ListOf_ConfigurationItem
 }
 
 structure CreateFile {
-    @required()
+    @required
     kind: String
-    @required()
+    @required
     uri: String
     options: CreateFileOptions
 }
@@ -481,7 +481,7 @@ structure CreateFileOptions {
 }
 
 structure CreateFilesParams {
-    @required()
+    @required
     files: ListOf_FileCreate
 }
 
@@ -508,9 +508,9 @@ structure DefinitionParams {}
 structure DefinitionRegistrationOptions {}
 
 structure DeleteFile {
-    @required()
+    @required
     kind: String
-    @required()
+    @required
     uri: String
     options: DeleteFileOptions
 }
@@ -521,18 +521,18 @@ structure DeleteFileOptions {
 }
 
 structure DeleteFilesParams {
-    @required()
+    @required
     files: ListOf_FileDelete
 }
 
 structure Diagnostic {
-    @required()
+    @required
     range: Range
     severity: DiagnosticSeverity
     code: IntegerOrString
     codeDescription: CodeDescription
     source: String
-    @required()
+    @required
     message: String
     tags: ListOf_DiagnosticTag
     relatedInformation: ListOf_DiagnosticRelatedInformation
@@ -546,18 +546,18 @@ structure DiagnosticClientCapabilities {
 
 structure DiagnosticOptions {
     identifier: String
-    @required()
+    @required
     interFileDependencies: Boolean
-    @required()
+    @required
     workspaceDiagnostics: Boolean
 }
 
 structure DiagnosticRegistrationOptions {}
 
 structure DiagnosticRelatedInformation {
-    @required()
+    @required
     location: Location
-    @required()
+    @required
     message: String
 }
 
@@ -569,7 +569,7 @@ structure DiagnosticsCapabilities {
 }
 
 structure DiagnosticServerCancellationData {
-    @required()
+    @required
     retriggerRequest: Boolean
 }
 
@@ -582,7 +582,7 @@ structure DidChangeConfigurationClientCapabilities {
 }
 
 structure DidChangeConfigurationParams {
-    @required()
+    @required
     settings: LSPAny
 }
 
@@ -591,16 +591,16 @@ structure DidChangeConfigurationRegistrationOptions {
 }
 
 structure DidChangeNotebookDocumentParams {
-    @required()
+    @required
     notebookDocument: VersionedNotebookDocumentIdentifier
-    @required()
+    @required
     change: NotebookDocumentChangeEvent
 }
 
 structure DidChangeTextDocumentParams {
-    @required()
+    @required
     textDocument: VersionedTextDocumentIdentifier
-    @required()
+    @required
     contentChanges: ListOf_TextDocumentContentChangeEvent
 }
 
@@ -610,51 +610,51 @@ structure DidChangeWatchedFilesClientCapabilities {
 }
 
 structure DidChangeWatchedFilesParams {
-    @required()
+    @required
     changes: ListOf_FileEvent
 }
 
 structure DidChangeWatchedFilesRegistrationOptions {
-    @required()
+    @required
     watchers: ListOf_FileSystemWatcher
 }
 
 structure DidChangeWorkspaceFoldersParams {
-    @required()
+    @required
     event: WorkspaceFoldersChangeEvent
 }
 
 structure DidCloseNotebookDocumentParams {
-    @required()
+    @required
     notebookDocument: NotebookDocumentIdentifier
-    @required()
+    @required
     cellTextDocuments: ListOf_TextDocumentIdentifier
 }
 
 structure DidCloseTextDocumentParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
 structure DidOpenNotebookDocumentParams {
-    @required()
+    @required
     notebookDocument: NotebookDocument
-    @required()
+    @required
     cellTextDocuments: ListOf_TextDocumentItem
 }
 
 structure DidOpenTextDocumentParams {
-    @required()
+    @required
     textDocument: TextDocumentItem
 }
 
 structure DidSaveNotebookDocumentParams {
-    @required()
+    @required
     notebookDocument: NotebookDocumentIdentifier
 }
 
 structure DidSaveTextDocumentParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
     text: String
 }
@@ -666,21 +666,21 @@ structure DocumentColorClientCapabilities {
 structure DocumentColorOptions {}
 
 structure DocumentColorParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
 structure DocumentColorRegistrationOptions {}
 
 structure DocumentDiagnosticParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
     identifier: String
     previousResultId: String
 }
 
 structure DocumentDiagnosticReportPartialResult {
-    @required()
+    @required
     relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
 }
 
@@ -691,16 +691,16 @@ structure DocumentFormattingClientCapabilities {
 structure DocumentFormattingOptions {}
 
 structure DocumentFormattingParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     options: FormattingOptions
 }
 
 structure DocumentFormattingRegistrationOptions {}
 
 structure DocumentHighlight {
-    @required()
+    @required
     range: Range
     kind: DocumentHighlightKind
 }
@@ -716,7 +716,7 @@ structure DocumentHighlightParams {}
 structure DocumentHighlightRegistrationOptions {}
 
 structure DocumentLink {
-    @required()
+    @required
     range: Range
     target: String
     tooltip: String
@@ -733,7 +733,7 @@ structure DocumentLinkOptions {
 }
 
 structure DocumentLinkParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
@@ -744,19 +744,19 @@ structure DocumentOnTypeFormattingClientCapabilities {
 }
 
 structure DocumentOnTypeFormattingOptions {
-    @required()
+    @required
     firstTriggerCharacter: String
     moreTriggerCharacter: ListOf_String
 }
 
 structure DocumentOnTypeFormattingParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     position: Position
-    @required()
+    @required
     ch: String
-    @required()
+    @required
     options: FormattingOptions
 }
 
@@ -772,36 +772,36 @@ structure DocumentRangeFormattingOptions {
 }
 
 structure DocumentRangeFormattingParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     options: FormattingOptions
 }
 
 structure DocumentRangeFormattingRegistrationOptions {}
 
 structure DocumentRangesFormattingParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     ranges: ListOf_Range
-    @required()
+    @required
     options: FormattingOptions
 }
 
 structure DocumentSymbol {
-    @required()
+    @required
     name: String
     detail: String
-    @required()
+    @required
     kind: SymbolKind
     tags: ListOf_SymbolTag
     deprecated: Boolean
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     selectionRange: Range
     children: ListOf_DocumentSymbol
 }
@@ -819,16 +819,16 @@ structure DocumentSymbolOptions {
 }
 
 structure DocumentSymbolParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
 structure DocumentSymbolRegistrationOptions {}
 
 structure EditRangeWithInsertReplace {
-    @required()
+    @required
     insert: Range
-    @required()
+    @required
     replace: Range
 }
 
@@ -837,12 +837,12 @@ structure ExecuteCommandClientCapabilities {
 }
 
 structure ExecuteCommandOptions {
-    @required()
+    @required
     commands: ListOf_String
 }
 
 structure ExecuteCommandParams {
-    @required()
+    @required
     command: String
     arguments: ListOf_LSPAny
 }
@@ -850,25 +850,25 @@ structure ExecuteCommandParams {
 structure ExecuteCommandRegistrationOptions {}
 
 structure ExecutionSummary {
-    @required()
+    @required
     executionOrder: Integer
     success: Boolean
 }
 
 structure FileCreate {
-    @required()
+    @required
     uri: String
 }
 
 structure FileDelete {
-    @required()
+    @required
     uri: String
 }
 
 structure FileEvent {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     type: FileChangeType
 }
 
@@ -884,7 +884,7 @@ structure FileOperationClientCapabilities {
 
 structure FileOperationFilter {
     scheme: String
-    @required()
+    @required
     pattern: FileOperationPattern
 }
 
@@ -898,7 +898,7 @@ structure FileOperationOptions {
 }
 
 structure FileOperationPattern {
-    @required()
+    @required
     glob: String
     matches: FileOperationPatternKind
     options: FileOperationPatternOptions
@@ -909,28 +909,28 @@ structure FileOperationPatternOptions {
 }
 
 structure FileOperationRegistrationOptions {
-    @required()
+    @required
     filters: ListOf_FileOperationFilter
 }
 
 structure FileRename {
-    @required()
+    @required
     oldUri: String
-    @required()
+    @required
     newUri: String
 }
 
 structure FileSystemWatcher {
-    @required()
+    @required
     globPattern: GlobPattern
     kind: WatchKind
 }
 
 structure FoldingRange {
-    @required()
+    @required
     startLine: Integer
     startCharacter: Integer
-    @required()
+    @required
     endLine: Integer
     endCharacter: Integer
     kind: FoldingRangeKind
@@ -948,7 +948,7 @@ structure FoldingRangeClientCapabilities {
 structure FoldingRangeOptions {}
 
 structure FoldingRangeParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
@@ -959,9 +959,9 @@ structure FoldingRangeWorkspaceClientCapabilities {
 }
 
 structure FormattingOptions {
-    @required()
+    @required
     tabSize: Integer
-    @required()
+    @required
     insertSpaces: Boolean
     trimTrailingWhitespace: Boolean
     insertFinalNewline: Boolean
@@ -969,10 +969,10 @@ structure FormattingOptions {
 }
 
 structure FullDocumentDiagnosticReport {
-    @required()
+    @required
     kind: String
     resultId: String
-    @required()
+    @required
     items: ListOf_Diagnostic
 }
 
@@ -984,7 +984,7 @@ structure GeneralClientCapabilities {
 }
 
 structure Hover {
-    @required()
+    @required
     contents: AnonymousUnion
     range: Range
 }
@@ -1014,22 +1014,22 @@ structure ImplementationRegistrationOptions {}
 structure InitializedParams {}
 
 structure InitializeError {
-    @required()
+    @required
     retry: Boolean
 }
 
 structure InitializeParams {}
 
 structure InitializeResult {
-    @required()
+    @required
     capabilities: ServerCapabilities
     serverInfo: ServerInfo
 }
 
 structure InlayHint {
-    @required()
+    @required
     position: Position
-    @required()
+    @required
     label: StringOrListOfInlayHintLabelPart
     kind: InlayHintKind
     textEdits: ListOf_TextEdit
@@ -1045,7 +1045,7 @@ structure InlayHintClientCapabilities {
 }
 
 structure InlayHintLabelPart {
-    @required()
+    @required
     value: String
     tooltip: StringOrMarkupContent
     location: Location
@@ -1057,9 +1057,9 @@ structure InlayHintOptions {
 }
 
 structure InlayHintParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     range: Range
 }
 
@@ -1074,13 +1074,13 @@ structure InlineCompletionClientCapabilities {
 }
 
 structure InlineCompletionContext {
-    @required()
+    @required
     triggerKind: InlineCompletionTriggerKind
     selectedCompletionInfo: SelectedCompletionInfo
 }
 
 structure InlineCompletionItem {
-    @required()
+    @required
     insertText: StringUnion
     filterText: String
     range: Range
@@ -1088,36 +1088,36 @@ structure InlineCompletionItem {
 }
 
 structure InlineCompletionList {
-    @required()
+    @required
     items: ListOf_InlineCompletionItem
 }
 
 structure InlineCompletionOptions {}
 
 structure InlineCompletionParams {
-    @required()
+    @required
     context: InlineCompletionContext
 }
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_9b7853a7af17442f9224a2880e2ed4f5 {}
+structure InlineStruct_8d264d4184e74152bcbbe109107704f2 {}
 
-structure InlineStruct_a7b75af8bc8b4688814ab3c172d6bbec {}
+structure InlineStruct_b85450a37d584046bac6ec60cb795b83 {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
 }
 
 structure InlineValueContext {
-    @required()
+    @required
     frameId: Integer
-    @required()
+    @required
     stoppedLocation: Range
 }
 
 structure InlineValueEvaluatableExpression {
-    @required()
+    @required
     range: Range
     expression: String
 }
@@ -1125,28 +1125,28 @@ structure InlineValueEvaluatableExpression {
 structure InlineValueOptions {}
 
 structure InlineValueParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     context: InlineValueContext
 }
 
 structure InlineValueRegistrationOptions {}
 
 structure InlineValueText {
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     text: String
 }
 
 structure InlineValueVariableLookup {
-    @required()
+    @required
     range: Range
     variableName: String
-    @required()
+    @required
     caseSensitiveLookup: Boolean
 }
 
@@ -1155,11 +1155,11 @@ structure InlineValueWorkspaceClientCapabilities {
 }
 
 structure InsertReplaceEdit {
-    @required()
+    @required
     newText: String
-    @required()
+    @required
     insert: Range
-    @required()
+    @required
     replace: Range
 }
 
@@ -1174,78 +1174,78 @@ structure LinkedEditingRangeParams {}
 structure LinkedEditingRangeRegistrationOptions {}
 
 structure LinkedEditingRanges {
-    @required()
+    @required
     ranges: ListOf_Range
     wordPattern: String
 }
 
 structure Location {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     range: Range
 }
 
 structure LocationLink {
     originSelectionRange: Range
-    @required()
+    @required
     targetUri: String
-    @required()
+    @required
     targetRange: Range
-    @required()
+    @required
     targetSelectionRange: Range
 }
 
 structure LocationUriOnly {
-    @required()
+    @required
     uri: String
 }
 
 structure LogMessageParams {
-    @required()
+    @required
     type: MessageType
-    @required()
+    @required
     message: String
 }
 
 structure LogTraceParams {
-    @required()
+    @required
     message: String
     verbose: String
 }
 
 structure MarkdownClientCapabilities {
-    @required()
+    @required
     parser: String
     version: String
     allowedTags: ListOf_String
 }
 
 structure MarkedStringWithLanguage {
-    @required()
+    @required
     language: String
-    @required()
+    @required
     value: String
 }
 
 structure MarkupContent {
-    @required()
+    @required
     kind: MarkupKind
-    @required()
+    @required
     value: String
 }
 
 structure MessageActionItem {
-    @required()
+    @required
     title: String
 }
 
 structure Moniker {
-    @required()
+    @required
     scheme: String
-    @required()
+    @required
     identifier: String
-    @required()
+    @required
     unique: UniquenessLevel
     kind: MonikerKind
 }
@@ -1261,42 +1261,42 @@ structure MonikerParams {}
 structure MonikerRegistrationOptions {}
 
 structure NotebookCell {
-    @required()
+    @required
     kind: NotebookCellKind
-    @required()
+    @required
     document: String
     metadata: LSPObject
     executionSummary: ExecutionSummary
 }
 
 structure NotebookCellArrayChange {
-    @required()
+    @required
     start: Integer
-    @required()
+    @required
     deleteCount: Integer
     cells: ListOf_NotebookCell
 }
 
 structure NotebookCellLanguage {
-    @required()
+    @required
     language: String
 }
 
 structure NotebookCellTextDocumentFilter {
-    @required()
+    @required
     notebook: StringOrNotebookDocumentFilter
     language: String
 }
 
 structure NotebookDocument {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     notebookType: String
-    @required()
+    @required
     version: Integer
     metadata: LSPObject
-    @required()
+    @required
     cells: ListOf_NotebookCell
 }
 
@@ -1307,16 +1307,16 @@ structure NotebookDocumentCellChanges {
 }
 
 structure NotebookDocumentCellChangeStructure {
-    @required()
+    @required
     array: NotebookCellArrayChange
     didOpen: ListOf_TextDocumentItem
     didClose: ListOf_TextDocumentIdentifier
 }
 
 structure NotebookDocumentCellContentChanges {
-    @required()
+    @required
     document: VersionedTextDocumentIdentifier
-    @required()
+    @required
     changes: ListOf_TextDocumentContentChangeEvent
 }
 
@@ -1326,12 +1326,12 @@ structure NotebookDocumentChangeEvent {
 }
 
 structure NotebookDocumentClientCapabilities {
-    @required()
+    @required
     synchronization: NotebookDocumentSyncClientCapabilities
 }
 
 structure NotebookDocumentFilterNotebookType {
-    @required()
+    @required
     notebookType: String
     scheme: String
     pattern: GlobPattern
@@ -1340,31 +1340,31 @@ structure NotebookDocumentFilterNotebookType {
 structure NotebookDocumentFilterPattern {
     notebookType: String
     scheme: String
-    @required()
+    @required
     pattern: GlobPattern
 }
 
 structure NotebookDocumentFilterScheme {
     notebookType: String
-    @required()
+    @required
     scheme: String
     pattern: GlobPattern
 }
 
 structure NotebookDocumentFilterWithCells {
     notebook: StringOrNotebookDocumentFilter
-    @required()
+    @required
     cells: ListOf_NotebookCellLanguage
 }
 
 structure NotebookDocumentFilterWithNotebook {
-    @required()
+    @required
     notebook: StringOrNotebookDocumentFilter
     cells: ListOf_NotebookCellLanguage
 }
 
 structure NotebookDocumentIdentifier {
-    @required()
+    @required
     uri: String
 }
 
@@ -1374,7 +1374,7 @@ structure NotebookDocumentSyncClientCapabilities {
 }
 
 structure NotebookDocumentSyncOptions {
-    @required()
+    @required
     notebookSelector: ListOf_NotebookDocumentFilterWithUnion
     save: Boolean
 }
@@ -1382,12 +1382,12 @@ structure NotebookDocumentSyncOptions {
 structure NotebookDocumentSyncRegistrationOptions {}
 
 structure OptionalVersionedTextDocumentIdentifier {
-    @required()
+    @required
     version: IntegerOrNULL
 }
 
 structure ParameterInformation {
-    @required()
+    @required
     label: StringUnion
     documentation: StringOrMarkupContent
 }
@@ -1397,37 +1397,37 @@ structure PartialResultParams {
 }
 
 structure Position {
-    @required()
+    @required
     line: Integer
-    @required()
+    @required
     character: Integer
 }
 
 structure PrepareRenameDefaultBehavior {
-    @required()
+    @required
     defaultBehavior: Boolean
 }
 
 structure PrepareRenameParams {}
 
 structure PrepareRenamePlaceholder {
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     placeholder: String
 }
 
 structure PreviousResultId {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     value: String
 }
 
 structure ProgressParams {
-    @required()
+    @required
     token: ProgressToken
-    @required()
+    @required
     value: LSPAny
 }
 
@@ -1436,17 +1436,17 @@ structure PublishDiagnosticsClientCapabilities {
 }
 
 structure PublishDiagnosticsParams {
-    @required()
+    @required
     uri: String
     version: Integer
-    @required()
+    @required
     diagnostics: ListOf_Diagnostic
 }
 
 structure Range {
-    @required()
+    @required
     start: Position
-    @required()
+    @required
     end: Position
 }
 
@@ -1455,34 +1455,34 @@ structure ReferenceClientCapabilities {
 }
 
 structure ReferenceContext {
-    @required()
+    @required
     includeDeclaration: Boolean
 }
 
 structure ReferenceOptions {}
 
 structure ReferenceParams {
-    @required()
+    @required
     context: ReferenceContext
 }
 
 structure ReferenceRegistrationOptions {}
 
 structure Registration {
-    @required()
+    @required
     id: String
-    @required()
+    @required
     method: String
     registerOptions: LSPAny
 }
 
 structure RegistrationParams {
-    @required()
+    @required
     registrations: ListOf_Registration
 }
 
 structure RegularExpressionsClientCapabilities {
-    @required()
+    @required
     engine: RegularExpressionEngineKind
     version: String
 }
@@ -1496,9 +1496,9 @@ structure RelatedUnchangedDocumentDiagnosticReport {
 }
 
 structure RelativePattern {
-    @required()
+    @required
     baseUri: WorkspaceFolderOrUri
-    @required()
+    @required
     pattern: Pattern
 }
 
@@ -1510,11 +1510,11 @@ structure RenameClientCapabilities {
 }
 
 structure RenameFile {
-    @required()
+    @required
     kind: String
-    @required()
+    @required
     oldUri: String
-    @required()
+    @required
     newUri: String
     options: RenameFileOptions
 }
@@ -1525,7 +1525,7 @@ structure RenameFileOptions {
 }
 
 structure RenameFilesParams {
-    @required()
+    @required
     files: ListOf_FileRename
 }
 
@@ -1534,18 +1534,18 @@ structure RenameOptions {
 }
 
 structure RenameParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     position: Position
-    @required()
+    @required
     newName: String
 }
 
 structure RenameRegistrationOptions {}
 
 structure ResourceOperation {
-    @required()
+    @required
     kind: String
     annotationId: ChangeAnnotationIdentifier
 }
@@ -1555,14 +1555,14 @@ structure SaveOptions {
 }
 
 structure SelectedCompletionInfo {
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     text: String
 }
 
 structure SelectionRange {
-    @required()
+    @required
     range: Range
     parent: SelectionRange
 }
@@ -1574,9 +1574,9 @@ structure SelectionRangeClientCapabilities {
 structure SelectionRangeOptions {}
 
 structure SelectionRangeParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     positions: ListOf_Position
 }
 
@@ -1584,19 +1584,19 @@ structure SelectionRangeRegistrationOptions {}
 
 structure SemanticTokens {
     resultId: String
-    @required()
+    @required
     data: ListOf_Integer
 }
 
 structure SemanticTokensClientCapabilities {
     dynamicRegistration: Boolean
-    @required()
+    @required
     requests: ClientSemanticTokensRequestOptions
-    @required()
+    @required
     tokenTypes: ListOf_String
-    @required()
+    @required
     tokenModifiers: ListOf_String
-    @required()
+    @required
     formats: ListOf_TokenFormat
     overlappingTokenSupport: Boolean
     multilineTokenSupport: Boolean
@@ -1606,26 +1606,26 @@ structure SemanticTokensClientCapabilities {
 
 structure SemanticTokensDelta {
     resultId: String
-    @required()
+    @required
     edits: ListOf_SemanticTokensEdit
 }
 
 structure SemanticTokensDeltaParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     previousResultId: String
 }
 
 structure SemanticTokensDeltaPartialResult {
-    @required()
+    @required
     edits: ListOf_SemanticTokensEdit
 }
 
 structure SemanticTokensEdit {
-    @required()
+    @required
     start: Integer
-    @required()
+    @required
     deleteCount: Integer
     data: ListOf_Integer
 }
@@ -1635,33 +1635,33 @@ structure SemanticTokensFullDelta {
 }
 
 structure SemanticTokensLegend {
-    @required()
+    @required
     tokenTypes: ListOf_String
-    @required()
+    @required
     tokenModifiers: ListOf_String
 }
 
 structure SemanticTokensOptions {
-    @required()
+    @required
     legend: SemanticTokensLegend
     range: BooleanUnion
     full: BooleanOrSemanticTokensFullDelta
 }
 
 structure SemanticTokensParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
 }
 
 structure SemanticTokensPartialResult {
-    @required()
+    @required
     data: ListOf_Integer
 }
 
 structure SemanticTokensRangeParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     range: Range
 }
 
@@ -1715,23 +1715,23 @@ structure ServerCompletionItemOptions {
 }
 
 structure ServerInfo {
-    @required()
+    @required
     name: String
     version: String
 }
 
 structure SetTraceParams {
-    @required()
+    @required
     value: TraceValue
 }
 
 structure ShowDocumentClientCapabilities {
-    @required()
+    @required
     support: Boolean
 }
 
 structure ShowDocumentParams {
-    @required()
+    @required
     uri: String
     external: Boolean
     takeFocus: Boolean
@@ -1739,14 +1739,14 @@ structure ShowDocumentParams {
 }
 
 structure ShowDocumentResult {
-    @required()
+    @required
     success: Boolean
 }
 
 structure ShowMessageParams {
-    @required()
+    @required
     type: MessageType
-    @required()
+    @required
     message: String
 }
 
@@ -1755,15 +1755,15 @@ structure ShowMessageRequestClientCapabilities {
 }
 
 structure ShowMessageRequestParams {
-    @required()
+    @required
     type: MessageType
-    @required()
+    @required
     message: String
     actions: ListOf_MessageActionItem
 }
 
 structure SignatureHelp {
-    @required()
+    @required
     signatures: ListOf_SignatureInformation
     activeSignature: Integer
     activeParameter: UintegerOrNULL
@@ -1776,10 +1776,10 @@ structure SignatureHelpClientCapabilities {
 }
 
 structure SignatureHelpContext {
-    @required()
+    @required
     triggerKind: SignatureHelpTriggerKind
     triggerCharacter: String
-    @required()
+    @required
     isRetrigger: Boolean
     activeSignatureHelp: SignatureHelp
 }
@@ -1796,7 +1796,7 @@ structure SignatureHelpParams {
 structure SignatureHelpRegistrationOptions {}
 
 structure SignatureInformation {
-    @required()
+    @required
     label: String
     documentation: StringOrMarkupContent
     parameters: ListOf_ParameterInformation
@@ -1804,17 +1804,17 @@ structure SignatureInformation {
 }
 
 structure SnippetTextEdit {
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     snippet: StringValue
     annotationId: ChangeAnnotationIdentifier
 }
 
 structure StaleRequestSupportOptions {
-    @required()
+    @required
     cancel: Boolean
-    @required()
+    @required
     retryOnContentModified: ListOf_String
 }
 
@@ -1823,20 +1823,20 @@ structure StaticRegistrationOptions {
 }
 
 structure StringValue {
-    @required()
+    @required
     kind: String
-    @required()
+    @required
     value: String
 }
 
 structure SymbolInformation {
     deprecated: Boolean
-    @required()
+    @required
     location: Location
 }
 
 structure TextDocumentChangeRegistrationOptions {
-    @required()
+    @required
     syncKind: TextDocumentSyncKind
 }
 
@@ -1876,15 +1876,15 @@ structure TextDocumentClientCapabilities {
 }
 
 structure TextDocumentContentChangePartial {
-    @required()
+    @required
     range: Range
     rangeLength: Integer
-    @required()
+    @required
     text: String
 }
 
 structure TextDocumentContentChangeWholeDocument {
-    @required()
+    @required
     text: String
 }
 
@@ -1893,31 +1893,31 @@ structure TextDocumentContentClientCapabilities {
 }
 
 structure TextDocumentContentOptions {
-    @required()
+    @required
     schemes: ListOf_String
 }
 
 structure TextDocumentContentParams {
-    @required()
+    @required
     uri: String
 }
 
 structure TextDocumentContentRefreshParams {
-    @required()
+    @required
     uri: String
 }
 
 structure TextDocumentContentRegistrationOptions {}
 
 structure TextDocumentContentResult {
-    @required()
+    @required
     text: String
 }
 
 structure TextDocumentEdit {
-    @required()
+    @required
     textDocument: OptionalVersionedTextDocumentIdentifier
-    @required()
+    @required
     edits: ListOf_TextEditUnion
 }
 
@@ -1926,7 +1926,7 @@ structure TextDocumentFilterClientCapabilities {
 }
 
 structure TextDocumentFilterLanguage {
-    @required()
+    @required
     language: String
     scheme: String
     pattern: GlobPattern
@@ -1935,42 +1935,42 @@ structure TextDocumentFilterLanguage {
 structure TextDocumentFilterPattern {
     language: String
     scheme: String
-    @required()
+    @required
     pattern: GlobPattern
 }
 
 structure TextDocumentFilterScheme {
     language: String
-    @required()
+    @required
     scheme: String
     pattern: GlobPattern
 }
 
 structure TextDocumentIdentifier {
-    @required()
+    @required
     uri: String
 }
 
 structure TextDocumentItem {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     languageId: LanguageKind
-    @required()
+    @required
     version: Integer
-    @required()
+    @required
     text: String
 }
 
 structure TextDocumentPositionParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     position: Position
 }
 
 structure TextDocumentRegistrationOptions {
-    @required()
+    @required
     documentSelector: DocumentSelectorOrNULL
 }
 
@@ -1992,9 +1992,9 @@ structure TextDocumentSyncOptions {
 }
 
 structure TextEdit {
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     newText: String
 }
 
@@ -2014,17 +2014,17 @@ structure TypeHierarchyClientCapabilities {
 }
 
 structure TypeHierarchyItem {
-    @required()
+    @required
     name: String
-    @required()
+    @required
     kind: SymbolKind
     tags: ListOf_SymbolTag
     detail: String
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     range: Range
-    @required()
+    @required
     selectionRange: Range
     data: LSPAny
 }
@@ -2036,50 +2036,50 @@ structure TypeHierarchyPrepareParams {}
 structure TypeHierarchyRegistrationOptions {}
 
 structure TypeHierarchySubtypesParams {
-    @required()
+    @required
     item: TypeHierarchyItem
 }
 
 structure TypeHierarchySupertypesParams {
-    @required()
+    @required
     item: TypeHierarchyItem
 }
 
 structure UnchangedDocumentDiagnosticReport {
-    @required()
+    @required
     kind: String
-    @required()
+    @required
     resultId: String
 }
 
 structure Unregistration {
-    @required()
+    @required
     id: String
-    @required()
+    @required
     method: String
 }
 
 structure UnregistrationParams {
-    @required()
+    @required
     unregisterations: ListOf_Unregistration
 }
 
 structure VersionedNotebookDocumentIdentifier {
-    @required()
+    @required
     version: Integer
-    @required()
+    @required
     uri: String
 }
 
 structure VersionedTextDocumentIdentifier {
-    @required()
+    @required
     version: Integer
 }
 
 structure WillSaveTextDocumentParams {
-    @required()
+    @required
     textDocument: TextDocumentIdentifier
-    @required()
+    @required
     reason: TextDocumentSaveReason
 }
 
@@ -2090,9 +2090,9 @@ structure WindowClientCapabilities {
 }
 
 structure WorkDoneProgressBegin {
-    @required()
+    @required
     kind: String
-    @required()
+    @required
     title: String
     cancellable: Boolean
     message: String
@@ -2100,17 +2100,17 @@ structure WorkDoneProgressBegin {
 }
 
 structure WorkDoneProgressCancelParams {
-    @required()
+    @required
     token: ProgressToken
 }
 
 structure WorkDoneProgressCreateParams {
-    @required()
+    @required
     token: ProgressToken
 }
 
 structure WorkDoneProgressEnd {
-    @required()
+    @required
     kind: String
     message: String
 }
@@ -2124,7 +2124,7 @@ structure WorkDoneProgressParams {
 }
 
 structure WorkDoneProgressReport {
-    @required()
+    @required
     kind: String
     cancellable: Boolean
     message: String
@@ -2152,17 +2152,17 @@ structure WorkspaceClientCapabilities {
 
 structure WorkspaceDiagnosticParams {
     identifier: String
-    @required()
+    @required
     previousResultIds: ListOf_PreviousResultId
 }
 
 structure WorkspaceDiagnosticReport {
-    @required()
+    @required
     items: ListOf_WorkspaceDocumentDiagnosticReport
 }
 
 structure WorkspaceDiagnosticReportPartialResult {
-    @required()
+    @required
     items: ListOf_WorkspaceDocumentDiagnosticReport
 }
 
@@ -2187,16 +2187,16 @@ structure WorkspaceEditMetadata {
 }
 
 structure WorkspaceFolder {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     name: String
 }
 
 structure WorkspaceFoldersChangeEvent {
-    @required()
+    @required
     added: ListOf_WorkspaceFolder
-    @required()
+    @required
     removed: ListOf_WorkspaceFolder
 }
 
@@ -2210,9 +2210,9 @@ structure WorkspaceFoldersServerCapabilities {
 }
 
 structure WorkspaceFullDocumentDiagnosticReport {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     version: IntegerOrNULL
 }
 
@@ -2223,7 +2223,7 @@ structure WorkspaceOptions {
 }
 
 structure WorkspaceSymbol {
-    @required()
+    @required
     location: LocationUnion
     data: LSPAny
 }
@@ -2240,16 +2240,16 @@ structure WorkspaceSymbolOptions {
 }
 
 structure WorkspaceSymbolParams {
-    @required()
+    @required
     query: String
 }
 
 structure WorkspaceSymbolRegistrationOptions {}
 
 structure WorkspaceUnchangedDocumentDiagnosticReport {
-    @required()
+    @required
     uri: String
-    @required()
+    @required
     version: IntegerOrNULL
 }
 
@@ -2331,7 +2331,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_9b7853a7af17442f9224a2880e2ed4f5
+    case1: InlineStruct_b85450a37d584046bac6ec60cb795b83
 }
 
 union DiagnosticOptionsUnion {
@@ -2359,12 +2359,6 @@ union EditUnion {
     case1: InsertReplaceEdit
 }
 
-union InlineValueUnion {
-    case0: InlineValueText
-    case1: InlineValueVariableLookup
-    case2: InlineValueEvaluatableExpression
-}
-
 union IntegerOrNULL {
     case0: Integer
     case1: Unit
@@ -2385,12 +2379,6 @@ union LocationUnion {
     case1: LocationUriOnly
 }
 
-union NotebookDocumentFilterUnion {
-    case0: NotebookDocumentFilterNotebookType
-    case1: NotebookDocumentFilterScheme
-    case2: NotebookDocumentFilterPattern
-}
-
 union NotebookDocumentFilterWithUnion {
     case0: NotebookDocumentFilterWithNotebook
     case1: NotebookDocumentFilterWithCells
@@ -2401,19 +2389,9 @@ union NotebookDocumentSyncOptionsUnion {
     case1: NotebookDocumentSyncRegistrationOptions
 }
 
-union PatternUnion {
-    case0: Pattern
-    case1: RelativePattern
-}
-
 union RangeUnion {
     case0: Range
     case1: EditRangeWithInsertReplace
-}
-
-union RelatedDocumentDiagnosticReportUnion {
-    case0: RelatedFullDocumentDiagnosticReport
-    case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
 union SemanticTokensOptionsUnion {
@@ -2451,20 +2429,9 @@ union StringUnion {
     case1: Tuple_of_Integer
 }
 
-union TextDocumentContentChangeUnion {
-    case0: TextDocumentContentChangePartial
-    case1: TextDocumentContentChangeWholeDocument
-}
-
 union TextDocumentContentOptionsUnion {
     case0: TextDocumentContentOptions
     case1: TextDocumentContentRegistrationOptions
-}
-
-union TextDocumentFilterUnion {
-    case0: TextDocumentFilterLanguage
-    case1: TextDocumentFilterScheme
-    case2: TextDocumentFilterPattern
 }
 
 union TextDocumentSyncUnion {
@@ -2481,11 +2448,6 @@ union TextEditUnion {
 union UintegerOrNULL {
     case0: Integer
     case1: Unit
-}
-
-union WorkspaceDocumentDiagnosticReportUnion {
-    case0: WorkspaceFullDocumentDiagnosticReport
-    case1: WorkspaceUnchangedDocumentDiagnosticReport
 }
 
 union WorkspaceFolderOrUri {
@@ -2537,10 +2499,6 @@ list ListOf_DiagnosticTag {
     member: DiagnosticTag
 }
 
-list ListOf_DocumentFilter {
-    member: DocumentFilter
-}
-
 list ListOf_DocumentSymbol {
     member: DocumentSymbol
 }
@@ -2587,10 +2545,6 @@ list ListOf_InsertTextMode {
 
 list ListOf_Integer {
     member: Integer
-}
-
-list ListOf_Location {
-    member: Location
 }
 
 list ListOf_LSPAny {
@@ -2728,12 +2682,7 @@ map MapOf_String_to_ListOf_TextEdit {
     value: ListOf_TextEdit
 }
 
-map MapOf_String_to_LSPAny {
-    key: String
-    value: LSPAny
-}
-
-enum ApplyKind {
+intEnum ApplyKind {
     Replace = 1
     Merge = 2
 }
@@ -2741,7 +2690,6 @@ enum ApplyKind {
 string ChangeAnnotationIdentifier
 
 enum CodeActionKind {
-    Empty = ""
     QuickFix = "quickfix"
     Refactor = "refactor"
     RefactorExtract = "refactor.extract"
@@ -2754,16 +2702,16 @@ enum CodeActionKind {
     Notebook = "notebook"
 }
 
-enum CodeActionTag {
+intEnum CodeActionTag {
     LLMGenerated = 1
 }
 
-enum CodeActionTriggerKind {
+intEnum CodeActionTriggerKind {
     Invoked = 1
     Automatic = 2
 }
 
-enum CompletionItemKind {
+intEnum CompletionItemKind {
     Text = 1
     Method = 2
     Function = 3
@@ -2791,11 +2739,11 @@ enum CompletionItemKind {
     TypeParameter = 25
 }
 
-enum CompletionItemTag {
+intEnum CompletionItemTag {
     Deprecated = 1
 }
 
-enum CompletionTriggerKind {
+intEnum CompletionTriggerKind {
     Invoked = 1
     TriggerCharacter = 2
     TriggerForIncompleteCompletions = 3
@@ -2809,14 +2757,14 @@ string Definition
 
 string DefinitionLink
 
-enum DiagnosticSeverity {
+intEnum DiagnosticSeverity {
     Error = 1
     Warning = 2
     Information = 3
     Hint = 4
 }
 
-enum DiagnosticTag {
+intEnum DiagnosticTag {
     Unnecessary = 1
     Deprecated = 2
 }
@@ -2830,7 +2778,7 @@ enum DocumentDiagnosticReportKind {
 
 string DocumentFilter
 
-enum DocumentHighlightKind {
+intEnum DocumentHighlightKind {
     Text = 1
     Read = 2
     Write = 3
@@ -2838,7 +2786,7 @@ enum DocumentHighlightKind {
 
 string DocumentSelector
 
-enum ErrorCodes {
+intEnum ErrorCodes {
     ParseError = -32700
     InvalidRequest = -32600
     MethodNotFound = -32601
@@ -2855,7 +2803,7 @@ enum FailureHandlingKind {
     Undo = "undo"
 }
 
-enum FileChangeType {
+intEnum FileChangeType {
     Created = 1
     Changed = 2
     Deleted = 3
@@ -2874,24 +2822,24 @@ enum FoldingRangeKind {
 
 string GlobPattern
 
-enum InlayHintKind {
+intEnum InlayHintKind {
     Type = 1
     Parameter = 2
 }
 
-enum InlineCompletionTriggerKind {
+intEnum InlineCompletionTriggerKind {
     Invoked = 1
     Automatic = 2
 }
 
 string InlineValue
 
-enum InsertTextFormat {
+intEnum InsertTextFormat {
     PlainText = 1
     Snippet = 2
 }
 
-enum InsertTextMode {
+intEnum InsertTextMode {
     asIs = 1
     adjustIndentation = 2
 }
@@ -2933,7 +2881,6 @@ enum LanguageKind {
     Markdown = "markdown"
     ObjectiveC = "objective-c"
     ObjectiveCPP = "objective-cpp"
-    Pascal = "pascal"
     Perl = "perl"
     Perl6 = "perl6"
     PHP = "php"
@@ -2964,7 +2911,7 @@ string LSPAny
 
 string LSPArray
 
-enum LSPErrorCodes {
+intEnum LSPErrorCodes {
     RequestFailed = -32803
     ServerCancelled = -32802
     ContentModified = -32801
@@ -2980,7 +2927,7 @@ enum MarkupKind {
     Markdown = "markdown"
 }
 
-enum MessageType {
+intEnum MessageType {
     Error = 1
     Warning = 2
     Info = 3
@@ -2994,7 +2941,7 @@ enum MonikerKind {
     local
 }
 
-enum NotebookCellKind {
+intEnum NotebookCellKind {
     Markup = 1
     Code = 2
 }
@@ -3011,7 +2958,7 @@ enum PositionEncodingKind {
 
 string PrepareRenameResult
 
-enum PrepareSupportDefaultBehavior {
+intEnum PrepareSupportDefaultBehavior {
     Identifier = 1
 }
 
@@ -3065,13 +3012,13 @@ enum SemanticTokenTypes {
     label
 }
 
-enum SignatureHelpTriggerKind {
+intEnum SignatureHelpTriggerKind {
     Invoked = 1
     TriggerCharacter = 2
     ContentChange = 3
 }
 
-enum SymbolKind {
+intEnum SymbolKind {
     File = 1
     Module = 2
     Namespace = 3
@@ -3100,7 +3047,7 @@ enum SymbolKind {
     TypeParameter = 26
 }
 
-enum SymbolTag {
+intEnum SymbolTag {
     Deprecated = 1
 }
 
@@ -3108,13 +3055,13 @@ string TextDocumentContentChangeEvent
 
 string TextDocumentFilter
 
-enum TextDocumentSaveReason {
+intEnum TextDocumentSaveReason {
     Manual = 1
     AfterDelay = 2
     FocusOut = 3
 }
 
-enum TextDocumentSyncKind {
+intEnum TextDocumentSyncKind {
     None = 0
     Full = 1
     Incremental = 2
@@ -3138,7 +3085,7 @@ enum UniquenessLevel {
     global
 }
 
-enum WatchKind {
+intEnum WatchKind {
     Create = 1
     Change = 2
     Delete = 4
