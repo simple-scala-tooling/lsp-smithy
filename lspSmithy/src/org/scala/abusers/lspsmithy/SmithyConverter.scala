@@ -1,6 +1,7 @@
 package org.scala.abusers.lspsmithy
 
 import langoustine.meta.*
+import software.amazon.smithy.model.loader.Prelude
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.EnumValueTrait
@@ -186,6 +187,8 @@ object SmithyConverter:
         shapes.addOne(unionShape)
         id
 
+      case StructureLiteralType(StructureLiteral(properties, _)) if properties.isEmpty =>
+        ShapeId.fromParts(Prelude.NAMESPACE, "Unit")
       case StructureLiteralType(StructureLiteral(properties, _)) =>
         val id      = uniqueShapeId("InlineStruct")
         val builder = StructureShape.builder().id(id)

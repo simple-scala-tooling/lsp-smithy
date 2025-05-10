@@ -1101,10 +1101,6 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_2cd6640e2bde4f1580720fa2ca576e6d {}
-
-structure InlineStruct_9066251c6d0f406dac3074e7dd572a9e {}
-
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
 }
@@ -2331,7 +2327,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_2cd6640e2bde4f1580720fa2ca576e6d
+    case1: Unit
 }
 
 union DiagnosticOptionsUnion {
