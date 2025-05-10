@@ -40,6 +40,10 @@ object lspSmithy extends CommonScalaModule {
     downloadDir
   }
 
+  override def forkEnv: T[Map[String, String]] = T {
+    Map("TARGET_PATH" -> (os.Path(sys.env("MILL_WORKSPACE_ROOT")) / "target").toString)
+  }
+
   override def resources = T {
     val downloaded = updateModelFiles()
     Seq(PathRef(downloaded))
@@ -50,7 +54,7 @@ object lspSmithy extends CommonScalaModule {
   def ivyDeps = Agg(
     ivy"tech.neander::langoustine-meta::0.0.22",
     ivy"com.lihaoyi::os-lib:0.11.4",
-    ivy"software.amazon.smithy:smithy-model:1.56.0",
+    ivy"software.amazon.smithy:smithy-model:1.57.1",
   )
 
   def scalacOptions = Seq(

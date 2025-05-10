@@ -16,7 +16,7 @@ def main() =
   val smithyModel = SmithyConverter(metaModel)
   val outputMap   = SmithyIdlModelSerializer.builder().build().serialize(smithyModel.unwrap()).asScala.toMap
 
-  val targetDir = os.Path("/home/kghost/workspace/sst/lsp-smithy/target")
+  val targetDir = os.Path(sys.env("TARGET_PATH"))
   os.remove.all(targetDir)
 
   for (path, content) <- outputMap do
