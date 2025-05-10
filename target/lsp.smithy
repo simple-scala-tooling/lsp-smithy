@@ -5433,35 +5433,113 @@ map MapOf_String_to_ListOf_TextEdit {
     value: ListOf_TextEdit
 }
 
+/// Defines how values from a set of defaults and an individual item will be
+/// merged.
+/// 
+/// @since 3.18.0
 intEnum ApplyKind {
+    /// The value from the individual item (if provided and not `null`) will be
+    /// used instead of the default.
     Replace = 1
+    /// The value from the item will be merged with the default.
+    /// 
+    /// The specific rules for mergeing values are defined against each field
+    /// that supports merging.
     Merge = 2
 }
 
 string ChangeAnnotationIdentifier
 
+/// A set of predefined code action kinds
 enum CodeActionKind {
+    /// Base kind for quickfix actions: 'quickfix'
     QuickFix = "quickfix"
+    /// Base kind for refactoring actions: 'refactor'
     Refactor = "refactor"
+    /// Base kind for refactoring extraction actions: 'refactor.extract'
+    /// 
+    /// Example extract actions:
+    /// 
+    /// - Extract method
+    /// - Extract function
+    /// - Extract variable
+    /// - Extract interface from class
+    /// - ...
     RefactorExtract = "refactor.extract"
+    /// Base kind for refactoring inline actions: 'refactor.inline'
+    /// 
+    /// Example inline actions:
+    /// 
+    /// - Inline function
+    /// - Inline variable
+    /// - Inline constant
+    /// - ...
     RefactorInline = "refactor.inline"
+    /// Base kind for refactoring move actions: `refactor.move`
+    /// 
+    /// Example move actions:
+    /// 
+    /// - Move a function to a new file
+    /// - Move a property between classes
+    /// - Move method to base class
+    /// - ...
+    /// 
+    /// @since 3.18.0
+    /// @proposed
     RefactorMove = "refactor.move"
+    /// Base kind for refactoring rewrite actions: 'refactor.rewrite'
+    /// 
+    /// Example rewrite actions:
+    /// 
+    /// - Convert JavaScript function to class
+    /// - Add or remove parameter
+    /// - Encapsulate field
+    /// - Make method static
+    /// - Move method to base class
+    /// - ...
     RefactorRewrite = "refactor.rewrite"
+    /// Base kind for source actions: `source`
+    /// 
+    /// Source code actions apply to the entire file.
     Source = "source"
+    /// Base kind for an organize imports source action: `source.organizeImports`
     SourceOrganizeImports = "source.organizeImports"
+    /// Base kind for auto-fix source actions: `source.fixAll`.
+    /// 
+    /// Fix all actions automatically fix errors that have a clear fix that do not require user input.
+    /// They should not suppress errors or perform unsafe fixes such as generating new types or classes.
+    /// 
+    /// @since 3.15.0
     SourceFixAll = "source.fixAll"
+    /// Base kind for all code actions applying to the entire notebook's scope. CodeActionKinds using
+    /// this should always begin with `notebook.`
+    /// 
+    /// @since 3.18.0
     Notebook = "notebook"
 }
 
+/// Code action tags are extra annotations that tweak the behavior of a code action.
+/// 
+/// @since 3.18.0 - proposed
 intEnum CodeActionTag {
+    /// Marks the code action as LLM-generated.
     LLMGenerated = 1
 }
 
+/// The reason why code actions were requested.
+/// 
+/// @since 3.17.0
 intEnum CodeActionTriggerKind {
+    /// Code actions were explicitly requested by the user or by an extension.
     Invoked = 1
+    /// Code actions were requested automatically.
+    /// 
+    /// This typically happens when current selection in a file changes, but can
+    /// also be triggered when file content changes.
     Automatic = 2
 }
 
+/// The kind of a completion entry.
 intEnum CompletionItemKind {
     Text = 1
     Method = 2
@@ -5490,13 +5568,24 @@ intEnum CompletionItemKind {
     TypeParameter = 25
 }
 
+/// Completion item tags are extra annotations that tweak the rendering of a completion
+/// item.
+/// 
+/// @since 3.15.0
 intEnum CompletionItemTag {
+    /// Render a completion as obsolete, usually using a strike-out.
     Deprecated = 1
 }
 
+/// How a completion was triggered
 intEnum CompletionTriggerKind {
+    /// Completion was triggered by typing an identifier (24x7 code
+    /// complete), manual invocation (e.g Ctrl+Space) or via API.
     Invoked = 1
+    /// Completion was triggered by a trigger character specified by
+    /// the `triggerCharacters` properties of the `CompletionRegistrationOptions`.
     TriggerCharacter = 2
+    /// Completion was re-triggered as current completion list is incomplete
     TriggerForIncompleteCompletions = 3
 }
 
@@ -5508,93 +5597,185 @@ string Definition
 
 string DefinitionLink
 
+/// The diagnostic's severity.
 intEnum DiagnosticSeverity {
+    /// Reports an error.
     Error = 1
+    /// Reports a warning.
     Warning = 2
+    /// Reports an information.
     Information = 3
+    /// Reports a hint.
     Hint = 4
 }
 
+/// The diagnostic tags.
+/// 
+/// @since 3.15.0
 intEnum DiagnosticTag {
+    /// Unused or unnecessary code.
+    /// 
+    /// Clients are allowed to render diagnostics with this tag faded out instead of having
+    /// an error squiggle.
     Unnecessary = 1
+    /// Deprecated or obsolete code.
+    /// 
+    /// Clients are allowed to rendered diagnostics with this tag strike through.
     Deprecated = 2
 }
 
 string DocumentDiagnosticReport
 
+/// The document diagnostic report kinds.
+/// 
+/// @since 3.17.0
 enum DocumentDiagnosticReportKind {
+    /// A diagnostic report with a full
+    /// set of problems.
     Full = "full"
+    /// A report indicating that the last
+    /// returned report is still accurate.
     Unchanged = "unchanged"
 }
 
 string DocumentFilter
 
+/// A document highlight kind.
 intEnum DocumentHighlightKind {
+    /// A textual occurrence.
     Text = 1
+    /// Read-access of a symbol, like reading a variable.
     Read = 2
+    /// Write-access of a symbol, like writing to a variable.
     Write = 3
 }
 
 string DocumentSelector
 
+/// Predefined error codes.
 intEnum ErrorCodes {
     ParseError = -32700
     InvalidRequest = -32600
     MethodNotFound = -32601
     InvalidParams = -32602
     InternalError = -32603
+    /// Error code indicating that a server received a notification or
+    /// request before the server has received the `initialize` request.
     ServerNotInitialized = -32002
     UnknownErrorCode = -32001
 }
 
 enum FailureHandlingKind {
+    /// Applying the workspace change is simply aborted if one of the changes provided
+    /// fails. All operations executed before the failing operation stay executed.
     Abort = "abort"
+    /// All operations are executed transactional. That means they either all
+    /// succeed or no changes at all are applied to the workspace.
     Transactional = "transactional"
+    /// If the workspace edit contains only textual file changes they are executed transactional.
+    /// If resource changes (create, rename or delete file) are part of the change the failure
+    /// handling strategy is abort.
     TextOnlyTransactional = "textOnlyTransactional"
+    /// The client tries to undo the operations already executed. But there is no
+    /// guarantee that this is succeeding.
     Undo = "undo"
 }
 
+/// The file event type
 intEnum FileChangeType {
+    /// The file got created.
     Created = 1
+    /// The file got changed.
     Changed = 2
+    /// The file got deleted.
     Deleted = 3
 }
 
+/// A pattern kind describing if a glob pattern matches a file a folder or
+/// both.
+/// 
+/// @since 3.16.0
 enum FileOperationPatternKind {
+    /// The pattern matches a file only.
     file
+    /// The pattern matches a folder only.
     folder
 }
 
+/// A set of predefined range kinds.
 enum FoldingRangeKind {
+    /// Folding range for a comment
     Comment = "comment"
+    /// Folding range for an import or include
     Imports = "imports"
+    /// Folding range for a region (e.g. `#region`)
     Region = "region"
 }
 
 string GlobPattern
 
+/// Inlay hint kinds.
+/// 
+/// @since 3.17.0
 intEnum InlayHintKind {
+    /// An inlay hint that for a type annotation.
     Type = 1
+    /// An inlay hint that is for a parameter.
     Parameter = 2
 }
 
+/// Describes how an {@link InlineCompletionItemProvider inline completion provider} was triggered.
+/// 
+/// @since 3.18.0
+/// @proposed
 intEnum InlineCompletionTriggerKind {
+    /// Completion was triggered explicitly by a user gesture.
     Invoked = 1
+    /// Completion was triggered automatically while editing.
     Automatic = 2
 }
 
 string InlineValue
 
+/// Defines whether the insert text in a completion item should be interpreted as
+/// plain text or a snippet.
 intEnum InsertTextFormat {
+    /// The primary text to be inserted is treated as a plain string.
     PlainText = 1
+    /// The primary text to be inserted is treated as a snippet.
+    /// 
+    /// A snippet can define tab stops and placeholders with `$1`, `$2`
+    /// and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+    /// the end of the snippet. Placeholders with equal identifiers are linked,
+    /// that is typing in one will update others too.
+    /// 
+    /// See also: https://microsoft.github.io/language-server-protocol/specifications/specification-current/#snippet_syntax
     Snippet = 2
 }
 
+/// How whitespace and indentation is handled during completion
+/// item insertion.
+/// 
+/// @since 3.16.0
 intEnum InsertTextMode {
+    /// The insertion or replace strings is taken as it is. If the
+    /// value is multi line the lines below the cursor will be
+    /// inserted using the indentation defined in the string value.
+    /// The client will not apply any kind of adjustments to the
+    /// string.
     asIs = 1
+    /// The editor adjusts leading whitespace of new lines so that
+    /// they match the indentation up to the cursor of the line for
+    /// which the item is accepted.
+    /// 
+    /// Consider a line like this: <2tabs><cursor><3tabs>foo. Accepting a
+    /// multi line completion item is indented using 2 tabs and all
+    /// following lines inserted will be indented using 2 tabs as well.
     adjustIndentation = 2
 }
 
+/// Predefined Language kinds
+/// @since 3.18.0
 enum LanguageKind {
     ABAP = "abap"
     WindowsBat = "bat"
@@ -5605,7 +5786,11 @@ enum LanguageKind {
     CPP = "cpp"
     CSharp = "csharp"
     CSS = "css"
+    /// @since 3.18.0
+    /// @proposed
     D = "d"
+    /// @since 3.18.0
+    /// @proposed
     Delphi = "pascal"
     Diff = "diff"
     Dart = "dart"
@@ -5663,9 +5848,30 @@ string LSPAny
 string LSPArray
 
 intEnum LSPErrorCodes {
+    /// A request failed but it was syntactically correct, e.g the
+    /// method name was known and the parameters were valid. The error
+    /// message should contain human readable information about why
+    /// the request failed.
+    /// 
+    /// @since 3.17.0
     RequestFailed = -32803
+    /// The server cancelled the request. This error code should
+    /// only be used for requests that explicitly support being
+    /// server cancellable.
+    /// 
+    /// @since 3.17.0
     ServerCancelled = -32802
+    /// The server detected that the content of a document got
+    /// modified outside normal conditions. A server should
+    /// NOT send this error code if it detects a content change
+    /// in it unprocessed messages. The result even computed
+    /// on an older state might still be useful for the client.
+    /// 
+    /// If a client decides that a result is not of any use anymore
+    /// the client should cancel the request.
     ContentModified = -32801
+    /// The client has canceled a request and a server has detected
+    /// the cancel.
     RequestCancelled = -32800
 }
 
@@ -5673,27 +5879,55 @@ string LSPObject
 
 string MarkedString
 
+/// Describes the content type that a client supports in various
+/// result literals like `Hover`, `ParameterInfo` or `CompletionItem`.
+/// 
+/// Please note that `MarkupKinds` must not start with a `$`. This kinds
+/// are reserved for internal usage.
 enum MarkupKind {
+    /// Plain text is supported as a content format
     PlainText = "plaintext"
+    /// Markdown is supported as a content format
     Markdown = "markdown"
 }
 
+/// The message type
 intEnum MessageType {
+    /// An error message.
     Error = 1
+    /// A warning message.
     Warning = 2
+    /// An information message.
     Info = 3
+    /// A log message.
     Log = 4
+    /// A debug message.
+    /// 
+    /// @since 3.18.0
+    /// @proposed
     Debug = 5
 }
 
+/// The moniker kind.
+/// 
+/// @since 3.16.0
 enum MonikerKind {
+    /// The moniker represent a symbol that is imported into a project
     import
+    /// The moniker represents a symbol that is exported from a project
     export
+    /// The moniker represents a symbol that is local to a project (e.g. a local
+    /// variable of a function, a class not visible outside the project, ...)
     local
 }
 
+/// A notebook cell kind.
+/// 
+/// @since 3.17.0
 intEnum NotebookCellKind {
+    /// A markup-cell is formatted source that is used for display.
     Markup = 1
+    /// A code-cell is source code.
     Code = 2
 }
 
@@ -5701,15 +5935,30 @@ string NotebookDocumentFilter
 
 string Pattern
 
+/// A set of predefined position encoding kinds.
+/// 
+/// @since 3.17.0
 enum PositionEncodingKind {
+    /// Character offsets count UTF-8 code units (e.g. bytes).
     UTF8 = "utf-8"
+    /// Character offsets count UTF-16 code units.
+    /// 
+    /// This is the default and must always be supported
+    /// by servers
     UTF16 = "utf-16"
+    /// Character offsets count UTF-32 code units.
+    /// 
+    /// Implementation note: these are the same as Unicode codepoints,
+    /// so this `PositionEncodingKind` may also be used for an
+    /// encoding-agnostic representation of character offsets.
     UTF32 = "utf-32"
 }
 
 string PrepareRenameResult
 
 intEnum PrepareSupportDefaultBehavior {
+    /// The client's default behavior is to select the identifier
+    /// according the to language's syntax rule.
     Identifier = 1
 }
 
@@ -5718,11 +5967,19 @@ string ProgressToken
 string RegularExpressionEngineKind
 
 enum ResourceOperationKind {
+    /// Supports creating new files and folders.
     Create = "create"
+    /// Supports renaming existing files and folders.
     Rename = "rename"
+    /// Supports deleting existing files and folders.
     Delete = "delete"
 }
 
+/// A set of predefined token modifiers. This set is not fixed
+/// an clients can specify additional token types via the
+/// corresponding client capabilities.
+/// 
+/// @since 3.16.0
 enum SemanticTokenModifiers {
     declaration
     definition
@@ -5736,8 +5993,15 @@ enum SemanticTokenModifiers {
     defaultLibrary
 }
 
+/// A set of predefined token types. This set is not fixed
+/// an clients can specify additional token types via the
+/// corresponding client capabilities.
+/// 
+/// @since 3.16.0
 enum SemanticTokenTypes {
     namespace
+    /// Represents a generic type. Acts as a fallback for types which can't be mapped to
+    /// a specific type like class or enum.
     type
     class
     enum
@@ -5759,16 +6023,25 @@ enum SemanticTokenTypes {
     number
     regexp
     operator
+    /// @since 3.17.0
     decorator
+    /// @since 3.18.0
     label
 }
 
+/// How a signature help was triggered.
+/// 
+/// @since 3.15.0
 intEnum SignatureHelpTriggerKind {
+    /// Signature help was invoked manually by the user or by a command.
     Invoked = 1
+    /// Signature help was triggered by a trigger character.
     TriggerCharacter = 2
+    /// Signature help was triggered by the cursor moving or by the document content changing.
     ContentChange = 3
 }
 
+/// A symbol kind.
 intEnum SymbolKind {
     File = 1
     Module = 2
@@ -5798,7 +6071,11 @@ intEnum SymbolKind {
     TypeParameter = 26
 }
 
+/// Symbol tags are extra annotations that tweak the rendering of a symbol.
+/// 
+/// @since 3.16
 intEnum SymbolTag {
+    /// Render a symbol as obsolete, usually using a strike-out.
     Deprecated = 1
 }
 
@@ -5806,15 +6083,28 @@ string TextDocumentContentChangeEvent
 
 string TextDocumentFilter
 
+/// Represents reasons why a text document is saved.
 intEnum TextDocumentSaveReason {
+    /// Manually triggered, e.g. by the user pressing save, by starting debugging,
+    /// or by an API call.
     Manual = 1
+    /// Automatic after a delay.
     AfterDelay = 2
+    /// When the editor lost focus.
     FocusOut = 3
 }
 
+/// Defines how the host (editor) should sync
+/// document changes to the language server.
 intEnum TextDocumentSyncKind {
+    /// Documents should not be synced at all.
     None = 0
+    /// Documents are synced by always sending the full content
+    /// of the document.
     Full = 1
+    /// Documents are synced by sending the full content on open.
+    /// After that only incremental updates to the document are
+    /// send.
     Incremental = 2
 }
 
@@ -5823,22 +6113,36 @@ enum TokenFormat {
 }
 
 enum TraceValue {
+    /// Turn tracing off.
     Off = "off"
+    /// Trace messages only.
     Messages = "messages"
+    /// Verbose message tracing.
     Verbose = "verbose"
 }
 
+/// Moniker uniqueness level to define scope of the moniker.
+/// 
+/// @since 3.16.0
 enum UniquenessLevel {
+    /// The moniker is only unique inside a document
     document
+    /// The moniker is unique inside a project for which a dump got created
     project
+    /// The moniker is unique inside the group to which a project belongs
     group
+    /// The moniker is unique inside the moniker scheme.
     scheme
+    /// The moniker is globally unique
     global
 }
 
 intEnum WatchKind {
+    /// Interested in create events.
     Create = 1
+    /// Interested in change events
     Change = 2
+    /// Interested in delete events
     Delete = 4
 }
 

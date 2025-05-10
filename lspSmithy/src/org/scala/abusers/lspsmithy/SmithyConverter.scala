@@ -37,19 +37,30 @@ object SmithyConverter:
 
       val enumShape = enum_.values.map(t => t.value).head match
         case _: Int =>
-          val builder = IntEnumShape.builder().id(shapeId)
-          for entry <- enum_.values.distinctBy(_.value) do builder.addMember(entry.name.value, entry.value.intValue)
+          val builder = IntEnumShape.builder().id(shapeId).tap(maybeAddDocs(enum_.documentation.toOption.map(_.value)))
+
+          for entry <- enum_.values.distinctBy(_.value) do
+            builder.addMember(
+              entry.name.value,
+              entry.value.intValue,
+              _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value))),
+            )
           builder.build()
         case _: String =>
-          val builder = EnumShape.builder().id(shapeId)
+          val builder = EnumShape.builder().id(shapeId).tap(maybeAddDocs(enum_.documentation.toOption.map(_.value)))
           for entry <- enum_.values
-              .distinctBy(_.value)
+              .distinctBy(_.value.stringValue)
               .filter {
-                _.value match
-                  case _: Int      => true
-                  case str: String => str.nonEmpty
+                // TODO: empty enum values aren't allowed in the Smithy model.
+                // https://github.com/smithy-lang/smithy/issues/2626
+                _.value.stringValue.nonEmpty
               }
-          do builder.addMember(entry.name.value, entry.value.stringValue)
+          do
+            builder.addMember(
+              entry.name.value,
+              entry.value.stringValue,
+              _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value))),
+            )
           builder.build()
 
       shapes.addOne(enumShape)
@@ -181,9 +192,9 @@ object SmithyConverter:
       docs: Opt[StructureDescription],
       shapes: ListBuffer[Shape],
   ): ShapeId =
-    val builder = StructureShape.builder().id(id).pipe(maybeAddDocs(docs.toOption.map(_.value)))
+    val builder = StructureShape.builder().id(id).tap(maybeAddDocs(docs.toOption.map(_.value)))
 
-    def makeRequired(prop: Property): MemberShape.Builder => MemberShape.Builder =
+    def makeRequired(prop: Property): MemberShape.Builder => Unit =
       if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
       else identity
 
@@ -191,14 +202,14 @@ object SmithyConverter:
       builder.addMember(
         prop.name.value,
         smithyType(prop.tpe, namespace, shapes),
-        _.pipe(makeRequired(prop))
-          .pipe(maybeAddDocs(prop.documentation.toOption.map(_.value))),
+        _.tap(makeRequired(prop))
+          .tap(maybeAddDocs(prop.documentation.toOption.map(_.value))),
       )
     val result = builder.build()
     shapes.addOne(result)
     result.getId()
 
-  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](text: Option[String])(b: B): B =
+  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](text: Option[String])(b: B): Unit =
     b.addTraits(text.map(new DocumentationTrait(_)).toList.asJava)
 
   def convertTypeAliases(typeAliases: Vector[TypeAlias]) =
