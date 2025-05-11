@@ -1647,9 +1647,9 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_0719828d815241149d57bcc91a5cfd96 {}
+structure InlineStruct_3778279148b949edb4c8793d172fa1c4 {}
 
-structure InlineStruct_bc46df69212c436bb5daa546f67472a6 {}
+structure InlineStruct_5a3fb4d0c4e94292af87818ff542d7d1 {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
@@ -3361,7 +3361,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_bc46df69212c436bb5daa546f67472a6
+    case1: InlineStruct_3778279148b949edb4c8793d172fa1c4
 }
 
 union CommandOrCodeAction {
@@ -4033,237 +4033,237 @@ map MapOf_String_to_ListOf_TextEdit {
 }
 
 intEnum ApplyKind {
-    Replace = 1
-    Merge = 2
+    REPLACE = 1
+    MERGE = 2
 }
 
 string ChangeAnnotationIdentifier
 
 enum CodeActionKind {
-    QuickFix = "quickfix"
-    Refactor = "refactor"
-    RefactorExtract = "refactor.extract"
-    RefactorInline = "refactor.inline"
-    RefactorRewrite = "refactor.rewrite"
-    Source = "source"
-    SourceOrganizeImports = "source.organizeImports"
-    SourceFixAll = "source.fixAll"
-    Notebook = "notebook"
+    QUICK_FIX = "quickfix"
+    REFACTOR = "refactor"
+    REFACTOR_EXTRACT = "refactor.extract"
+    REFACTOR_INLINE = "refactor.inline"
+    REFACTOR_REWRITE = "refactor.rewrite"
+    SOURCE = "source"
+    SOURCE_ORGANIZE_IMPORTS = "source.organizeImports"
+    SOURCE_FIX_ALL = "source.fixAll"
+    NOTEBOOK = "notebook"
 }
 
 intEnum CodeActionTag {
-    LLMGenerated = 1
+    LLM_GENERATED = 1
 }
 
 intEnum CodeActionTriggerKind {
-    Invoked = 1
-    Automatic = 2
+    INVOKED = 1
+    AUTOMATIC = 2
 }
 
 intEnum CompletionItemKind {
-    Text = 1
-    Method = 2
-    Function = 3
-    Constructor = 4
-    Field = 5
-    Variable = 6
-    Class = 7
-    Interface = 8
-    Module = 9
-    Property = 10
-    Unit = 11
-    Value = 12
-    Enum = 13
-    Keyword = 14
-    Snippet = 15
-    Color = 16
-    File = 17
-    Reference = 18
-    Folder = 19
-    EnumMember = 20
-    Constant = 21
-    Struct = 22
-    Event = 23
-    Operator = 24
-    TypeParameter = 25
+    TEXT = 1
+    METHOD = 2
+    FUNCTION = 3
+    CONSTRUCTOR = 4
+    FIELD = 5
+    VARIABLE = 6
+    CLASS = 7
+    INTERFACE = 8
+    MODULE = 9
+    PROPERTY = 10
+    UNIT = 11
+    VALUE = 12
+    ENUM = 13
+    KEYWORD = 14
+    SNIPPET = 15
+    COLOR = 16
+    FILE = 17
+    REFERENCE = 18
+    FOLDER = 19
+    ENUM_MEMBER = 20
+    CONSTANT = 21
+    STRUCT = 22
+    EVENT = 23
+    OPERATOR = 24
+    TYPE_PARAMETER = 25
 }
 
 intEnum CompletionItemTag {
-    Deprecated = 1
+    DEPRECATED = 1
 }
 
 intEnum CompletionTriggerKind {
-    Invoked = 1
-    TriggerCharacter = 2
-    TriggerForIncompleteCompletions = 3
+    INVOKED = 1
+    TRIGGER_CHARACTER = 2
+    TRIGGER_FOR_INCOMPLETE_COMPLETIONS = 3
 }
 
 intEnum DiagnosticSeverity {
-    Error = 1
-    Warning = 2
-    Information = 3
-    Hint = 4
+    ERROR = 1
+    WARNING = 2
+    INFORMATION = 3
+    HINT = 4
 }
 
 intEnum DiagnosticTag {
-    Unnecessary = 1
-    Deprecated = 2
+    UNNECESSARY = 1
+    DEPRECATED = 2
 }
 
 enum DocumentDiagnosticReportKind {
-    Full = "full"
-    Unchanged = "unchanged"
+    FULL = "full"
+    UNCHANGED = "unchanged"
 }
 
 intEnum DocumentHighlightKind {
-    Text = 1
-    Read = 2
-    Write = 3
+    TEXT = 1
+    READ = 2
+    WRITE = 3
 }
 
 intEnum ErrorCodes {
-    ParseError = -32700
-    InvalidRequest = -32600
-    MethodNotFound = -32601
-    InvalidParams = -32602
-    InternalError = -32603
-    ServerNotInitialized = -32002
-    UnknownErrorCode = -32001
+    PARSE_ERROR = -32700
+    INVALID_REQUEST = -32600
+    METHOD_NOT_FOUND = -32601
+    INVALID_PARAMS = -32602
+    INTERNAL_ERROR = -32603
+    SERVER_NOT_INITIALIZED = -32002
+    UNKNOWN_ERROR_CODE = -32001
 }
 
 enum FailureHandlingKind {
-    Abort = "abort"
-    Transactional = "transactional"
-    TextOnlyTransactional = "textOnlyTransactional"
-    Undo = "undo"
+    ABORT = "abort"
+    TRANSACTIONAL = "transactional"
+    TEXT_ONLY_TRANSACTIONAL = "textOnlyTransactional"
+    UNDO = "undo"
 }
 
 intEnum FileChangeType {
-    Created = 1
-    Changed = 2
-    Deleted = 3
+    CREATED = 1
+    CHANGED = 2
+    DELETED = 3
 }
 
 enum FileOperationPatternKind {
-    file
-    folder
+    FILE = "file"
+    FOLDER = "folder"
 }
 
 enum FoldingRangeKind {
-    Comment = "comment"
-    Imports = "imports"
-    Region = "region"
+    COMMENT = "comment"
+    IMPORTS = "imports"
+    REGION = "region"
 }
 
 intEnum InlayHintKind {
-    Type = 1
-    Parameter = 2
+    TYPE = 1
+    PARAMETER = 2
 }
 
 intEnum InlineCompletionTriggerKind {
-    Invoked = 1
-    Automatic = 2
+    INVOKED = 1
+    AUTOMATIC = 2
 }
 
 intEnum InsertTextFormat {
-    PlainText = 1
-    Snippet = 2
+    PLAIN_TEXT = 1
+    SNIPPET = 2
 }
 
 intEnum InsertTextMode {
-    asIs = 1
-    adjustIndentation = 2
+    AS_IS = 1
+    ADJUST_INDENTATION = 2
 }
 
 enum LanguageKind {
     ABAP = "abap"
-    WindowsBat = "bat"
-    BibTeX = "bibtex"
-    Clojure = "clojure"
-    Coffeescript = "coffeescript"
+    WINDOWS_BAT = "bat"
+    BIB_TE_X = "bibtex"
+    CLOJURE = "clojure"
+    COFFEESCRIPT = "coffeescript"
     C = "c"
     CPP = "cpp"
-    CSharp = "csharp"
+    C_SHARP = "csharp"
     CSS = "css"
-    Diff = "diff"
-    Dart = "dart"
-    Dockerfile = "dockerfile"
-    Elixir = "elixir"
-    Erlang = "erlang"
-    FSharp = "fsharp"
-    GitCommit = "git-commit"
-    GitRebase = "rebase"
-    Go = "go"
-    Groovy = "groovy"
-    Handlebars = "handlebars"
-    Haskell = "haskell"
+    DIFF = "diff"
+    DART = "dart"
+    DOCKERFILE = "dockerfile"
+    ELIXIR = "elixir"
+    ERLANG = "erlang"
+    F_SHARP = "fsharp"
+    GIT_COMMIT = "git-commit"
+    GIT_REBASE = "rebase"
+    GO = "go"
+    GROOVY = "groovy"
+    HANDLEBARS = "handlebars"
+    HASKELL = "haskell"
     HTML = "html"
-    Ini = "ini"
-    Java = "java"
-    JavaScript = "javascript"
-    JavaScriptReact = "javascriptreact"
+    INI = "ini"
+    JAVA = "java"
+    JAVA_SCRIPT = "javascript"
+    JAVA_SCRIPT_REACT = "javascriptreact"
     JSON = "json"
-    LaTeX = "latex"
-    Less = "less"
-    Lua = "lua"
-    Makefile = "makefile"
-    Markdown = "markdown"
-    ObjectiveC = "objective-c"
-    ObjectiveCPP = "objective-cpp"
-    Perl = "perl"
-    Perl6 = "perl6"
+    LA_TE_X = "latex"
+    LESS = "less"
+    LUA = "lua"
+    MAKEFILE = "makefile"
+    MARKDOWN = "markdown"
+    OBJECTIVE_C = "objective-c"
+    OBJECTIVE_CPP = "objective-cpp"
+    PERL = "perl"
+    PERL6 = "perl6"
     PHP = "php"
-    Powershell = "powershell"
-    Pug = "jade"
-    Python = "python"
+    POWERSHELL = "powershell"
+    PUG = "jade"
+    PYTHON = "python"
     R = "r"
-    Razor = "razor"
-    Ruby = "ruby"
-    Rust = "rust"
+    RAZOR = "razor"
+    RUBY = "ruby"
+    RUST = "rust"
     SCSS = "scss"
     SASS = "sass"
-    Scala = "scala"
-    ShaderLab = "shaderlab"
-    ShellScript = "shellscript"
+    SCALA = "scala"
+    SHADER_LAB = "shaderlab"
+    SHELL_SCRIPT = "shellscript"
     SQL = "sql"
-    Swift = "swift"
-    TypeScript = "typescript"
-    TypeScriptReact = "typescriptreact"
-    TeX = "tex"
-    VisualBasic = "vb"
+    SWIFT = "swift"
+    TYPE_SCRIPT = "typescript"
+    TYPE_SCRIPT_REACT = "typescriptreact"
+    TE_X = "tex"
+    VISUAL_BASIC = "vb"
     XML = "xml"
     XSL = "xsl"
     YAML = "yaml"
 }
 
 intEnum LSPErrorCodes {
-    RequestFailed = -32803
-    ServerCancelled = -32802
-    ContentModified = -32801
-    RequestCancelled = -32800
+    REQUEST_FAILED = -32803
+    SERVER_CANCELLED = -32802
+    CONTENT_MODIFIED = -32801
+    REQUEST_CANCELLED = -32800
 }
 
 enum MarkupKind {
-    PlainText = "plaintext"
-    Markdown = "markdown"
+    PLAIN_TEXT = "plaintext"
+    MARKDOWN = "markdown"
 }
 
 intEnum MessageType {
-    Error = 1
-    Warning = 2
-    Info = 3
-    Log = 4
+    ERROR = 1
+    WARNING = 2
+    INFO = 3
+    LOG = 4
 }
 
 enum MonikerKind {
-    import
-    export
-    local
+    IMPORT = "import"
+    EXPORT = "export"
+    LOCAL = "local"
 }
 
 intEnum NotebookCellKind {
-    Markup = 1
-    Code = 2
+    MARKUP = 1
+    CODE = 2
 }
 
 string Pattern
@@ -4275,128 +4275,128 @@ enum PositionEncodingKind {
 }
 
 intEnum PrepareSupportDefaultBehavior {
-    Identifier = 1
+    IDENTIFIER = 1
 }
 
 string RegularExpressionEngineKind
 
 enum ResourceOperationKind {
-    Create = "create"
-    Rename = "rename"
-    Delete = "delete"
+    CREATE = "create"
+    RENAME = "rename"
+    DELETE = "delete"
 }
 
 enum SemanticTokenModifiers {
-    declaration
-    definition
-    readonly
-    static
-    deprecated
-    abstract
-    async
-    modification
-    documentation
-    defaultLibrary
+    DECLARATION = "declaration"
+    DEFINITION = "definition"
+    READONLY = "readonly"
+    STATIC = "static"
+    DEPRECATED = "deprecated"
+    ABSTRACT = "abstract"
+    ASYNC = "async"
+    MODIFICATION = "modification"
+    DOCUMENTATION = "documentation"
+    DEFAULT_LIBRARY = "defaultLibrary"
 }
 
 enum SemanticTokenTypes {
-    namespace
-    type
-    class
-    enum
-    interface
-    struct
-    typeParameter
-    parameter
-    variable
-    property
-    enumMember
-    event
-    function
-    method
-    macro
-    keyword
-    modifier
-    comment
-    string
-    number
-    regexp
-    operator
-    decorator
-    label
+    NAMESPACE = "namespace"
+    TYPE = "type"
+    CLASS = "class"
+    ENUM = "enum"
+    INTERFACE = "interface"
+    STRUCT = "struct"
+    TYPE_PARAMETER = "typeParameter"
+    PARAMETER = "parameter"
+    VARIABLE = "variable"
+    PROPERTY = "property"
+    ENUM_MEMBER = "enumMember"
+    EVENT = "event"
+    FUNCTION = "function"
+    METHOD = "method"
+    MACRO = "macro"
+    KEYWORD = "keyword"
+    MODIFIER = "modifier"
+    COMMENT = "comment"
+    STRING = "string"
+    NUMBER = "number"
+    REGEXP = "regexp"
+    OPERATOR = "operator"
+    DECORATOR = "decorator"
+    LABEL = "label"
 }
 
 intEnum SignatureHelpTriggerKind {
-    Invoked = 1
-    TriggerCharacter = 2
-    ContentChange = 3
+    INVOKED = 1
+    TRIGGER_CHARACTER = 2
+    CONTENT_CHANGE = 3
 }
 
 intEnum SymbolKind {
-    File = 1
-    Module = 2
-    Namespace = 3
-    Package = 4
-    Class = 5
-    Method = 6
-    Property = 7
-    Field = 8
-    Constructor = 9
-    Enum = 10
-    Interface = 11
-    Function = 12
-    Variable = 13
-    Constant = 14
-    String = 15
-    Number = 16
-    Boolean = 17
-    Array = 18
-    Object = 19
-    Key = 20
-    Null = 21
-    EnumMember = 22
-    Struct = 23
-    Event = 24
-    Operator = 25
-    TypeParameter = 26
+    FILE = 1
+    MODULE = 2
+    NAMESPACE = 3
+    PACKAGE = 4
+    CLASS = 5
+    METHOD = 6
+    PROPERTY = 7
+    FIELD = 8
+    CONSTRUCTOR = 9
+    ENUM = 10
+    INTERFACE = 11
+    FUNCTION = 12
+    VARIABLE = 13
+    CONSTANT = 14
+    STRING = 15
+    NUMBER = 16
+    BOOLEAN = 17
+    ARRAY = 18
+    OBJECT = 19
+    KEY = 20
+    NULL = 21
+    ENUM_MEMBER = 22
+    STRUCT = 23
+    EVENT = 24
+    OPERATOR = 25
+    TYPE_PARAMETER = 26
 }
 
 intEnum SymbolTag {
-    Deprecated = 1
+    DEPRECATED = 1
 }
 
 intEnum TextDocumentSaveReason {
-    Manual = 1
-    AfterDelay = 2
-    FocusOut = 3
+    MANUAL = 1
+    AFTER_DELAY = 2
+    FOCUS_OUT = 3
 }
 
 intEnum TextDocumentSyncKind {
-    None = 0
-    Full = 1
-    Incremental = 2
+    NONE = 0
+    FULL = 1
+    INCREMENTAL = 2
 }
 
 enum TokenFormat {
-    Relative = "relative"
+    RELATIVE = "relative"
 }
 
 enum TraceValue {
-    Off = "off"
-    Messages = "messages"
-    Verbose = "verbose"
+    OFF = "off"
+    MESSAGES = "messages"
+    VERBOSE = "verbose"
 }
 
 enum UniquenessLevel {
-    document
-    project
-    group
-    scheme
-    global
+    DOCUMENT = "document"
+    PROJECT = "project"
+    GROUP = "group"
+    SCHEME = "scheme"
+    GLOBAL = "global"
 }
 
 intEnum WatchKind {
-    Create = 1
-    Change = 2
-    Delete = 4
+    CREATE = 1
+    CHANGE = 2
+    DELETE = 4
 }

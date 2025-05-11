@@ -89,8 +89,13 @@ object SmithyConverter:
     }
     State.modify(shapes => shapes ++ smithyEnums)
 
+  private def toUpperSnakeCase(s: String): String =
+  s.replaceAll("([a-z])([A-Z])", "$1_$2")
+   .replaceAll("([A-Z])([A-Z][a-z])", "$1_$2")
+   .toUpperCase
+
   private def convertEnumValues(shapeId: ShapeId, entry: EnumerationEntry) =
-    val memberId = shapeId.withMember(entry.name.value)
+    val memberId = shapeId.withMember(toUpperSnakeCase(entry.name.value))
     val memberBuilder = MemberShape
       .builder()
       .id(memberId)
