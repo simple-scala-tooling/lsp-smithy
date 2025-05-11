@@ -18,10 +18,10 @@ object SmithyConverter:
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val shapes = (for
-      _ <- convertTypeAliases(meta.typeAliases)
+      _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed))
       _ <- convertStructures(meta.structures)
       _ <- convertEnums(meta.enumerations)
-      _ <- convertRequests(meta.requests)
+      _ <- convertRequests(meta.requests.filterNot(_.proposed))
     yield ()).run(Map.empty).value._1.values
 
     val assembler = Model.assembler()
@@ -66,6 +66,7 @@ object SmithyConverter:
           val builder = IntEnumShape.builder().id(shapeId)
           enum_.values
             .distinctBy(_.value)
+            .filterNot(_.proposed)
             .map(convertEnumValues(shapeId, _))
             .foldLeft(builder) { case (acc, item) => acc.addMember(item) }
             .build()
@@ -73,6 +74,7 @@ object SmithyConverter:
           val builder = EnumShape.builder().id(shapeId)
           enum_.values
             .distinctBy(_.value)
+            .filterNot(_.proposed)
             .filter {
               _.value match
                 case _: Int      => true
@@ -116,7 +118,8 @@ object SmithyConverter:
       case BaseType(BaseTypes.NULL)     => ShapeId.from("smithy.api#Unit").pure
       case BaseType(_)                  => ShapeId.from("smithy.api#String").pure
 
-      case ReferenceType(name) => ShapeId.fromParts(namespace, name.value).pure
+      case ReferenceType(name) => 
+        ShapeId.fromParts(namespace, name.value).pure
 
       case ArrayType(element) =>
         smithyType(element, namespace)
@@ -231,6 +234,7 @@ object SmithyConverter:
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
       struct.properties
+        .filterNot(_.proposed)
         .traverse { prop =>
           val memberId = shapeId.withMember(prop.name.value)
           smithyType(prop.tpe, namespace).map { target =>

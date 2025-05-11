@@ -137,11 +137,6 @@ operation TextDocumentInlayHintOp {
     output: TextDocumentInlayHintOpOutput
 }
 
-operation TextDocumentInlineCompletionOp {
-    input: TextDocumentInlineCompletionOpInput
-    output: TextDocumentInlineCompletionOpOutput
-}
-
 operation TextDocumentInlineValueOp {
     input: TextDocumentInlineValueOpInput
     output: TextDocumentInlineValueOpOutput
@@ -180,11 +175,6 @@ operation TextDocumentPrepareTypeHierarchyOp {
 operation TextDocumentRangeFormattingOp {
     input: TextDocumentRangeFormattingOpInput
     output: TextDocumentRangeFormattingOpOutput
-}
-
-operation TextDocumentRangesFormattingOp {
-    input: TextDocumentRangesFormattingOpInput
-    output: TextDocumentRangesFormattingOpOutput
 }
 
 operation TextDocumentReferencesOp {
@@ -287,11 +277,6 @@ operation WorkspaceExecuteCommandOp {
     output: WorkspaceExecuteCommandOpOutput
 }
 
-operation WorkspaceFoldingRangeRefreshOp {
-    input: WorkspaceFoldingRangeRefreshOpInput
-    output: WorkspaceFoldingRangeRefreshOpOutput
-}
-
 operation WorkspaceInlayHintRefreshOp {
     input: WorkspaceInlayHintRefreshOpInput
     output: WorkspaceInlayHintRefreshOpOutput
@@ -315,16 +300,6 @@ operation WorkspaceSymbolOp {
 operation WorkspaceSymbolResolveOp {
     input: WorkspaceSymbolResolveOpInput
     output: WorkspaceSymbolResolveOpOutput
-}
-
-operation WorkspaceTextDocumentContentOp {
-    input: WorkspaceTextDocumentContentOpInput
-    output: WorkspaceTextDocumentContentOpOutput
-}
-
-operation WorkspaceTextDocumentContentRefreshOp {
-    input: WorkspaceTextDocumentContentRefreshOpInput
-    output: WorkspaceTextDocumentContentRefreshOpOutput
 }
 
 operation WorkspaceWillCreateFilesOp {
@@ -370,7 +345,6 @@ structure ApplyWorkspaceEditParams {
     label: String
     @required
     edit: WorkspaceEdit
-    metadata: WorkspaceEditMetadata
 }
 
 structure ApplyWorkspaceEditResult {
@@ -574,7 +548,6 @@ structure ClientSignatureInformationOptions {
     documentationFormat: ListOf_MarkupKind
     parameterInformation: ClientSignatureParameterInformationOptions
     activeParameterSupport: Boolean
-    noActiveParameterSupport: Boolean
 }
 
 structure ClientSignatureParameterInformationOptions {
@@ -622,7 +595,6 @@ structure CodeActionClientCapabilities {
     dataSupport: Boolean
     resolveSupport: ClientCodeActionResolveOptions
     honorsChangeAnnotations: Boolean
-    documentationSupport: Boolean
     tagSupport: CodeActionTagOptions
 }
 
@@ -647,7 +619,6 @@ structure CodeActionKindDocumentation {
 
 structure CodeActionOptions {
     codeActionKinds: ListOf_CodeActionKind
-    documentation: ListOf_CodeActionKindDocumentation
     resolveProvider: Boolean
 }
 
@@ -752,7 +723,6 @@ structure ColorPresentationParams {
 structure Command {
     @required
     title: String
-    tooltip: String
     @required
     command: String
     arguments: ListOf_LSPAny
@@ -1169,12 +1139,9 @@ structure DocumentOnTypeFormattingRegistrationOptions {}
 
 structure DocumentRangeFormattingClientCapabilities {
     dynamicRegistration: Boolean
-    rangesSupport: Boolean
 }
 
-structure DocumentRangeFormattingOptions {
-    rangesSupport: Boolean
-}
+structure DocumentRangeFormattingOptions {}
 
 structure DocumentRangeFormattingParams {
     @required
@@ -1359,9 +1326,7 @@ structure FoldingRangeParams {
 
 structure FoldingRangeRegistrationOptions {}
 
-structure FoldingRangeWorkspaceClientCapabilities {
-    refreshSupport: Boolean
-}
+structure FoldingRangeWorkspaceClientCapabilities {}
 
 structure FormattingOptions {
     @required
@@ -1522,9 +1487,9 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_07a356e013eb4ca6a42da7fa468537d9 {}
+structure InlineStruct_016a54b45f394233a022ca110ba862c0 {}
 
-structure InlineStruct_aa71ec2d585d41798d5a2633c4efd329 {}
+structure InlineStruct_5927b17b331b4389a2ab994b69eaa4ab {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
@@ -2126,7 +2091,6 @@ structure ServerCapabilities {
     inlineValueProvider: AnonymousUnion
     inlayHintProvider: AnonymousUnion
     diagnosticProvider: DiagnosticOptionsUnion
-    inlineCompletionProvider: BooleanOrInlineCompletionOptions
     workspace: WorkspaceOptions
     experimental: LSPAny
 }
@@ -2297,7 +2261,6 @@ structure TextDocumentClientCapabilities {
     inlineValue: InlineValueClientCapabilities
     inlayHint: InlayHintClientCapabilities
     diagnostic: DiagnosticClientCapabilities
-    inlineCompletion: InlineCompletionClientCapabilities
 }
 
 structure TextDocumentCodeActionOpInput {
@@ -2504,14 +2467,6 @@ structure TextDocumentInlayHintOpOutput {
     result: ListOfInlayHintOrNULL
 }
 
-structure TextDocumentInlineCompletionOpInput {
-    params: InlineCompletionParams
-}
-
-structure TextDocumentInlineCompletionOpOutput {
-    result: AnonymousUnion
-}
-
 structure TextDocumentInlineValueOpInput {
     params: InlineValueParams
 }
@@ -2591,14 +2546,6 @@ structure TextDocumentRangeFormattingOpInput {
 }
 
 structure TextDocumentRangeFormattingOpOutput {
-    result: ListOfTextEditOrNULL
-}
-
-structure TextDocumentRangesFormattingOpInput {
-    params: DocumentRangesFormattingParams
-}
-
-structure TextDocumentRangesFormattingOpOutput {
     result: ListOfTextEditOrNULL
 }
 
@@ -2897,8 +2844,6 @@ structure WorkspaceClientCapabilities {
     inlineValue: InlineValueWorkspaceClientCapabilities
     inlayHint: InlayHintWorkspaceClientCapabilities
     diagnostics: DiagnosticWorkspaceClientCapabilities
-    foldingRange: FoldingRangeWorkspaceClientCapabilities
-    textDocumentContent: TextDocumentContentClientCapabilities
 }
 
 structure WorkspaceCodeLensRefreshOpInput {}
@@ -2953,8 +2898,6 @@ structure WorkspaceEditClientCapabilities {
     failureHandling: FailureHandlingKind
     normalizesLineEndings: Boolean
     changeAnnotationSupport: ChangeAnnotationsSupportOptions
-    metadataSupport: Boolean
-    snippetEditSupport: Boolean
 }
 
 structure WorkspaceEditMetadata {
@@ -2992,10 +2935,6 @@ structure WorkspaceFoldersServerCapabilities {
     changeNotifications: StringOrBoolean
 }
 
-structure WorkspaceFoldingRangeRefreshOpInput {}
-
-structure WorkspaceFoldingRangeRefreshOpOutput {}
-
 structure WorkspaceFullDocumentDiagnosticReport {
     @required
     uri: String
@@ -3014,7 +2953,6 @@ structure WorkspaceInlineValueRefreshOpOutput {}
 structure WorkspaceOptions {
     workspaceFolders: WorkspaceFoldersServerCapabilities
     fileOperations: FileOperationOptions
-    textDocumentContent: TextDocumentContentOptionsUnion
 }
 
 structure WorkspaceSemanticTokensRefreshOpInput {}
@@ -3060,20 +2998,6 @@ structure WorkspaceSymbolResolveOpInput {
 structure WorkspaceSymbolResolveOpOutput {
     result: WorkspaceSymbol
 }
-
-structure WorkspaceTextDocumentContentOpInput {
-    params: TextDocumentContentParams
-}
-
-structure WorkspaceTextDocumentContentOpOutput {
-    result: TextDocumentContentResult
-}
-
-structure WorkspaceTextDocumentContentRefreshOpInput {
-    params: TextDocumentContentRefreshParams
-}
-
-structure WorkspaceTextDocumentContentRefreshOpOutput {}
 
 structure WorkspaceUnchangedDocumentDiagnosticReport {
     @required
@@ -3158,11 +3082,6 @@ union BooleanOrHoverOptions {
     case1: HoverOptions
 }
 
-union BooleanOrInlineCompletionOptions {
-    case0: Boolean
-    case1: InlineCompletionOptions
-}
-
 union BooleanOrReferenceOptions {
     case0: Boolean
     case1: ReferenceOptions
@@ -3190,7 +3109,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_07a356e013eb4ca6a42da7fa468537d9
+    case1: InlineStruct_016a54b45f394233a022ca110ba862c0
 }
 
 union CommandOrCodeAction {
@@ -3403,11 +3322,6 @@ union StringUnion {
     case1: Tuple_of_Integer
 }
 
-union TextDocumentContentOptionsUnion {
-    case0: TextDocumentContentOptions
-    case1: TextDocumentContentRegistrationOptions
-}
-
 union TextDocumentSyncUnion {
     case0: TextDocumentSyncOptions
     case1: TextDocumentSyncKind
@@ -3452,10 +3366,6 @@ list ListOf_CallHierarchyOutgoingCall {
 
 list ListOf_CodeActionKind {
     member: CodeActionKind
-}
-
-list ListOf_CodeActionKindDocumentation {
-    member: CodeActionKindDocumentation
 }
 
 list ListOf_CodeActionTag {
@@ -3753,7 +3663,6 @@ enum CodeActionKind {
     Refactor = "refactor"
     RefactorExtract = "refactor.extract"
     RefactorInline = "refactor.inline"
-    RefactorMove = "refactor.move"
     RefactorRewrite = "refactor.rewrite"
     Source = "source"
     SourceOrganizeImports = "source.organizeImports"
@@ -3913,8 +3822,6 @@ enum LanguageKind {
     CPP = "cpp"
     CSharp = "csharp"
     CSS = "css"
-    D = "d"
-    Delphi = "pascal"
     Diff = "diff"
     Dart = "dart"
     Dockerfile = "dockerfile"
@@ -3991,7 +3898,6 @@ intEnum MessageType {
     Warning = 2
     Info = 3
     Log = 4
-    Debug = 5
 }
 
 enum MonikerKind {
