@@ -5,6 +5,7 @@ import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
 import software.amazon.smithy.model.traits.RequiredTrait
+import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
@@ -29,7 +30,7 @@ object SmithyConverter:
     // Structures
     for struct <- meta.structures do
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
-      structure(shapeId, struct.properties, struct.documentation, shapes)
+      structure(shapeId, struct.properties, shapes, docs = struct.documentation, since = struct.since)
 
     // Enums
     for enum_ <- meta.enumerations do
@@ -37,17 +38,24 @@ object SmithyConverter:
 
       val enumShape = enum_.values.map(t => t.value).head match
         case _: Int =>
-          val builder = IntEnumShape.builder().id(shapeId).tap(maybeAddDocs(enum_.documentation.toOption.map(_.value)))
+          val builder = IntEnumShape
+            .builder()
+            .id(shapeId)
+            .tap(maybeAddDocs(enum_.documentation.toOption.map(_.value), enum_.since.toOption))
 
           for entry <- enum_.values.distinctBy(_.value) do
             builder.addMember(
               entry.name.value,
               entry.value.intValue,
-              _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value))),
+              _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
             )
           builder.build()
         case _: String =>
-          val builder = EnumShape.builder().id(shapeId).tap(maybeAddDocs(enum_.documentation.toOption.map(_.value)))
+          val builder =
+            EnumShape
+              .builder()
+              .id(shapeId)
+              .tap(maybeAddDocs(enum_.documentation.toOption.map(_.value), enum_.since.toOption))
           for entry <- enum_.values
               .distinctBy(_.value.stringValue)
               .filter {
@@ -59,7 +67,7 @@ object SmithyConverter:
             builder.addMember(
               entry.name.value,
               entry.value.stringValue,
-              _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value))),
+              _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
             )
           builder.build()
 
@@ -178,7 +186,6 @@ object SmithyConverter:
         structure(
           id,
           properties,
-          docs = Opt.empty,
           shapes,
         )
 
@@ -189,10 +196,11 @@ object SmithyConverter:
   private def structure(
       id: ShapeId,
       properties: Vector[Property],
-      docs: Opt[StructureDescription],
       shapes: ListBuffer[Shape],
+      docs: Opt[StructureDescription] = Opt.empty,
+      since: Opt[String] = Opt.empty,
   ): ShapeId =
-    val builder = StructureShape.builder().id(id).tap(maybeAddDocs(docs.toOption.map(_.value)))
+    val builder = StructureShape.builder().id(id).tap(maybeAddDocs(docs.toOption.map(_.value), since.toOption))
 
     def makeRequired(prop: Property): MemberShape.Builder => Unit =
       if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
@@ -203,14 +211,30 @@ object SmithyConverter:
         prop.name.value,
         smithyType(prop.tpe, namespace, shapes),
         _.tap(makeRequired(prop))
-          .tap(maybeAddDocs(prop.documentation.toOption.map(_.value))),
+          .tap(maybeAddDocs(prop.documentation.toOption.map(_.value), prop.since.toOption)),
       )
     val result = builder.build()
     shapes.addOne(result)
     result.getId()
 
-  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](text: Option[String])(b: B): Unit =
-    b.addTraits(text.map(new DocumentationTrait(_)).toList.asJava)
+  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](
+      text: Option[String],
+      since: Option[String],
+  )(
+      b: B
+  ): Unit =
+    b.addTraits(
+      List
+        .concat(
+          // technically we could try to strip the text of `since` if present
+          // but in some cases there's more than one @since, and only one `since` property (though there should be multiple sinceTags).
+          // so we just leave it be for simplicity, it's just docstrings
+          // example: https://github.com/microsoft/language-server-protocol/blob/5500ef8fb35925106ee222173a95c57595882b0a/_specifications/lsp/3.18/metaModel/metaModel.json#L7234-L7235
+          text.map(new DocumentationTrait(_)),
+          since.map(new SinceTrait(_)),
+        )
+        .asJava
+    )
 
   def convertTypeAliases(typeAliases: Vector[TypeAlias]) =
     typeAliases.map { alias =>
