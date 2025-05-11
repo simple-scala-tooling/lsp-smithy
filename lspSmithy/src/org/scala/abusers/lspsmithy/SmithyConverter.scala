@@ -289,23 +289,8 @@ object SmithyConverter:
             }
           }
 
-    // shapes ++ newShapes.groupBy(_.getId).view.mapValues(_.head).toMap
     }.void
 
-  // def convertTypeAliases(typeAliases: Vector[TypeAlias]): ShapeState[Unit] =
-  //   State.modify { shapes =>
-  //     val aliases = typeAliases.map { alias =>
-  //       val shapeId  = ShapeId.fromParts(namespace, alias.name.value)
-  //       val targetId = smithyType(alias.`type`, namespace, shapes)
-  //       val aliasShape = StringShape
-  //         .builder()
-  //         .id(shapeId)
-  //         .build()
-  //       aliasShape
-  //     }
-  //     shapes ++ aliases.groupBy(_.getId).mapValues(_.head).toMap
-  //   }
-  //
   def convertStructures(structures: Vector[Structure]): ShapeState[Unit] =
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
