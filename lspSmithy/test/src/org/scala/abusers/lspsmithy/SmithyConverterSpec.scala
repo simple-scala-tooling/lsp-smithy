@@ -17,4 +17,3 @@ object SmithyConverterSpec extends SimpleIOSuite:
 
     expect(result.isBroken() == false)
   }
-
