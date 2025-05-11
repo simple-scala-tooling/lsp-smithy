@@ -18,11 +18,11 @@ object SmithyConverter:
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val shapes = (for
-      _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed))
       _ <- convertStructures(meta.structures)
       _ <- convertEnums(meta.enumerations)
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
+      _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed).filterNot(_.name.value == "LSPAny"))
     yield ()).run(Map.empty).value._1.values
 
     val assembler = Model.assembler()
@@ -120,7 +120,8 @@ object SmithyConverter:
       case BaseType(_)                  => ShapeId.from("smithy.api#String").pure
 
       case ReferenceType(name) =>
-        ShapeId.fromParts(namespace, name.value).pure
+        if name.value == "LSPAny" then ShapeId.from("smithy.api#Document").pure
+        else ShapeId.fromParts(namespace, name.value).pure
 
       case ArrayType(element) =>
         smithyType(element, namespace)
@@ -217,20 +218,89 @@ object SmithyConverter:
         // No Smithy equivalent — fallback to string
         ShapeId.from("smithy.api#String").pure
 
-  def convertTypeAliases(typeAliases: Vector[TypeAlias]): ShapeState[Unit] =
-    State.modify { shapes =>
-      val aliases = typeAliases.map { alias =>
-        val shapeId = ShapeId.fromParts(namespace, alias.name.value)
-        // val targetId = smithyType(alias.`type`, namespace, shapes)
-        val aliasShape = StringShape
-          .builder()
-          .id(shapeId)
-          .build()
-        aliasShape
-      }
-      shapes ++ aliases.groupBy(_.getId).mapValues(_.head).toMap
-    }
+  private def simpleShapeOfType(shapeId: ShapeId, shapeType: ShapeType): Shape =
+    shapeType match
+      case ShapeType.STRING      => StringShape.builder().id(shapeId).build()
+      case ShapeType.INTEGER     => IntegerShape.builder().id(shapeId).build()
+      case ShapeType.LONG        => LongShape.builder().id(shapeId).build()
+      case ShapeType.SHORT       => ShortShape.builder().id(shapeId).build()
+      case ShapeType.BYTE        => ByteShape.builder().id(shapeId).build()
+      case ShapeType.FLOAT       => FloatShape.builder().id(shapeId).build()
+      case ShapeType.DOUBLE      => DoubleShape.builder().id(shapeId).build()
+      case ShapeType.BIG_INTEGER => BigIntegerShape.builder().id(shapeId).build()
+      case ShapeType.BIG_DECIMAL => BigDecimalShape.builder().id(shapeId).build()
+      case ShapeType.BOOLEAN     => BooleanShape.builder().id(shapeId).build()
+      case ShapeType.BLOB        => BlobShape.builder().id(shapeId).build()
+      case ShapeType.TIMESTAMP   => TimestampShape.builder().id(shapeId).build()
+      case ShapeType.DOCUMENT    => DocumentShape.builder().id(shapeId).build()
+      case _ =>
+        throw new IllegalArgumentException(s"Unsupported shape type for alias: $shapeType")
 
+  def convertTypeAliases(typeAliases: Vector[TypeAlias]): ShapeState[Unit] =
+    typeAliases.traverse { alias =>
+      val aliasId = ShapeId.fromParts(namespace, alias.name.value)
+      alias.`type` match
+        case t @ Type.ReferenceType(_) =>
+          smithyType(t, namespace).flatMap { targetShapeId =>
+            State.modify { shapes =>
+              shapes.get(targetShapeId) match
+                case Some(shape) =>
+                  // Rename the shape to alias name
+                  val renamed             = Shape.shapeToBuilder(shape): AbstractShapeBuilder[?, ?]
+                  val anotherVarForUpcast = renamed.id(aliasId): AbstractShapeBuilder[?, ?]
+                  val s: Shape            = anotherVarForUpcast.build().asInstanceOf[Shape]
+                  shapes + (aliasId -> s)
+                case None =>
+                  sys.error(s"Shape not found: $targetShapeId")
+            }
+          }
+
+        case base @ Type.BaseType(_) =>
+          val baseShapeType = base match
+            case Type.BaseType(BaseTypes.string)   => ShapeType.STRING
+            case Type.BaseType(BaseTypes.integer)  => ShapeType.INTEGER
+            case Type.BaseType(BaseTypes.uinteger) => ShapeType.INTEGER
+            case Type.BaseType(BaseTypes.decimal)  => ShapeType.FLOAT
+            case Type.BaseType(BaseTypes.boolean)  => ShapeType.BOOLEAN
+            case _                                 => ShapeType.STRING
+          val s = simpleShapeOfType(aliasId, baseShapeType)
+          State.modify[Map[ShapeId, Shape]] { shapes =>
+            shapes + (s.getId -> s)
+          }
+
+        case complex =>
+          // Generate the actual shape under alias name
+          smithyType(complex, namespace).flatMap { targetShapeId =>
+            State.modify { shapes =>
+              shapes.get(targetShapeId) match
+                case Some(shape) =>
+                  // Rename the shape to alias name
+                  val renamed             = Shape.shapeToBuilder(shape): AbstractShapeBuilder[?, ?]
+                  val anotherVarForUpcast = renamed.id(aliasId): AbstractShapeBuilder[?, ?]
+                  val s: Shape            = anotherVarForUpcast.build().asInstanceOf[Shape]
+                  shapes + (aliasId -> s)
+                case None =>
+                  sys.error(s"Shape not found: $targetShapeId")
+            }
+          }
+
+    // shapes ++ newShapes.groupBy(_.getId).view.mapValues(_.head).toMap
+    }.void
+
+  // def convertTypeAliases(typeAliases: Vector[TypeAlias]): ShapeState[Unit] =
+  //   State.modify { shapes =>
+  //     val aliases = typeAliases.map { alias =>
+  //       val shapeId  = ShapeId.fromParts(namespace, alias.name.value)
+  //       val targetId = smithyType(alias.`type`, namespace, shapes)
+  //       val aliasShape = StringShape
+  //         .builder()
+  //         .id(shapeId)
+  //         .build()
+  //       aliasShape
+  //     }
+  //     shapes ++ aliases.groupBy(_.getId).mapValues(_.head).toMap
+  //   }
+  //
   def convertStructures(structures: Vector[Structure]): ShapeState[Unit] =
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)

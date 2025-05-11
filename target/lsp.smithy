@@ -462,7 +462,7 @@ structure _InitializeParams {
     rootUri: DocumentUriOrNULL
     @required
     capabilities: ClientCapabilities
-    initializationOptions: LSPAny
+    initializationOptions: Document
     trace: TraceValue
 }
 
@@ -530,7 +530,7 @@ structure CallHierarchyItem {
     range: Range
     @required
     selectionRange: Range
-    data: LSPAny
+    data: Document
 }
 
 structure CallHierarchyOptions {}
@@ -585,7 +585,7 @@ structure ClientCapabilities {
     notebookDocument: NotebookDocumentClientCapabilities
     window: WindowClientCapabilities
     general: GeneralClientCapabilities
-    experimental: LSPAny
+    experimental: Document
 }
 
 structure ClientCodeActionKindOptions {
@@ -717,7 +717,7 @@ structure CodeAction {
     disabled: CodeActionDisabled
     edit: WorkspaceEdit
     command: Command
-    data: LSPAny
+    data: Document
     tags: ListOf_CodeActionTag
 }
 
@@ -789,7 +789,7 @@ structure CodeLens {
     @required
     range: Range
     command: Command
-    data: LSPAny
+    data: Document
 }
 
 structure CodeLensClientCapabilities {
@@ -859,7 +859,7 @@ structure Command {
     title: String
     @required
     command: String
-    arguments: ListOf_LSPAny
+    arguments: ListOf_Document
 }
 
 structure CompletionClientCapabilities {
@@ -897,7 +897,7 @@ structure CompletionItem {
     additionalTextEdits: ListOf_TextEdit
     commitCharacters: ListOf_String
     command: Command
-    data: LSPAny
+    data: Document
 }
 
 structure CompletionItemApplyKinds {
@@ -910,7 +910,7 @@ structure CompletionItemDefaults {
     editRange: RangeUnion
     insertTextFormat: InsertTextFormat
     insertTextMode: InsertTextMode
-    data: LSPAny
+    data: Document
 }
 
 structure CompletionItemLabelDetails {
@@ -991,6 +991,16 @@ structure DeclarationClientCapabilities {
     linkSupport: Boolean
 }
 
+structure DeclarationLink {
+    originSelectionRange: Range
+    @required
+    targetUri: String
+    @required
+    targetRange: Range
+    @required
+    targetSelectionRange: Range
+}
+
 structure DeclarationOptions {}
 
 structure DeclarationParams {}
@@ -1000,6 +1010,16 @@ structure DeclarationRegistrationOptions {}
 structure DefinitionClientCapabilities {
     dynamicRegistration: Boolean
     linkSupport: Boolean
+}
+
+structure DefinitionLink {
+    originSelectionRange: Range
+    @required
+    targetUri: String
+    @required
+    targetRange: Range
+    @required
+    targetSelectionRange: Range
 }
 
 structure DefinitionOptions {}
@@ -1037,7 +1057,7 @@ structure Diagnostic {
     message: String
     tags: ListOf_DiagnosticTag
     relatedInformation: ListOf_DiagnosticRelatedInformation
-    data: LSPAny
+    data: Document
 }
 
 structure DiagnosticClientCapabilities {
@@ -1084,7 +1104,7 @@ structure DidChangeConfigurationClientCapabilities {
 
 structure DidChangeConfigurationParams {
     @required
-    settings: LSPAny
+    settings: Document
 }
 
 structure DidChangeConfigurationRegistrationOptions {
@@ -1221,7 +1241,7 @@ structure DocumentLink {
     range: Range
     target: String
     tooltip: String
-    data: LSPAny
+    data: Document
 }
 
 structure DocumentLinkClientCapabilities {
@@ -1350,7 +1370,7 @@ structure ExecuteCommandOptions {
 structure ExecuteCommandParams {
     @required
     command: String
-    arguments: ListOf_LSPAny
+    arguments: ListOf_Document
 }
 
 structure ExecuteCommandRegistrationOptions {}
@@ -1554,7 +1574,7 @@ structure InlayHint {
     tooltip: StringOrMarkupContent
     paddingLeft: Boolean
     paddingRight: Boolean
-    data: LSPAny
+    data: Document
 }
 
 structure InlayHintClientCapabilities {
@@ -1627,9 +1647,9 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_02e164d5a6514245a8aa04773d73b897 {}
+structure InlineStruct_0719828d815241149d57bcc91a5cfd96 {}
 
-structure InlineStruct_688554b7c89f4a0dad30c0d03c9e97a3 {}
+structure InlineStruct_bc46df69212c436bb5daa546f67472a6 {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
@@ -1978,7 +1998,7 @@ structure ProgressParams {
     @required
     token: ProgressToken
     @required
-    value: LSPAny
+    value: Document
 }
 
 structure PublishDiagnosticsClientCapabilities {
@@ -2023,7 +2043,7 @@ structure Registration {
     id: String
     @required
     method: String
-    registerOptions: LSPAny
+    registerOptions: Document
 }
 
 structure RegistrationParams {
@@ -2256,7 +2276,7 @@ structure ServerCapabilities {
     inlayHintProvider: AnonymousUnion
     diagnosticProvider: DiagnosticOptionsUnion
     workspace: WorkspaceOptions
-    experimental: LSPAny
+    experimental: Document
 }
 
 structure ServerCompletionItemOptions {
@@ -2393,7 +2413,7 @@ structure SymbolInformation {
 }
 
 structure TelemetryEventInput {
-    params: LSPAny
+    params: Document
 }
 
 structure TextDocumentChangeRegistrationOptions {
@@ -2874,7 +2894,7 @@ structure TypeHierarchyItem {
     range: Range
     @required
     selectionRange: Range
-    data: LSPAny
+    data: Document
 }
 
 structure TypeHierarchyOptions {}
@@ -3063,7 +3083,7 @@ structure WorkspaceConfigurationOpInput {
 }
 
 structure WorkspaceConfigurationOpOutput {
-    result: ListOf_LSPAny
+    result: ListOf_Document
 }
 
 structure WorkspaceDiagnosticOpInput {
@@ -3194,7 +3214,7 @@ structure WorkspaceSemanticTokensRefreshOpOutput {}
 structure WorkspaceSymbol {
     @required
     location: LocationUnion
-    data: LSPAny
+    data: Document
 }
 
 structure WorkspaceSymbolClientCapabilities {
@@ -3269,9 +3289,9 @@ structure WorkspaceWorkspaceFoldersOpOutput {
 }
 
 union AnonymousUnion {
-    case0: ListOf_SymbolInformation
-    case1: ListOf_WorkspaceSymbol
-    case2: Unit
+    case0: Range
+    case1: PrepareRenamePlaceholder
+    case2: PrepareRenameDefaultBehavior
 }
 
 union BooleanOrClientSemanticTokensRequestFullDelta {
@@ -3341,7 +3361,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_688554b7c89f4a0dad30c0d03c9e97a3
+    case1: InlineStruct_bc46df69212c436bb5daa546f67472a6
 }
 
 union CommandOrCodeAction {
@@ -3349,14 +3369,34 @@ union CommandOrCodeAction {
     case1: CodeAction
 }
 
+union Declaration {
+    case0: Location
+    case1: ListOf_Location
+}
+
+union Definition {
+    case0: Location
+    case1: ListOf_Location
+}
+
 union DiagnosticOptionsUnion {
     case0: DiagnosticOptions
     case1: DiagnosticRegistrationOptions
 }
 
+union DocumentDiagnosticReport {
+    case0: RelatedFullDocumentDiagnosticReport
+    case1: RelatedUnchangedDocumentDiagnosticReport
+}
+
 union DocumentDiagnosticReportUnion {
     case0: FullDocumentDiagnosticReport
     case1: UnchangedDocumentDiagnosticReport
+}
+
+union DocumentFilter {
+    case0: TextDocumentFilter
+    case1: NotebookCellTextDocumentFilter
 }
 
 union DocumentSelectorOrNULL {
@@ -3374,9 +3414,26 @@ union EditUnion {
     case1: InsertReplaceEdit
 }
 
+union GlobPattern {
+    case0: Pattern
+    case1: RelativePattern
+}
+
 union HoverOrNULL {
     case0: Hover
     case1: Unit
+}
+
+union InlineValue {
+    case0: InlineValueText
+    case1: InlineValueVariableLookup
+    case2: InlineValueEvaluatableExpression
+}
+
+union InlineValueUnion {
+    case0: InlineValueText
+    case1: InlineValueVariableLookup
+    case2: InlineValueEvaluatableExpression
 }
 
 union IntegerOrNULL {
@@ -3476,17 +3533,34 @@ union ListOfWorkspaceFolderOrNULL {
 
 union LocationUnion {
     case0: Location
-    case1: LocationUriOnly
+    case1: ListOf_Location
 }
 
 union LUnion {
-    case0: LSPAny
+    case0: Document
     case1: Unit
+}
+
+union MarkedString {
+    case0: String
+    case1: MarkedStringWithLanguage
 }
 
 union MessageActionItemOrNULL {
     case0: MessageActionItem
     case1: Unit
+}
+
+union NotebookDocumentFilter {
+    case0: NotebookDocumentFilterNotebookType
+    case1: NotebookDocumentFilterScheme
+    case2: NotebookDocumentFilterPattern
+}
+
+union NotebookDocumentFilterUnion {
+    case0: NotebookDocumentFilterNotebookType
+    case1: NotebookDocumentFilterScheme
+    case2: NotebookDocumentFilterPattern
 }
 
 union NotebookDocumentFilterWithUnion {
@@ -3499,14 +3573,35 @@ union NotebookDocumentSyncOptionsUnion {
     case1: NotebookDocumentSyncRegistrationOptions
 }
 
+union PatternUnion {
+    case0: Pattern
+    case1: RelativePattern
+}
+
+union PrepareRenameResult {
+    case0: Range
+    case1: PrepareRenamePlaceholder
+    case2: PrepareRenameDefaultBehavior
+}
+
 union PrepareRenameResultOrNULL {
     case0: PrepareRenameResult
     case1: Unit
 }
 
+union ProgressToken {
+    case0: Integer
+    case1: String
+}
+
 union RangeUnion {
     case0: Range
     case1: EditRangeWithInsertReplace
+}
+
+union RelatedDocumentDiagnosticReportUnion {
+    case0: RelatedFullDocumentDiagnosticReport
+    case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
 union SemanticTokensOptionsUnion {
@@ -3551,7 +3646,29 @@ union StringOrNULL {
 
 union StringUnion {
     case0: String
-    case1: Tuple_of_Integer
+    case1: MarkedStringWithLanguage
+}
+
+union TextDocumentContentChangeEvent {
+    case0: TextDocumentContentChangePartial
+    case1: TextDocumentContentChangeWholeDocument
+}
+
+union TextDocumentContentChangeUnion {
+    case0: TextDocumentContentChangePartial
+    case1: TextDocumentContentChangeWholeDocument
+}
+
+union TextDocumentFilter {
+    case0: TextDocumentFilterLanguage
+    case1: TextDocumentFilterScheme
+    case2: TextDocumentFilterPattern
+}
+
+union TextDocumentFilterUnion {
+    case0: TextDocumentFilterLanguage
+    case1: TextDocumentFilterScheme
+    case2: TextDocumentFilterPattern
 }
 
 union TextDocumentSyncUnion {
@@ -3570,6 +3687,16 @@ union UintegerOrNULL {
     case1: Unit
 }
 
+union WorkspaceDocumentDiagnosticReport {
+    case0: WorkspaceFullDocumentDiagnosticReport
+    case1: WorkspaceUnchangedDocumentDiagnosticReport
+}
+
+union WorkspaceDocumentDiagnosticReportUnion {
+    case0: WorkspaceFullDocumentDiagnosticReport
+    case1: WorkspaceUnchangedDocumentDiagnosticReport
+}
+
 union WorkspaceEditOrNULL {
     case0: WorkspaceEdit
     case1: Unit
@@ -3578,6 +3705,10 @@ union WorkspaceEditOrNULL {
 union WorkspaceFolderOrUri {
     case0: WorkspaceFolder
     case1: String
+}
+
+list DocumentSelector {
+    member: DocumentFilter
 }
 
 list ListOf_AnonymousUnion {
@@ -3656,6 +3787,14 @@ list ListOf_DiagnosticTag {
     member: DiagnosticTag
 }
 
+list ListOf_Document {
+    member: Document
+}
+
+list ListOf_DocumentFilter {
+    member: DocumentFilter
+}
+
 list ListOf_DocumentHighlight {
     member: DocumentHighlight
 }
@@ -3726,10 +3865,6 @@ list ListOf_Integer {
 
 list ListOf_Location {
     member: Location
-}
-
-list ListOf_LSPAny {
-    member: LSPAny
 }
 
 list ListOf_MarkedString {
@@ -3864,13 +3999,27 @@ list ListOf_WorkspaceSymbol {
     member: WorkspaceSymbol
 }
 
+list LSPArray {
+    member: Document
+}
+
 list Tuple_of_Integer {
     member: Integer
+}
+
+map LSPObject {
+    key: String
+    value: Document
 }
 
 map MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation {
     key: ChangeAnnotationIdentifier
     value: ChangeAnnotation
+}
+
+map MapOf_String_to_Document {
+    key: String
+    value: Document
 }
 
 map MapOf_String_to_DocumentDiagnosticReportUnion {
@@ -3949,14 +4098,6 @@ intEnum CompletionTriggerKind {
     TriggerForIncompleteCompletions = 3
 }
 
-string Declaration
-
-string DeclarationLink
-
-string Definition
-
-string DefinitionLink
-
 intEnum DiagnosticSeverity {
     Error = 1
     Warning = 2
@@ -3969,22 +4110,16 @@ intEnum DiagnosticTag {
     Deprecated = 2
 }
 
-string DocumentDiagnosticReport
-
 enum DocumentDiagnosticReportKind {
     Full = "full"
     Unchanged = "unchanged"
 }
-
-string DocumentFilter
 
 intEnum DocumentHighlightKind {
     Text = 1
     Read = 2
     Write = 3
 }
-
-string DocumentSelector
 
 intEnum ErrorCodes {
     ParseError = -32700
@@ -4020,8 +4155,6 @@ enum FoldingRangeKind {
     Region = "region"
 }
 
-string GlobPattern
-
 intEnum InlayHintKind {
     Type = 1
     Parameter = 2
@@ -4031,8 +4164,6 @@ intEnum InlineCompletionTriggerKind {
     Invoked = 1
     Automatic = 2
 }
-
-string InlineValue
 
 intEnum InsertTextFormat {
     PlainText = 1
@@ -4105,20 +4236,12 @@ enum LanguageKind {
     YAML = "yaml"
 }
 
-string LSPAny
-
-string LSPArray
-
 intEnum LSPErrorCodes {
     RequestFailed = -32803
     ServerCancelled = -32802
     ContentModified = -32801
     RequestCancelled = -32800
 }
-
-string LSPObject
-
-string MarkedString
 
 enum MarkupKind {
     PlainText = "plaintext"
@@ -4143,8 +4266,6 @@ intEnum NotebookCellKind {
     Code = 2
 }
 
-string NotebookDocumentFilter
-
 string Pattern
 
 enum PositionEncodingKind {
@@ -4153,13 +4274,9 @@ enum PositionEncodingKind {
     UTF32 = "utf-32"
 }
 
-string PrepareRenameResult
-
 intEnum PrepareSupportDefaultBehavior {
     Identifier = 1
 }
-
-string ProgressToken
 
 string RegularExpressionEngineKind
 
@@ -4248,10 +4365,6 @@ intEnum SymbolTag {
     Deprecated = 1
 }
 
-string TextDocumentContentChangeEvent
-
-string TextDocumentFilter
-
 intEnum TextDocumentSaveReason {
     Manual = 1
     AfterDelay = 2
@@ -4287,5 +4400,3 @@ intEnum WatchKind {
     Change = 2
     Delete = 4
 }
-
-string WorkspaceDocumentDiagnosticReport
