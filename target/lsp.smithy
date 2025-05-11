@@ -12,6 +12,11 @@ operation CallHierarchyOutgoingCallsOp {
     output: CallHierarchyOutgoingCallsOpOutput
 }
 
+operation CancelRequest {
+    input: CancelRequestInput
+    output: Unit
+}
+
 operation ClientRegisterCapabilityOp {
     input: ClientRegisterCapabilityOpInput
     output: ClientRegisterCapabilityOpOutput
@@ -42,6 +47,16 @@ operation DocumentLinkResolveOp {
     output: DocumentLinkResolveOpOutput
 }
 
+operation Exit {
+    input: ExitInput
+    output: Unit
+}
+
+operation Initialized {
+    input: InitializedInput
+    output: Unit
+}
+
 operation InitializeOp {
     input: InitializeOpInput
     output: InitializeOpOutput
@@ -52,9 +67,49 @@ operation InlayHintResolveOp {
     output: InlayHintResolveOpOutput
 }
 
+operation LogTrace {
+    input: LogTraceInput
+    output: Unit
+}
+
+operation NotebookDocumentDidChange {
+    input: NotebookDocumentDidChangeInput
+    output: Unit
+}
+
+operation NotebookDocumentDidClose {
+    input: NotebookDocumentDidCloseInput
+    output: Unit
+}
+
+operation NotebookDocumentDidOpen {
+    input: NotebookDocumentDidOpenInput
+    output: Unit
+}
+
+operation NotebookDocumentDidSave {
+    input: NotebookDocumentDidSaveInput
+    output: Unit
+}
+
+operation Progress {
+    input: ProgressInput
+    output: Unit
+}
+
+operation SetTrace {
+    input: SetTraceInput
+    output: Unit
+}
+
 operation ShutdownOp {
     input: ShutdownOpInput
     output: ShutdownOpOutput
+}
+
+operation TelemetryEvent {
+    input: TelemetryEventInput
+    output: Unit
 }
 
 operation TextDocumentCodeActionOp {
@@ -90,6 +145,26 @@ operation TextDocumentDefinitionOp {
 operation TextDocumentDiagnosticOp {
     input: TextDocumentDiagnosticOpInput
     output: TextDocumentDiagnosticOpOutput
+}
+
+operation TextDocumentDidChange {
+    input: TextDocumentDidChangeInput
+    output: Unit
+}
+
+operation TextDocumentDidClose {
+    input: TextDocumentDidCloseInput
+    output: Unit
+}
+
+operation TextDocumentDidOpen {
+    input: TextDocumentDidOpenInput
+    output: Unit
+}
+
+operation TextDocumentDidSave {
+    input: TextDocumentDidSaveInput
+    output: Unit
 }
 
 operation TextDocumentDocumentColorOp {
@@ -172,6 +247,11 @@ operation TextDocumentPrepareTypeHierarchyOp {
     output: TextDocumentPrepareTypeHierarchyOpOutput
 }
 
+operation TextDocumentPublishDiagnostics {
+    input: TextDocumentPublishDiagnosticsInput
+    output: Unit
+}
+
 operation TextDocumentRangeFormattingOp {
     input: TextDocumentRangeFormattingOpInput
     output: TextDocumentRangeFormattingOpOutput
@@ -217,6 +297,11 @@ operation TextDocumentTypeDefinitionOp {
     output: TextDocumentTypeDefinitionOpOutput
 }
 
+operation TextDocumentWillSave {
+    input: TextDocumentWillSaveInput
+    output: Unit
+}
+
 operation TextDocumentWillSaveWaitUntilOp {
     input: TextDocumentWillSaveWaitUntilOpInput
     output: TextDocumentWillSaveWaitUntilOpOutput
@@ -232,14 +317,29 @@ operation TypeHierarchySupertypesOp {
     output: TypeHierarchySupertypesOpOutput
 }
 
+operation WindowLogMessage {
+    input: WindowLogMessageInput
+    output: Unit
+}
+
 operation WindowShowDocumentOp {
     input: WindowShowDocumentOpInput
     output: WindowShowDocumentOpOutput
 }
 
+operation WindowShowMessage {
+    input: WindowShowMessageInput
+    output: Unit
+}
+
 operation WindowShowMessageRequestOp {
     input: WindowShowMessageRequestOpInput
     output: WindowShowMessageRequestOpOutput
+}
+
+operation WindowWorkDoneProgressCancel {
+    input: WindowWorkDoneProgressCancelInput
+    output: Unit
 }
 
 operation WindowWorkDoneProgressCreateOp {
@@ -270,6 +370,36 @@ operation WorkspaceDiagnosticOp {
 operation WorkspaceDiagnosticRefreshOp {
     input: WorkspaceDiagnosticRefreshOpInput
     output: WorkspaceDiagnosticRefreshOpOutput
+}
+
+operation WorkspaceDidChangeConfiguration {
+    input: WorkspaceDidChangeConfigurationInput
+    output: Unit
+}
+
+operation WorkspaceDidChangeWatchedFiles {
+    input: WorkspaceDidChangeWatchedFilesInput
+    output: Unit
+}
+
+operation WorkspaceDidChangeWorkspaceFolders {
+    input: WorkspaceDidChangeWorkspaceFoldersInput
+    output: Unit
+}
+
+operation WorkspaceDidCreateFiles {
+    input: WorkspaceDidCreateFilesInput
+    output: Unit
+}
+
+operation WorkspaceDidDeleteFiles {
+    input: WorkspaceDidDeleteFilesInput
+    output: Unit
+}
+
+operation WorkspaceDidRenameFiles {
+    input: WorkspaceDidRenameFilesInput
+    output: Unit
 }
 
 operation WorkspaceExecuteCommandOp {
@@ -432,6 +562,10 @@ structure CallHierarchyRegistrationOptions {}
 structure CancelParams {
     @required
     id: IntegerOrString
+}
+
+structure CancelRequestInput {
+    params: CancelParams
 }
 
 structure ChangeAnnotation {
@@ -1227,6 +1361,8 @@ structure ExecutionSummary {
     success: Boolean
 }
 
+structure ExitInput {}
+
 structure FileCreate {
     @required
     uri: String
@@ -1381,6 +1517,10 @@ structure ImplementationParams {}
 
 structure ImplementationRegistrationOptions {}
 
+structure InitializedInput {
+    params: InitializedParams
+}
+
 structure InitializedParams {}
 
 structure InitializeError {
@@ -1487,9 +1627,9 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_016a54b45f394233a022ca110ba862c0 {}
+structure InlineStruct_02e164d5a6514245a8aa04773d73b897 {}
 
-structure InlineStruct_5927b17b331b4389a2ab994b69eaa4ab {}
+structure InlineStruct_688554b7c89f4a0dad30c0d03c9e97a3 {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
@@ -1592,6 +1732,10 @@ structure LogMessageParams {
     type: MessageType
     @required
     message: String
+}
+
+structure LogTraceInput {
+    params: LogTraceParams
 }
 
 structure LogTraceParams {
@@ -1716,6 +1860,22 @@ structure NotebookDocumentClientCapabilities {
     synchronization: NotebookDocumentSyncClientCapabilities
 }
 
+structure NotebookDocumentDidChangeInput {
+    params: DidChangeNotebookDocumentParams
+}
+
+structure NotebookDocumentDidCloseInput {
+    params: DidCloseNotebookDocumentParams
+}
+
+structure NotebookDocumentDidOpenInput {
+    params: DidOpenNotebookDocumentParams
+}
+
+structure NotebookDocumentDidSaveInput {
+    params: DidSaveNotebookDocumentParams
+}
+
 structure NotebookDocumentFilterNotebookType {
     @required
     notebookType: String
@@ -1808,6 +1968,10 @@ structure PreviousResultId {
     uri: String
     @required
     value: String
+}
+
+structure ProgressInput {
+    params: ProgressParams
 }
 
 structure ProgressParams {
@@ -2105,6 +2269,10 @@ structure ServerInfo {
     version: String
 }
 
+structure SetTraceInput {
+    params: SetTraceParams
+}
+
 structure SetTraceParams {
     @required
     value: TraceValue
@@ -2222,6 +2390,10 @@ structure SymbolInformation {
     deprecated: Boolean
     @required
     location: Location
+}
+
+structure TelemetryEventInput {
+    params: LSPAny
 }
 
 structure TextDocumentChangeRegistrationOptions {
@@ -2356,6 +2528,22 @@ structure TextDocumentDiagnosticOpInput {
 
 structure TextDocumentDiagnosticOpOutput {
     result: DocumentDiagnosticReport
+}
+
+structure TextDocumentDidChangeInput {
+    params: DidChangeTextDocumentParams
+}
+
+structure TextDocumentDidCloseInput {
+    params: DidCloseTextDocumentParams
+}
+
+structure TextDocumentDidOpenInput {
+    params: DidOpenTextDocumentParams
+}
+
+structure TextDocumentDidSaveInput {
+    params: DidSaveTextDocumentParams
 }
 
 structure TextDocumentDocumentColorOpInput {
@@ -2541,6 +2729,10 @@ structure TextDocumentPrepareTypeHierarchyOpOutput {
     result: ListOfTypeHierarchyItemOrNULL
 }
 
+structure TextDocumentPublishDiagnosticsInput {
+    params: PublishDiagnosticsParams
+}
+
 structure TextDocumentRangeFormattingOpInput {
     params: DocumentRangeFormattingParams
 }
@@ -2633,6 +2825,10 @@ structure TextDocumentTypeDefinitionOpInput {
 
 structure TextDocumentTypeDefinitionOpOutput {
     result: AnonymousUnion
+}
+
+structure TextDocumentWillSaveInput {
+    params: WillSaveTextDocumentParams
 }
 
 structure TextDocumentWillSaveWaitUntilOpInput {
@@ -2757,6 +2953,10 @@ structure WindowClientCapabilities {
     showDocument: ShowDocumentClientCapabilities
 }
 
+structure WindowLogMessageInput {
+    params: LogMessageParams
+}
+
 structure WindowShowDocumentOpInput {
     params: ShowDocumentParams
 }
@@ -2765,12 +2965,20 @@ structure WindowShowDocumentOpOutput {
     result: ShowDocumentResult
 }
 
+structure WindowShowMessageInput {
+    params: ShowMessageParams
+}
+
 structure WindowShowMessageRequestOpInput {
     params: ShowMessageRequestParams
 }
 
 structure WindowShowMessageRequestOpOutput {
     result: MessageActionItemOrNULL
+}
+
+structure WindowWorkDoneProgressCancelInput {
+    params: WorkDoneProgressCancelParams
 }
 
 structure WindowWorkDoneProgressCreateOpInput {
@@ -2884,6 +3092,30 @@ structure WorkspaceDiagnosticReport {
 structure WorkspaceDiagnosticReportPartialResult {
     @required
     items: ListOf_WorkspaceDocumentDiagnosticReport
+}
+
+structure WorkspaceDidChangeConfigurationInput {
+    params: DidChangeConfigurationParams
+}
+
+structure WorkspaceDidChangeWatchedFilesInput {
+    params: DidChangeWatchedFilesParams
+}
+
+structure WorkspaceDidChangeWorkspaceFoldersInput {
+    params: DidChangeWorkspaceFoldersParams
+}
+
+structure WorkspaceDidCreateFilesInput {
+    params: CreateFilesParams
+}
+
+structure WorkspaceDidDeleteFilesInput {
+    params: DeleteFilesParams
+}
+
+structure WorkspaceDidRenameFilesInput {
+    params: RenameFilesParams
 }
 
 structure WorkspaceEdit {
@@ -3109,7 +3341,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_016a54b45f394233a022ca110ba862c0
+    case1: InlineStruct_688554b7c89f4a0dad30c0d03c9e97a3
 }
 
 union CommandOrCodeAction {

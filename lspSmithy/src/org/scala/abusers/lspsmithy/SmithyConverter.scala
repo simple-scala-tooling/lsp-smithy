@@ -22,6 +22,7 @@ object SmithyConverter:
       _ <- convertStructures(meta.structures)
       _ <- convertEnums(meta.enumerations)
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
+      _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
     yield ()).run(Map.empty).value._1.values
 
     val assembler = Model.assembler()
@@ -118,7 +119,7 @@ object SmithyConverter:
       case BaseType(BaseTypes.NULL)     => ShapeId.from("smithy.api#Unit").pure
       case BaseType(_)                  => ShapeId.from("smithy.api#String").pure
 
-      case ReferenceType(name) => 
+      case ReferenceType(name) =>
         ShapeId.fromParts(namespace, name.value).pure
 
       case ArrayType(element) =>
@@ -256,7 +257,7 @@ object SmithyConverter:
     }.void
 
   private def sanitizeMethodName(m: RequestMethod): String =
-    m.value.split("/").toList.map(_.capitalize).mkString
+    m.value.split("/").toList.map(_.capitalize).mkString.replaceAll("\\$", "")
 
   private def structureFromParams(
       params: ParamsType,
@@ -336,4 +337,21 @@ object SmithyConverter:
           shapes ++ Map(opId -> opShape, outputShapeId -> outputShape)
         }
       yield ()
+    }.void
+
+  def convertNotifications(notifications: Vector[Notification]): ShapeState[Unit] =
+    notifications.traverse { notif =>
+      val opId    = ShapeId.fromParts(namespace, sanitizeMethodName(notif.method))
+      val builder = OperationShape.builder().id(opId)
+
+      // --- Input ---
+      val inputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
+      structureFromParams(notif.params, inputShapeId, namespace).flatMap { inputShapeId =>
+        builder.input(inputShapeId)
+
+        builder.output(ShapeId.from("smithy.api#Unit"))
+        val notifiShapeOp = builder.build()
+
+        State.modify(shapes => shapes + (opId -> notifiShapeOp))
+      }
     }.void
