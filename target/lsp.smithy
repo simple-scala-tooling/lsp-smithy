@@ -982,15 +982,15 @@ structure CodeAction {
     /// 
     /// Clients should follow the following guidelines regarding disabled code actions:
     /// 
-    /// - Disabled code actions are not shown in automatic [lightbulbs](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
-    /// code action menus.
+    ///   - Disabled code actions are not shown in automatic [lightbulbs](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
+    ///     code action menus.
     /// 
-    /// - Disabled actions are shown as faded out in the code action menu when the user requests a more specific type
-    /// of code action, such as refactorings.
+    ///   - Disabled actions are shown as faded out in the code action menu when the user requests a more specific type
+    ///     of code action, such as refactorings.
     /// 
-    /// - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
-    /// that auto applies a code action and only disabled code actions are returned, the client should show the user an
-    /// error message with `reason` in the editor.
+    ///   - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+    ///     that auto applies a code action and only disabled code actions are returned, the client should show the user an
+    ///     error message with `reason` in the editor.
     /// 
     /// @since 3.16.0
     disabled: CodeActionDisabled
@@ -1498,12 +1498,12 @@ structure CompletionItemApplyKinds {
     /// using the following rules:
     /// 
     /// - If a completion's `data` field is not provided (or `null`), the
-    /// entire `data` field from `completionList.itemDefaults.data` will be
-    /// used as-is.
+    ///   entire `data` field from `completionList.itemDefaults.data` will be
+    ///   used as-is.
     /// - If a completion's `data` field is provided, each field will
-    /// overwrite the field of the same name in
-    /// `completionList.itemDefaults.data` but no merging of nested fields
-    /// within that value will occur.
+    ///   overwrite the field of the same name in
+    ///   `completionList.itemDefaults.data` but no merging of nested fields
+    ///   within that value will occur.
     /// 
     /// @since 3.18.0
     data: ApplyKind
@@ -2008,7 +2008,7 @@ structure DidChangeNotebookDocumentParams {
     /// - start with the same initial content
     /// - apply the 'notebookDocument/didChange' notifications in the order you receive them.
     /// - apply the `NotebookChangeEvent`s in a single notification in the order
-    /// you receive them.
+    ///   you receive them.
     @required
     change: NotebookDocumentChangeEvent
 }
@@ -2030,7 +2030,7 @@ structure DidChangeTextDocumentParams {
     /// - start with the same initial content
     /// - apply the 'textDocument/didChange' notifications in the order you receive them.
     /// - apply the `TextDocumentContentChangeEvent`s in a single notification in the order
-    /// you receive them.
+    ///   you receive them.
     @required
     contentChanges: ListOf_TextDocumentContentChangeEvent
 }
@@ -3050,9 +3050,9 @@ structure InlineCompletionParams {
 /// @proposed
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_046f85554e3948d08431a2ba45a08a92 {}
+structure InlineStruct_a32dc9f64f1df03a8ce970b71df42503 {}
 
-structure InlineStruct_8b4088022d864a1cbd0c1aff4a5a4aa1 {}
+structure InlineStruct_bb20b45fd4d951383d93cb799b3970be {}
 
 /// Client capabilities specific to inline values.
 /// 
@@ -3294,14 +3294,14 @@ structure MarkedStringWithLanguage {
 /// Here is an example how such a string can be constructed using JavaScript / TypeScript:
 /// ```ts
 /// let markdown: MarkdownContent = {
-/// kind: MarkupKind.Markdown,
-/// value: [
-/// '# Header',
-/// 'Some text',
-/// '```typescript',
-/// 'someCode();',
-/// '```'
-/// ].join('\n')
+///  kind: MarkupKind.Markdown,
+///  value: [
+///    '# Header',
+///    'Some text',
+///    '```typescript',
+///    'someCode();',
+///    '```'
+///  ].join('\n')
 /// };
 /// ```
 /// 
@@ -3780,8 +3780,8 @@ structure PublishDiagnosticsParams {
 /// For example:
 /// ```ts
 /// {
-/// start: { line: 5, character: 23 }
-/// end : { line 6, character : 0 }
+///     start: { line: 5, character: 23 }
+///     end : { line 6, character : 0 }
 /// }
 /// ```
 structure Range {
@@ -4943,6 +4943,7 @@ structure TextDocumentFilterLanguage {
     language: String
     /// A Uri {@link Uri.scheme scheme}, like `file` or `untitled`.
     scheme: String
+    /// A glob pattern, like **​/*.{ts,js}. See TextDocumentFilter for examples.
     /// 
     /// @since 3.18.0 - support for relative patterns. Whether clients support
     /// relative patterns depends on the client capability
@@ -4958,6 +4959,7 @@ structure TextDocumentFilterPattern {
     language: String
     /// A Uri {@link Uri.scheme scheme}, like `file` or `untitled`.
     scheme: String
+    /// A glob pattern, like **​/*.{ts,js}. See TextDocumentFilter for examples.
     /// 
     /// @since 3.18.0 - support for relative patterns. Whether clients support
     /// relative patterns depends on the client capability
@@ -6058,7 +6060,7 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_046f85554e3948d08431a2ba45a08a92
+    case1: InlineStruct_a32dc9f64f1df03a8ce970b71df42503
 }
 
 union CommandOrCodeAction {

@@ -7,23 +7,31 @@ import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
 import software.amazon.smithy.model.traits.EnumValueTrait
+import software.amazon.smithy.model.traits.MixinTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
-import software.amazon.smithy.model.traits.MixinTrait
+
+import java.util.UUID
+import scala.util.Random
 
 object SmithyConverter:
 
   type ShapeState[A] = State[Map[ShapeId, Shape], A]
 
-  private val namespace: String = "lsp"
+  private val namespace: String   = "lsp"
+  private val deterministicRandom = new Random(0)
+  private def nextUUID()          = new UUID(deterministicRandom.nextLong(), deterministicRandom.nextLong())
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
-    val referencedAsMixin: Set[String] = meta.structures.flatMap(s =>
-      s.mixins.collect { //TODO add extendz?
-        case Type.ReferenceType(name) => name
-      }
-    ).map(_.value).toSet
+    val referencedAsMixin: Set[String] = meta.structures
+      .flatMap(s =>
+        s.mixins.collect { // TODO add extendz?
+          case Type.ReferenceType(name) => name
+        }
+      )
+      .map(_.value)
+      .toSet
     val shapes = (for
       _ <- convertStructures(meta.structures, referencedAsMixin)
       _ <- convertEnums(meta.enumerations)
@@ -117,10 +125,9 @@ object SmithyConverter:
 
   private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] =
     import Type.*
-    import java.util.UUID
 
     def uniqueShapeId(prefix: String): ShapeId =
-      ShapeId.fromParts(namespace, s"${prefix}_${UUID.randomUUID().toString.replace("-", "")}")
+      ShapeId.fromParts(namespace, s"${prefix}_${nextUUID().toString.replace("-", "")}")
 
     t match
       case BaseType(BaseTypes.string)   => ShapeId.from("smithy.api#String").pure
@@ -298,7 +305,7 @@ object SmithyConverter:
 
     }.void
 
-  def convertStructures(structures: Vector[Structure], referencedAsMixin:Set[String]): ShapeState[Unit] =
+  def convertStructures(structures: Vector[Structure], referencedAsMixin: Set[String]): ShapeState[Unit] =
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
 
@@ -327,15 +334,14 @@ object SmithyConverter:
           }
 
         // mixins: both `extends` and `mixins`
-        mixinIds <- struct.mixins //TODO add exteds?
+        mixinIds <- struct.mixins // TODO add exteds?
           .filterNot(_.isInstanceOf[Type.BaseType])
           .traverse(t => smithyType(t, namespace))
 
         result <- State.modify[Map[ShapeId, Shape]] { shapes =>
           val builder = StructureShape.builder().id(shapeId)
 
-          if referencedAsMixin.contains(struct.name.value) then
-            builder.addTrait(MixinTrait.builder().build())
+          if referencedAsMixin.contains(struct.name.value) then builder.addTrait(MixinTrait.builder().build())
 
           members.foreach(builder.addMember)
           mixinIds.flatMap(shapes.get).foreach(builder.addMixin)
