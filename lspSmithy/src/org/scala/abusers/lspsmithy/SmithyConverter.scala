@@ -32,8 +32,8 @@ object SmithyConverter:
       .map(_.value)
       .toSet
     val shapes = (for
-      _ <- convertStructures(meta.structures, referencedAsMixin)
-      _ <- convertEnums(meta.enumerations)
+      _ <- convertStructures(meta.structures.filterNot(_.proposed), referencedAsMixin)
+      _ <- convertEnums(meta.enumerations.filterNot(_.proposed))
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
       _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed).filterNot(_.name.value == "LSPAny"))
@@ -191,18 +191,24 @@ object SmithyConverter:
                 .build()
             }
           }
-          .map(_.foldLeft(UnionShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
+          .map(_.foldLeft(UnionShape.builder().id(id)) { case (acc, item) =>
+            // TODO: this shape gets filtered out as it is marked as proposed
+            if item.getTarget.toString == "lsp#SnippetTextEdit" then acc
+            else acc.addMember(item)
+          }.build())
           .flatMap { unionShape =>
             State(shapes => (shapes + (id -> unionShape), id))
           }
 
-      case StructureLiteralType(StructureLiteral(properties, _)) =>
+      case StructureLiteralType(StructureLiteral(properties, false)) =>
         val id = uniqueShapeId("InlineStruct")
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
             State(shapes => (shapes + (id -> structureShape), id))
           }
+
+      case StructureLiteralType(StructureLiteral(properties, true)) => sys.error("this should not happen")
 
       case AndType(_) =>
         // No Smithy equivalent — fallback to string

@@ -1087,25 +1087,6 @@ structure CodeActionDisabled {
     reason: String
 }
 
-/// Documentation for a class of code actions.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure CodeActionKindDocumentation {
-    /// The kind of the code action being documented.
-    /// 
-    /// If the kind is generic, such as `CodeActionKind.Refactor`, the documentation will be shown whenever any
-    /// refactorings are returned. If the kind if more specific, such as `CodeActionKind.RefactorExtract`, the
-    /// documentation will only be shown when extract refactoring code actions are returned.
-    @required
-    kind: CodeActionKind
-    /// Command that is ued to display the documentation to the user.
-    /// 
-    /// The title of this documentation code action is taken from {@linkcode Command.title}
-    @required
-    command: Command
-}
-
 /// Provider options for a {@link CodeActionRequest}.
 structure CodeActionOptions with [WorkDoneProgressOptions] {
     /// CodeActionKinds that this server may return.
@@ -2333,22 +2314,6 @@ structure DocumentRangeFormattingParams {
 /// Registration options for a {@link DocumentRangeFormattingRequest}.
 structure DocumentRangeFormattingRegistrationOptions {}
 
-/// The parameters of a {@link DocumentRangesFormattingRequest}.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure DocumentRangesFormattingParams {
-    /// The document to format.
-    @required
-    textDocument: TextDocumentIdentifier
-    /// The ranges to format
-    @required
-    ranges: ListOf_Range
-    /// The format options
-    @required
-    options: FormattingOptions
-}
-
 /// Represents programming constructs like variables, classes, interfaces etc.
 /// that appear in a document. Document symbols can be hierarchical and they
 /// have two ranges: one that encloses its definition and one that points to
@@ -2679,12 +2644,6 @@ structure FoldingRangeParams {
 
 structure FoldingRangeRegistrationOptions {}
 
-/// Client workspace capabilities specific to folding ranges
-/// 
-/// @since 3.18.0
-/// @proposed
-structure FoldingRangeWorkspaceClientCapabilities {}
-
 /// Value-object describing what options formatting should use.
 structure FormattingOptions {
     /// Size of a tab in spaces.
@@ -2979,76 +2938,6 @@ structure InlayHintWorkspaceClientCapabilities {
     /// change that requires such a calculation.
     refreshSupport: Boolean
 }
-
-/// Client capabilities specific to inline completions.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionClientCapabilities {
-    /// Whether implementation supports dynamic registration for inline completion providers.
-    dynamicRegistration: Boolean
-}
-
-/// Provides information about the context in which an inline completion was requested.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionContext {
-    /// Describes how the inline completion was triggered.
-    @required
-    triggerKind: InlineCompletionTriggerKind
-    /// Provides information about the currently selected item in the autocomplete widget if it is visible.
-    selectedCompletionInfo: SelectedCompletionInfo
-}
-
-/// An inline completion item represents a text snippet that is proposed inline to complete text that is being typed.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionItem {
-    /// The text to replace the range with. Must be set.
-    @required
-    insertText: StringUnion
-    /// A text that is used to decide if this inline completion should be shown. When `falsy` the {@link InlineCompletionItem.insertText} is used.
-    filterText: String
-    /// The range to replace. Must begin and end on the same line.
-    range: Range
-    /// An optional {@link Command} that is executed *after* inserting this completion.
-    command: Command
-}
-
-/// Represents a collection of {@link InlineCompletionItem inline completion items} to be presented in the editor.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionList {
-    /// The inline completion items
-    @required
-    items: ListOf_InlineCompletionItem
-}
-
-/// Inline completion options used during static registration.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionOptions with [WorkDoneProgressOptions] {}
-
-/// A parameter literal used in inline completion requests.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionParams {
-    /// Additional information about the context in which inline completions were
-    /// requested.
-    @required
-    context: InlineCompletionContext
-}
-
-/// Inline completion options used during static or dynamic registration.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure InlineCompletionRegistrationOptions {}
 
 structure InlineStruct_a32dc9f64f1df03a8ce970b71df42503 {}
 
@@ -3993,19 +3882,6 @@ structure SaveOptions {
     includeText: Boolean
 }
 
-/// Describes the currently selected completion item.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure SelectedCompletionInfo {
-    /// The range that will be replaced if this completion item is accepted.
-    @required
-    range: Range
-    /// The text the range will be replaced with if this completion is accepted.
-    @required
-    text: String
-}
-
 /// A selection range represents a part of a selection hierarchy. A selection range
 /// may have a parent selection range that contains it.
 structure SelectionRange {
@@ -4542,21 +4418,6 @@ structure SignatureInformation {
     activeParameter: UintegerOrNULL
 }
 
-/// An interactive text edit.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure SnippetTextEdit {
-    /// The range of the text document to be manipulated.
-    @required
-    range: Range
-    /// The snippet to be inserted.
-    @required
-    snippet: StringValue
-    /// The actual identifier of the snippet edit.
-    annotationId: ChangeAnnotationIdentifier
-}
-
 /// @since 3.18.0
 structure StaleRequestSupportOptions {
     /// The client will actively cancel the request.
@@ -4576,25 +4437,6 @@ structure StaticRegistrationOptions {
     /// The id used to register the request. The id can be used to deregister
     /// the request again. See also Registration#id.
     id: String
-}
-
-/// A string value used as a snippet is a template which allows to insert text
-/// and to control the editor cursor when insertion happens.
-/// 
-/// A snippet can define tab stops and placeholders with `$1`, `$2`
-/// and `${3:foo}`. `$0` defines the final tab stop, it defaults to
-/// the end of the snippet. Variables are defined with `$name` and
-/// `${name:default value}`.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure StringValue {
-    /// The kind of string value.
-    @required
-    kind: String
-    /// The snippet string.
-    @required
-    value: String
 }
 
 /// Represents information about programming constructs like variables, classes,
@@ -4774,64 +4616,6 @@ structure TextDocumentContentChangePartial {
 /// @since 3.18.0
 structure TextDocumentContentChangeWholeDocument {
     /// The new text of the whole document.
-    @required
-    text: String
-}
-
-/// Client capabilities for a text document content provider.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure TextDocumentContentClientCapabilities {
-    /// Text document content provider supports dynamic registration.
-    dynamicRegistration: Boolean
-}
-
-/// Text document content provider options.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure TextDocumentContentOptions {
-    /// The schemes for which the server provides content.
-    @required
-    schemes: ListOf_String
-}
-
-/// Parameters for the `workspace/textDocumentContent` request.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure TextDocumentContentParams {
-    /// The uri of the text document.
-    @required
-    uri: String
-}
-
-/// Parameters for the `workspace/textDocumentContent/refresh` request.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure TextDocumentContentRefreshParams {
-    /// The uri of the text document to refresh.
-    @required
-    uri: String
-}
-
-/// Text document content provider registration options.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure TextDocumentContentRegistrationOptions {}
-
-/// Result of the `workspace/textDocumentContent` request.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure TextDocumentContentResult {
-    /// The text content of the text document. Please note, that the content of
-    /// any subsequent open notifications for the text document might differ
-    /// from the returned content due to whitespace and line ending
-    /// normalizations done on the client
     @required
     text: String
 }
@@ -5764,15 +5548,6 @@ structure WorkspaceEditClientCapabilities {
     changeAnnotationSupport: ChangeAnnotationsSupportOptions
 }
 
-/// Additional data about a workspace edit.
-/// 
-/// @since 3.18.0
-/// @proposed
-structure WorkspaceEditMetadata {
-    /// Signal to the editor that this edit is a refactoring.
-    isRefactoring: Boolean
-}
-
 structure WorkspaceExecuteCommandOpInput {
     params: ExecuteCommandParams
 }
@@ -6378,7 +6153,6 @@ union TextDocumentSyncUnion {
 union TextEditUnion {
     case0: TextEdit
     case1: AnnotatedTextEdit
-    case2: SnippetTextEdit
 }
 
 union UintegerOrNULL {
@@ -6544,10 +6318,6 @@ list ListOf_InlayHint {
 
 list ListOf_InlayHintLabelPart {
     member: InlayHintLabelPart
-}
-
-list ListOf_InlineCompletionItem {
-    member: InlineCompletionItem
 }
 
 list ListOf_InlineValue {
@@ -6857,11 +6627,6 @@ enum FoldingRangeKind {
 intEnum InlayHintKind {
     TYPE = 1
     PARAMETER = 2
-}
-
-intEnum InlineCompletionTriggerKind {
-    INVOKED = 1
-    AUTOMATIC = 2
 }
 
 intEnum InsertTextFormat {
