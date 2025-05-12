@@ -23,13 +23,13 @@ object UnionNameGeneratorSpec extends SimpleIOSuite:
     expect(unionNameFor(input) == "DocumentDiagnosticReportUnion")
   }
 
-  pureTest("unionNameFor returns AnonymousUnion if no shared subsequence") {
+  pureTest("unionNameFor returns generated name if no shared subsequence") {
     val input = Vector(
       Type.ReferenceType(TypeName("Alpha")),
       Type.ReferenceType(TypeName("Beta")),
       Type.ReferenceType(TypeName("Gamma")),
     )
-    expect(unionNameFor(input) == "AnonymousUnion")
+    expect(unionNameFor(input) == "Union_e1121b0805e8b107f0f5b4f22d0cd0f1")
   }
 
   pureTest("unionNameFor skips empty extracted names") {
@@ -46,7 +46,7 @@ object UnionNameGeneratorSpec extends SimpleIOSuite:
       Type.MapType(Type.BaseType(BaseTypes.string), Type.BaseType(BaseTypes.integer)),
       Type.BaseType(BaseTypes.string),
     )
-    expect(unionNameFor(input) == "StringUnion")
+    expect(unionNameFor(input) == "MapOfStringToIntegerOrString")
   }
 
   pureTest("unionNameFor handles nested ArrayType correctly") {
@@ -63,4 +63,23 @@ object UnionNameGeneratorSpec extends SimpleIOSuite:
       Type.StringLiteralType("ok"),
     )
     expect(unionNameFor(input) == "LiteralUnion")
+  }
+
+  pureTest("unionNameFor returns RangeOrPrepareRename for distinct Pascal prefixes") {
+    val input = Vector(
+      Type.ReferenceType(TypeName("Range")),
+      Type.ReferenceType(TypeName("PrepareRenamePlaceholder")),
+      Type.ReferenceType(TypeName("PrepareRenameDefaultBehavior")),
+    )
+    val result = unionNameFor(input)
+    expect(result == "PrepareRenameOrRange")
+  }
+
+  pureTest("unionNameFor returns shared PascalCase suffix as union name") {
+    val input = Vector(
+      Type.ReferenceType(TypeName("FullDocumentDiagnosticReport")),
+      Type.ReferenceType(TypeName("UnchangedDocumentDiagnosticReport")),
+    )
+    val result = unionNameFor(input)
+    expect(result == "DocumentDiagnosticReportUnion")
   }

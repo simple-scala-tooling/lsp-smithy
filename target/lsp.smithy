@@ -2,6 +2,7 @@ $version: "2.0"
 
 namespace lsp
 
+use alloy#untagged
 use jsonrpclib#jsonNotification
 use jsonrpclib#jsonRequest
 
@@ -641,7 +642,7 @@ structure BaseSymbolInformation {
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    tags: ListOf_SymbolTag
+    tags: ListOfSymbolTag
     /// The name of the symbol containing this symbol. This information is for
     /// user interface purposes (e.g. to render a qualifier in the user interface
     /// if necessary). It can't be used to re-infer a hierarchy for the document
@@ -669,7 +670,7 @@ structure CallHierarchyIncomingCall {
     /// The ranges at which the calls appear. This is relative to the caller
     /// denoted by {@link CallHierarchyIncomingCall.from `this.from`}.
     @required
-    fromRanges: ListOf_Range
+    fromRanges: ListOfRange
 }
 
 structure CallHierarchyIncomingCallsOpInput {
@@ -702,7 +703,7 @@ structure CallHierarchyItem {
     @required
     kind: SymbolKind
     /// Tags for this item.
-    tags: ListOf_SymbolTag
+    tags: ListOfSymbolTag
     /// More detail for this item, e.g. the signature of a function.
     detail: String
     /// The resource identifier of this item.
@@ -738,7 +739,7 @@ structure CallHierarchyOutgoingCall {
     /// passed to {@link CallHierarchyItemProvider.provideCallHierarchyOutgoingCalls `provideCallHierarchyOutgoingCalls`}
     /// and not {@link CallHierarchyOutgoingCall.to `this.to`}.
     @required
-    fromRanges: ListOf_Range
+    fromRanges: ListOfRange
 }
 
 structure CallHierarchyOutgoingCallsOpInput {
@@ -836,7 +837,7 @@ structure ClientCodeActionKindOptions {
     /// handle values outside its set gracefully and falls back
     /// to a default value when unknown.
     @required
-    valueSet: ListOf_CodeActionKind
+    valueSet: ListOfCodeActionKind
 }
 
 /// @since 3.18.0
@@ -853,7 +854,7 @@ structure ClientCodeActionLiteralOptions {
 structure ClientCodeActionResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
-    properties: ListOf_String
+    properties: ListOfString
 }
 
 /// @since 3.18.0
@@ -861,14 +862,14 @@ structure ClientCodeActionResolveOptions {
 structure ClientCodeLensResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
-    properties: ListOf_String
+    properties: ListOfString
 }
 
 /// @since 3.18.0
 @since("3.18.0")
 structure ClientCompletionItemInsertTextModeOptions {
     @required
-    valueSet: ListOf_InsertTextMode
+    valueSet: ListOfInsertTextMode
 }
 
 /// @since 3.18.0
@@ -885,7 +886,7 @@ structure ClientCompletionItemOptions {
     commitCharactersSupport: Boolean
     /// Client supports the following content formats for the documentation
     /// property. The order describes the preferred format of the client.
-    documentationFormat: ListOf_MarkupKind
+    documentationFormat: ListOfMarkupKind
     /// Client supports the deprecated property on a completion item.
     deprecatedSupport: Boolean
     /// Client supports the preselect property on a completion item.
@@ -937,7 +938,7 @@ structure ClientCompletionItemOptionsKind {
     /// If this property is not present the client only supports
     /// the completion items kinds from `Text` to `Reference` as defined in
     /// the initial version of the protocol.
-    valueSet: ListOf_CompletionItemKind
+    valueSet: ListOfCompletionItemKind
 }
 
 /// @since 3.18.0
@@ -945,7 +946,7 @@ structure ClientCompletionItemOptionsKind {
 structure ClientCompletionItemResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
-    properties: ListOf_String
+    properties: ListOfString
 }
 
 /// @since 3.18.0
@@ -953,7 +954,7 @@ structure ClientCompletionItemResolveOptions {
 structure ClientDiagnosticsTagOptions {
     /// The tags supported by the client.
     @required
-    valueSet: ListOf_DiagnosticTag
+    valueSet: ListOfDiagnosticTag
 }
 
 /// @since 3.18.0
@@ -963,7 +964,7 @@ structure ClientFoldingRangeKindOptions {
     /// property exists the client also guarantees that it will
     /// handle values outside its set gracefully and falls back
     /// to a default value when unknown.
-    valueSet: ListOf_FoldingRangeKind
+    valueSet: ListOfFoldingRangeKind
 }
 
 /// @since 3.18.0
@@ -995,7 +996,7 @@ structure ClientInfo {
 structure ClientInlayHintResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
-    properties: ListOf_String
+    properties: ListOfString
 }
 
 structure ClientRegisterCapabilityOpInput {
@@ -1037,7 +1038,7 @@ structure ClientShowMessageActionItemOptions {
 structure ClientSignatureInformationOptions {
     /// Client supports the following content formats for the documentation
     /// property. The order describes the preferred format of the client.
-    documentationFormat: ListOf_MarkupKind
+    documentationFormat: ListOfMarkupKind
     /// Client capabilities specific to parameter information.
     parameterInformation: ClientSignatureParameterInformationOptions
     /// The client supports the `activeParameter` property on `SignatureInformation`
@@ -1070,7 +1071,7 @@ structure ClientSymbolKindOptions {
     /// If this property is not present the client only supports
     /// the symbol kinds from `File` to `Array` as defined in
     /// the initial version of the protocol.
-    valueSet: ListOf_SymbolKind
+    valueSet: ListOfSymbolKind
 }
 
 /// @since 3.18.0
@@ -1079,7 +1080,7 @@ structure ClientSymbolResolveOptions {
     /// The properties that a client can resolve lazily. Usually
     /// `location.range`
     @required
-    properties: ListOf_String
+    properties: ListOfString
 }
 
 /// @since 3.18.0
@@ -1087,7 +1088,7 @@ structure ClientSymbolResolveOptions {
 structure ClientSymbolTagOptions {
     /// The tags supported by the client.
     @required
-    valueSet: ListOf_SymbolTag
+    valueSet: ListOfSymbolTag
 }
 
 structure ClientUnregisterCapabilityOpInput {
@@ -1109,7 +1110,7 @@ structure CodeAction {
     /// Used to filter code actions.
     kind: CodeActionKind
     /// The diagnostics that this code action resolves.
-    diagnostics: ListOf_Diagnostic
+    diagnostics: ListOfDiagnostic
     /// Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
     /// by keybindings.
     /// 
@@ -1152,7 +1153,7 @@ structure CodeAction {
     /// 
     /// @since 3.18.0 - proposed
     @since("3.18.0 - proposed")
-    tags: ListOf_CodeActionTag
+    tags: ListOfCodeActionTag
 }
 
 /// The Client Capabilities of a {@link CodeActionRequest}.
@@ -1215,12 +1216,12 @@ structure CodeActionContext {
     /// that these accurately reflect the error state of the resource. The primary parameter
     /// to compute code actions is the provided range.
     @required
-    diagnostics: ListOf_Diagnostic
+    diagnostics: ListOfDiagnostic
     /// Requested kind of actions to return.
     /// 
     /// Actions not of this kind are filtered out by the client before being shown. So servers
     /// can omit computing them.
-    only: ListOf_CodeActionKind
+    only: ListOfCodeActionKind
     /// The reason why code actions were requested.
     /// 
     /// @since 3.17.0
@@ -1246,7 +1247,7 @@ structure CodeActionOptions with [WorkDoneProgressOptions] {
     /// 
     /// The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
     /// may list out every specific kind they provide.
-    codeActionKinds: ListOf_CodeActionKind
+    codeActionKinds: ListOfCodeActionKind
     /// The server provides support to resolve additional
     /// information for a code action.
     /// 
@@ -1284,7 +1285,7 @@ structure CodeActionResolveOpOutput {
 structure CodeActionTagOptions {
     /// The tags supported by the client.
     @required
-    valueSet: ListOf_CodeActionTag
+    valueSet: ListOfCodeActionTag
 }
 
 /// Structure to capture a description for an error code.
@@ -1400,7 +1401,7 @@ structure ColorPresentation {
     textEdit: TextEdit
     /// An optional array of additional {@link TextEdit text edits} that are applied when
     /// selecting this color presentation. Edits must not overlap with the main {@link ColorPresentation.textEdit edit} nor with themselves.
-    additionalTextEdits: ListOf_TextEdit
+    additionalTextEdits: ListOfTextEdit
 }
 
 /// Parameters for a {@link ColorPresentationRequest}.
@@ -1429,7 +1430,7 @@ structure Command {
     command: String
     /// Arguments that the command handler should be
     /// invoked with.
-    arguments: ListOf_Document
+    arguments: ListOfDocument
 }
 
 /// Completion client capabilities
@@ -1492,7 +1493,7 @@ structure CompletionItem {
     /// 
     /// @since 3.15.0
     @since("3.15.0")
-    tags: ListOf_CompletionItemTag
+    tags: ListOfCompletionItemTag
     /// A human-readable string with additional information
     /// about this item, like type or symbol information.
     detail: String
@@ -1562,7 +1563,7 @@ structure CompletionItem {
     /// 
     /// @since 3.16.0 additional type `InsertReplaceEdit`
     @since("3.16.0 additional type `InsertReplaceEdit`")
-    textEdit: EditUnion
+    textEdit: TextEditOrInsertReplaceEdit
     /// The edit text used if the completion item is part of a CompletionList and
     /// CompletionList defines an item default for the text edit range.
     /// 
@@ -1582,11 +1583,11 @@ structure CompletionItem {
     /// Additional text edits should be used to change text unrelated to the current cursor position
     /// (for example adding an import statement at the top of the file if the completion item will
     /// insert an unqualified type).
-    additionalTextEdits: ListOf_TextEdit
+    additionalTextEdits: ListOfTextEdit
     /// An optional set of characters that when pressed while this completion is active will accept it first and
     /// then type that character. *Note* that all commit characters should have `length=1` and that superfluous
     /// characters will be ignored.
-    commitCharacters: ListOf_String
+    commitCharacters: ListOfString
     /// An optional {@link Command command} that is executed *after* inserting this completion. *Note* that
     /// additional modifications to the current document should be described with the
     /// {@link CompletionItem.additionalTextEdits additionalTextEdits}-property.
@@ -1679,12 +1680,12 @@ structure CompletionItemDefaults {
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    commitCharacters: ListOf_String
+    commitCharacters: ListOfString
     /// A default edit range.
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    editRange: RangeUnion
+    editRange: RangeOrEditRangeWithInsertReplace
     /// A default insert text format.
     /// 
     /// @since 3.17.0
@@ -1728,7 +1729,7 @@ structure CompletionItemResolveOpOutput {
 structure CompletionItemTagOptions {
     /// The tags supported by the client.
     @required
-    valueSet: ListOf_CompletionItemTag
+    valueSet: ListOfCompletionItemTag
 }
 
 /// Represents a collection of {@link CompletionItem completion items} to be presented
@@ -1778,7 +1779,7 @@ structure CompletionList {
     applyKind: CompletionItemApplyKinds
     /// The completion items.
     @required
-    items: ListOf_CompletionItem
+    items: ListOfCompletionItem
 }
 
 /// The client supports the following `CompletionList` specific
@@ -1796,7 +1797,7 @@ structure CompletionListCapabilities {
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    itemDefaults: ListOf_String
+    itemDefaults: ListOfString
     /// Specifies whether the client supports `CompletionList.applyKind` to
     /// indicate how supported values from `completionList.itemDefaults`
     /// and `completion` will be combined.
@@ -1822,7 +1823,7 @@ structure CompletionOptions with [WorkDoneProgressOptions] {
     /// 
     /// If code complete should automatically be trigger on characters not being valid inside
     /// an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
-    triggerCharacters: ListOf_String
+    triggerCharacters: ListOfString
     /// The list of all possible characters that commit a completion. This field can be used
     /// if clients don't support individual commit characters per completion item. See
     /// `ClientCapabilities.textDocument.completion.completionItem.commitCharactersSupport`
@@ -1832,7 +1833,7 @@ structure CompletionOptions with [WorkDoneProgressOptions] {
     /// 
     /// @since 3.2.0
     @since("3.2.0")
-    allCommitCharacters: ListOf_String
+    allCommitCharacters: ListOfString
     /// The server provides support to resolve additional
     /// information for a completion item.
     resolveProvider: Boolean
@@ -1864,7 +1865,7 @@ structure ConfigurationItem {
 /// The parameters of a configuration request.
 structure ConfigurationParams {
     @required
-    items: ListOf_ConfigurationItem
+    items: ListOfConfigurationItem
 }
 
 /// Create file operation.
@@ -1895,7 +1896,7 @@ structure CreateFileOptions {
 structure CreateFilesParams {
     /// An array of all files/folders created in this operation.
     @required
-    files: ListOf_FileCreate
+    files: ListOfFileCreate
 }
 
 /// @since 3.14.0
@@ -2007,7 +2008,7 @@ structure DeleteFileOptions {
 structure DeleteFilesParams {
     /// An array of all files/folders deleted in this operation.
     @required
-    files: ListOf_FileDelete
+    files: ListOfFileDelete
 }
 
 /// Represents a diagnostic, such as a compiler error or warning. Diagnostic objects
@@ -2039,10 +2040,10 @@ structure Diagnostic {
     /// 
     /// @since 3.15.0
     @since("3.15.0")
-    tags: ListOf_DiagnosticTag
+    tags: ListOfDiagnosticTag
     /// An array of related diagnostic information, e.g. when symbol-names within
     /// a scope collide all definitions can be marked via this property.
-    relatedInformation: ListOf_DiagnosticRelatedInformation
+    relatedInformation: ListOfDiagnosticRelatedInformation
     /// A data entry field that is preserved between a `textDocument/publishDiagnostics`
     /// notification and `textDocument/codeAction` request.
     /// 
@@ -2162,7 +2163,7 @@ structure DidChangeConfigurationParams {
 }
 
 structure DidChangeConfigurationRegistrationOptions {
-    section: StringUnion
+    section: StringOrListOfString
 }
 
 /// The params sent in a change notebook document notification.
@@ -2212,7 +2213,7 @@ structure DidChangeTextDocumentParams {
     /// - apply the `TextDocumentContentChangeEvent`s in a single notification in the order
     ///   you receive them.
     @required
-    contentChanges: ListOf_TextDocumentContentChangeEvent
+    contentChanges: ListOfTextDocumentContentChangeEvent
 }
 
 structure DidChangeWatchedFilesClientCapabilities {
@@ -2232,14 +2233,14 @@ structure DidChangeWatchedFilesClientCapabilities {
 structure DidChangeWatchedFilesParams {
     /// The actual file events.
     @required
-    changes: ListOf_FileEvent
+    changes: ListOfFileEvent
 }
 
 /// Describe options to be used when registered for text document change events.
 structure DidChangeWatchedFilesRegistrationOptions {
     /// The watchers to register.
     @required
-    watchers: ListOf_FileSystemWatcher
+    watchers: ListOfFileSystemWatcher
 }
 
 /// The parameters of a `workspace/didChangeWorkspaceFolders` notification.
@@ -2260,7 +2261,7 @@ structure DidCloseNotebookDocumentParams {
     /// The text documents that represent the content
     /// of a notebook cell that got closed.
     @required
-    cellTextDocuments: ListOf_TextDocumentIdentifier
+    cellTextDocuments: ListOfTextDocumentIdentifier
 }
 
 /// The parameters sent in a close text document notification
@@ -2281,7 +2282,7 @@ structure DidOpenNotebookDocumentParams {
     /// The text documents that represent the content
     /// of a notebook cell.
     @required
-    cellTextDocuments: ListOf_TextDocumentItem
+    cellTextDocuments: ListOfTextDocumentItem
 }
 
 /// The parameters sent in an open text document notification
@@ -2349,7 +2350,7 @@ structure DocumentDiagnosticParams {
 @since("3.17.0")
 structure DocumentDiagnosticReportPartialResult {
     @required
-    relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
+    relatedDocuments: MapOfString2DocumentDiagnosticReportUnion
 }
 
 /// Client capabilities of a {@link DocumentFormattingRequest}.
@@ -2469,7 +2470,7 @@ structure DocumentOnTypeFormattingOptions {
     @required
     firstTriggerCharacter: String
     /// More trigger characters.
-    moreTriggerCharacter: ListOf_String
+    moreTriggerCharacter: ListOfString
 }
 
 /// The parameters of a {@link DocumentOnTypeFormattingRequest}.
@@ -2539,7 +2540,7 @@ structure DocumentSymbol {
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    tags: ListOf_SymbolTag
+    tags: ListOfSymbolTag
     /// Indicates if this symbol is deprecated.
     /// 
     /// @deprecated Use tags instead
@@ -2554,7 +2555,7 @@ structure DocumentSymbol {
     @required
     selectionRange: Range
     /// Children of this symbol, e.g. properties of a class.
-    children: ListOf_DocumentSymbol
+    children: ListOfDocumentSymbol
 }
 
 /// Client Capabilities for a {@link DocumentSymbolRequest}.
@@ -2622,7 +2623,7 @@ structure ExecuteCommandClientCapabilities {
 structure ExecuteCommandOptions with [WorkDoneProgressOptions] {
     /// The commands to be executed on the server
     @required
-    commands: ListOf_String
+    commands: ListOfString
 }
 
 /// The parameters of a {@link ExecuteCommandRequest}.
@@ -2631,7 +2632,7 @@ structure ExecuteCommandParams {
     @required
     command: String
     /// Arguments that the command should be invoked with.
-    arguments: ListOf_Document
+    arguments: ListOfDocument
 }
 
 /// Registration options for a {@link ExecuteCommandRequest}.
@@ -2775,7 +2776,7 @@ structure FileOperationPatternOptions {
 structure FileOperationRegistrationOptions {
     /// The actual filters.
     @required
-    filters: ListOf_FileOperationFilter
+    filters: ListOfFileOperationFilter
 }
 
 /// Represents information on a file/folder rename.
@@ -2908,7 +2909,7 @@ structure FullDocumentDiagnosticReport {
     resultId: String
     /// The actual items.
     @required
-    items: ListOf_Diagnostic
+    items: ListOfDiagnostic
 }
 
 /// General client capabilities.
@@ -2953,14 +2954,14 @@ structure GeneralClientCapabilities {
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    positionEncodings: ListOf_PositionEncodingKind
+    positionEncodings: ListOfPositionEncodingKind
 }
 
 /// The result of a hover request.
 structure Hover {
     /// The hover's content
     @required
-    contents: AnonymousUnion
+    contents: MarkedStringOrMarkupContent
     /// An optional range inside the text document that is used to
     /// visualize the hover, e.g. by changing the background color.
     range: Range
@@ -2971,7 +2972,7 @@ structure HoverClientCapabilities {
     dynamicRegistration: Boolean
     /// Client supports the following content formats for the content
     /// property. The order describes the preferred format of the client.
-    contentFormat: ListOf_MarkupKind
+    contentFormat: ListOfMarkupKind
 }
 
 /// Hover options.
@@ -3067,7 +3068,7 @@ structure InlayHint {
     /// *Note* that edits are expected to change the document so that the inlay
     /// hint (or its nearest variant) is now part of the document and the inlay
     /// hint itself is now obsolete.
-    textEdits: ListOf_TextEdit
+    textEdits: ListOfTextEdit
     /// The tooltip text when you hover over this item.
     tooltip: StringOrMarkupContent
     /// Render padding before the hint.
@@ -3339,7 +3340,7 @@ structure LinkedEditingRanges {
     /// A list of ranges that can be edited together. The ranges must have
     /// identical length and contain identical text content. The ranges cannot overlap.
     @required
-    ranges: ListOf_Range
+    ranges: ListOfRange
     /// An optional word pattern (regular expression) that describes valid contents for
     /// the given ranges. If no pattern is provided, the client configuration's word
     /// pattern will be used.
@@ -3421,7 +3422,7 @@ structure MarkdownClientCapabilities {
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    allowedTags: ListOf_String
+    allowedTags: ListOfString
 }
 
 /// @since 3.18.0
@@ -3545,7 +3546,7 @@ structure NotebookCellArrayChange {
     @required
     deleteCount: Integer
     /// The new cells, if any
-    cells: ListOf_NotebookCell
+    cells: ListOfNotebookCell
 }
 
 /// @since 3.18.0
@@ -3596,7 +3597,7 @@ structure NotebookDocument {
     metadata: LSPObject
     /// The cells of a notebook.
     @required
-    cells: ListOf_NotebookCell
+    cells: ListOfNotebookCell
 }
 
 /// Cell changes to a notebook document.
@@ -3609,9 +3610,9 @@ structure NotebookDocumentCellChanges {
     structure: NotebookDocumentCellChangeStructure
     /// Changes to notebook cells properties like its
     /// kind, execution summary or metadata.
-    data: ListOf_NotebookCell
+    data: ListOfNotebookCell
     /// Changes to the text content of notebook cells.
-    textContent: ListOf_NotebookDocumentCellContentChanges
+    textContent: ListOfNotebookDocumentCellContentChanges
 }
 
 /// Structural changes to cells in a notebook document.
@@ -3623,9 +3624,9 @@ structure NotebookDocumentCellChangeStructure {
     @required
     array: NotebookCellArrayChange
     /// Additional opened cell text documents.
-    didOpen: ListOf_TextDocumentItem
+    didOpen: ListOfTextDocumentItem
     /// Additional closed cell text documents.
-    didClose: ListOf_TextDocumentIdentifier
+    didClose: ListOfTextDocumentIdentifier
 }
 
 /// Content changes to a cell in a notebook document.
@@ -3636,7 +3637,7 @@ structure NotebookDocumentCellContentChanges {
     @required
     document: VersionedTextDocumentIdentifier
     @required
-    changes: ListOf_TextDocumentContentChangeEvent
+    changes: ListOfTextDocumentContentChangeEvent
 }
 
 /// A change event for a notebook document.
@@ -3732,7 +3733,7 @@ structure NotebookDocumentFilterWithCells {
     notebook: StringOrNotebookDocumentFilter
     /// The cells of the matching notebook to be synced.
     @required
-    cells: ListOf_NotebookCellLanguage
+    cells: ListOfNotebookCellLanguage
 }
 
 /// @since 3.18.0
@@ -3744,7 +3745,7 @@ structure NotebookDocumentFilterWithNotebook {
     @required
     notebook: StringOrNotebookDocumentFilter
     /// The cells of the matching notebook to be synced.
-    cells: ListOf_NotebookCellLanguage
+    cells: ListOfNotebookCellLanguage
 }
 
 /// A literal to identify a notebook document in the client.
@@ -3788,7 +3789,7 @@ structure NotebookDocumentSyncClientCapabilities {
 structure NotebookDocumentSyncOptions {
     /// The notebooks to be synced
     @required
-    notebookSelector: ListOf_NotebookDocumentFilterWithUnion
+    notebookSelector: ListOfNotebookDocumentFilterWithUnion
     /// Whether save notification should be forwarded to
     /// the server. Will only be honored if mode === `notebook`.
     save: Boolean
@@ -3947,7 +3948,7 @@ structure PublishDiagnosticsParams {
     version: Integer
     /// An array of diagnostic information items.
     @required
-    diagnostics: ListOf_Diagnostic
+    diagnostics: ListOfDiagnostic
 }
 
 /// A range in a text document expressed as (zero-based) start and end positions.
@@ -4011,7 +4012,7 @@ structure Registration {
 
 structure RegistrationParams {
     @required
-    registrations: ListOf_Registration
+    registrations: ListOfRegistration
 }
 
 /// Client capabilities specific to regular expressions.
@@ -4039,7 +4040,7 @@ structure RelatedFullDocumentDiagnosticReport {
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
+    relatedDocuments: MapOfString2DocumentDiagnosticReportUnion
 }
 
 /// An unchanged diagnostic report with a set of related documents.
@@ -4055,7 +4056,7 @@ structure RelatedUnchangedDocumentDiagnosticReport {
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
+    relatedDocuments: MapOfString2DocumentDiagnosticReportUnion
 }
 
 /// A relative pattern is a helper to construct glob patterns that are matched
@@ -4134,7 +4135,7 @@ structure RenameFilesParams {
     /// An array of all files/folders renamed in this operation. When a folder is renamed, only
     /// the folder will be included, and not its children.
     @required
-    files: ListOf_FileRename
+    files: ListOfFileRename
 }
 
 /// Provider options for a {@link RenameRequest}.
@@ -4208,7 +4209,7 @@ structure SelectionRangeParams {
     textDocument: TextDocumentIdentifier
     /// The positions inside the text document.
     @required
-    positions: ListOf_Position
+    positions: ListOfPosition
 }
 
 structure SelectionRangeRegistrationOptions {}
@@ -4223,7 +4224,7 @@ structure SemanticTokens {
     resultId: String
     /// The actual tokens.
     @required
-    data: ListOf_Integer
+    data: ListOfInteger
 }
 
 /// @since 3.16.0
@@ -4245,13 +4246,13 @@ structure SemanticTokensClientCapabilities {
     requests: ClientSemanticTokensRequestOptions
     /// The token types that the client supports.
     @required
-    tokenTypes: ListOf_String
+    tokenTypes: ListOfString
     /// The token modifiers that the client supports.
     @required
-    tokenModifiers: ListOf_String
+    tokenModifiers: ListOfString
     /// The token formats the clients supports.
     @required
-    formats: ListOf_TokenFormat
+    formats: ListOfTokenFormat
     /// Whether the client supports tokens that can overlap each other.
     overlappingTokenSupport: Boolean
     /// Whether the client supports tokens that can span multiple lines.
@@ -4284,7 +4285,7 @@ structure SemanticTokensDelta {
     resultId: String
     /// The semantic token edits to transform a previous result into a new result.
     @required
-    edits: ListOf_SemanticTokensEdit
+    edits: ListOfSemanticTokensEdit
 }
 
 /// @since 3.16.0
@@ -4303,7 +4304,7 @@ structure SemanticTokensDeltaParams {
 @since("3.16.0")
 structure SemanticTokensDeltaPartialResult {
     @required
-    edits: ListOf_SemanticTokensEdit
+    edits: ListOfSemanticTokensEdit
 }
 
 /// @since 3.16.0
@@ -4316,7 +4317,7 @@ structure SemanticTokensEdit {
     @required
     deleteCount: Integer
     /// The elements to insert.
-    data: ListOf_Integer
+    data: ListOfInteger
 }
 
 /// Semantic tokens options to support deltas for full documents
@@ -4333,10 +4334,10 @@ structure SemanticTokensFullDelta {
 structure SemanticTokensLegend {
     /// The token types a server uses.
     @required
-    tokenTypes: ListOf_String
+    tokenTypes: ListOfString
     /// The token modifiers a server uses.
     @required
-    tokenModifiers: ListOf_String
+    tokenModifiers: ListOfString
 }
 
 /// @since 3.16.0
@@ -4364,7 +4365,7 @@ structure SemanticTokensParams {
 @since("3.16.0")
 structure SemanticTokensPartialResult {
     @required
-    data: ListOf_Integer
+    data: ListOfInteger
 }
 
 /// @since 3.16.0
@@ -4425,13 +4426,13 @@ structure ServerCapabilities {
     /// The server provides signature help support.
     signatureHelpProvider: SignatureHelpOptions
     /// The server provides Goto Declaration support.
-    declarationProvider: AnonymousUnion
+    declarationProvider: BooleanOrDeclarationOptions
     /// The server provides goto definition support.
     definitionProvider: BooleanOrDefinitionOptions
     /// The server provides Goto Type Definition support.
-    typeDefinitionProvider: AnonymousUnion
+    typeDefinitionProvider: BooleanOrTypeDefinitionOptions
     /// The server provides Goto Implementation support.
-    implementationProvider: AnonymousUnion
+    implementationProvider: BooleanOrImplementationOptions
     /// The server provides find references support.
     referencesProvider: BooleanOrReferenceOptions
     /// The server provides document highlight support.
@@ -4447,7 +4448,7 @@ structure ServerCapabilities {
     /// The server provides document link support.
     documentLinkProvider: DocumentLinkOptions
     /// The server provides color provider support.
-    colorProvider: AnonymousUnion
+    colorProvider: BooleanOrDocumentColorOptions
     /// The server provides workspace symbol support.
     workspaceSymbolProvider: BooleanOrWorkspaceSymbolOptions
     /// The server provides document formatting.
@@ -4461,21 +4462,21 @@ structure ServerCapabilities {
     /// `prepareSupport` in its initial `initialize` request.
     renameProvider: BooleanOrRenameOptions
     /// The server provides folding provider support.
-    foldingRangeProvider: AnonymousUnion
+    foldingRangeProvider: BooleanOrFoldingRangeOptions
     /// The server provides selection range support.
-    selectionRangeProvider: AnonymousUnion
+    selectionRangeProvider: BooleanOrSelectionRangeOptions
     /// The server provides execute command support.
     executeCommandProvider: ExecuteCommandOptions
     /// The server provides call hierarchy support.
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    callHierarchyProvider: AnonymousUnion
+    callHierarchyProvider: BooleanOrCallHierarchyOptions
     /// The server provides linked editing range support.
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    linkedEditingRangeProvider: AnonymousUnion
+    linkedEditingRangeProvider: BooleanOrLinkedEditingRangeOptions
     /// The server provides semantic tokens support.
     /// 
     /// @since 3.16.0
@@ -4485,22 +4486,22 @@ structure ServerCapabilities {
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    monikerProvider: AnonymousUnion
+    monikerProvider: BooleanOrMonikerOptions
     /// The server provides type hierarchy support.
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    typeHierarchyProvider: AnonymousUnion
+    typeHierarchyProvider: BooleanOrTypeHierarchyOptions
     /// The server provides inline values.
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    inlineValueProvider: AnonymousUnion
+    inlineValueProvider: BooleanOrInlineValueOptions
     /// The server provides inlay hints.
     /// 
     /// @since 3.17.0
     @since("3.17.0")
-    inlayHintProvider: AnonymousUnion
+    inlayHintProvider: BooleanOrInlayHintOptions
     /// The server has support for pull model diagnostics.
     /// 
     /// @since 3.17.0
@@ -4615,7 +4616,7 @@ structure ShowMessageRequestParams {
     @required
     message: String
     /// The message action items to present.
-    actions: ListOf_MessageActionItem
+    actions: ListOfMessageActionItem
 }
 
 structure ShutdownOpInput {}
@@ -4628,7 +4629,7 @@ structure ShutdownOpOutput {}
 structure SignatureHelp {
     /// One or more signatures.
     @required
-    signatures: ListOf_SignatureInformation
+    signatures: ListOfSignatureInformation
     /// The active signature. If omitted or the value lies outside the
     /// range of `signatures` the value defaults to zero or is ignored if
     /// the `SignatureHelp` has no signatures.
@@ -4703,7 +4704,7 @@ structure SignatureHelpContext {
 /// Server Capabilities for a {@link SignatureHelpRequest}.
 structure SignatureHelpOptions with [WorkDoneProgressOptions] {
     /// List of characters that trigger signature help automatically.
-    triggerCharacters: ListOf_String
+    triggerCharacters: ListOfString
     /// List of characters that re-trigger signature help.
     /// 
     /// These trigger characters are only active when signature help is already showing. All trigger characters
@@ -4711,7 +4712,7 @@ structure SignatureHelpOptions with [WorkDoneProgressOptions] {
     /// 
     /// @since 3.15.0
     @since("3.15.0")
-    retriggerCharacters: ListOf_String
+    retriggerCharacters: ListOfString
 }
 
 /// Parameters for a {@link SignatureHelpRequest}.
@@ -4739,7 +4740,7 @@ structure SignatureInformation {
     /// in the UI but can be omitted.
     documentation: StringOrMarkupContent
     /// The parameters of this signature.
-    parameters: ListOf_ParameterInformation
+    parameters: ListOfParameterInformation
     /// The index of the active parameter.
     /// 
     /// If `null`, no parameter of the signature is active (for example a named
@@ -4765,7 +4766,7 @@ structure StaleRequestSupportOptions {
     /// will retry the request if it receives a
     /// response with error code `ContentModified`
     @required
-    retryOnContentModified: ListOf_String
+    retryOnContentModified: ListOfString
 }
 
 /// Static registration options to be returned in the initialize
@@ -4941,7 +4942,7 @@ structure TextDocumentColorPresentationOpInput {
 }
 
 structure TextDocumentColorPresentationOpOutput {
-    result: ListOf_ColorPresentation
+    result: ListOfColorPresentation
 }
 
 structure TextDocumentCompletionOpInput {
@@ -4949,7 +4950,7 @@ structure TextDocumentCompletionOpInput {
 }
 
 structure TextDocumentCompletionOpOutput {
-    result: AnonymousUnion
+    result: ListCompletionOrNULL
 }
 
 /// @since 3.18.0
@@ -4980,7 +4981,7 @@ structure TextDocumentDeclarationOpInput {
 }
 
 structure TextDocumentDeclarationOpOutput {
-    result: AnonymousUnion
+    result: DeclarationOrNULL
 }
 
 structure TextDocumentDefinitionOpInput {
@@ -4988,7 +4989,7 @@ structure TextDocumentDefinitionOpInput {
 }
 
 structure TextDocumentDefinitionOpOutput {
-    result: AnonymousUnion
+    result: DefinitionOrNULL
 }
 
 structure TextDocumentDiagnosticOpInput {
@@ -5020,7 +5021,7 @@ structure TextDocumentDocumentColorOpInput {
 }
 
 structure TextDocumentDocumentColorOpOutput {
-    result: ListOf_ColorInformation
+    result: ListOfColorInformation
 }
 
 structure TextDocumentDocumentHighlightOpInput {
@@ -5044,7 +5045,7 @@ structure TextDocumentDocumentSymbolOpInput {
 }
 
 structure TextDocumentDocumentSymbolOpOutput {
-    result: AnonymousUnion
+    result: ListOfSymbolOrNULL
 }
 
 /// Describes textual changes on a text document. A TextDocumentEdit describes all changes
@@ -5064,7 +5065,7 @@ structure TextDocumentEdit {
     /// client capability.
     @required
     @since("3.18.0 - support for SnippetTextEdit. This is guarded using a\nclient capability.")
-    edits: ListOf_TextEditUnion
+    edits: ListOfTextEditUnion
 }
 
 structure TextDocumentFilterClientCapabilities {
@@ -5168,7 +5169,7 @@ structure TextDocumentImplementationOpInput {
 }
 
 structure TextDocumentImplementationOpOutput {
-    result: AnonymousUnion
+    result: DefinitionOrNULL
 }
 
 structure TextDocumentInlayHintOpInput {
@@ -5316,7 +5317,7 @@ structure TextDocumentSemanticTokensFullDeltaOpInput {
 }
 
 structure TextDocumentSemanticTokensFullDeltaOpOutput {
-    result: AnonymousUnion
+    result: NULLOrSemanticTokens
 }
 
 structure TextDocumentSemanticTokensFullOpInput {
@@ -5379,7 +5380,7 @@ structure TextDocumentTypeDefinitionOpInput {
 }
 
 structure TextDocumentTypeDefinitionOpOutput {
-    result: AnonymousUnion
+    result: DefinitionOrNULL
 }
 
 structure TextDocumentWillSaveInput {
@@ -5443,7 +5444,7 @@ structure TypeHierarchyItem {
     @required
     kind: SymbolKind
     /// Tags for this item.
-    tags: ListOf_SymbolTag
+    tags: ListOfSymbolTag
     /// More detail for this item, e.g. the signature of a function.
     detail: String
     /// The resource identifier of this item.
@@ -5548,7 +5549,7 @@ structure Unregistration {
 
 structure UnregistrationParams {
     @required
-    unregisterations: ListOf_Unregistration
+    unregisterations: ListOfUnregistration
 }
 
 /// A versioned notebook document identifier.
@@ -5800,7 +5801,7 @@ structure WorkspaceConfigurationOpInput {
 }
 
 structure WorkspaceConfigurationOpOutput {
-    result: ListOf_Document
+    result: ListOfDocument
 }
 
 structure WorkspaceDiagnosticOpInput {
@@ -5821,7 +5822,7 @@ structure WorkspaceDiagnosticParams {
     /// The currently known diagnostic reports with their
     /// previous result ids.
     @required
-    previousResultIds: ListOf_PreviousResultId
+    previousResultIds: ListOfPreviousResultId
 }
 
 structure WorkspaceDiagnosticRefreshOpInput {}
@@ -5834,7 +5835,7 @@ structure WorkspaceDiagnosticRefreshOpOutput {}
 @since("3.17.0")
 structure WorkspaceDiagnosticReport {
     @required
-    items: ListOf_WorkspaceDocumentDiagnosticReport
+    items: ListOfWorkspaceDocumentDiagnosticReport
 }
 
 /// A partial result for a workspace diagnostic report.
@@ -5843,7 +5844,7 @@ structure WorkspaceDiagnosticReport {
 @since("3.17.0")
 structure WorkspaceDiagnosticReportPartialResult {
     @required
-    items: ListOf_WorkspaceDocumentDiagnosticReport
+    items: ListOfWorkspaceDocumentDiagnosticReport
 }
 
 structure WorkspaceDidChangeConfigurationInput {
@@ -5884,7 +5885,7 @@ structure WorkspaceDidRenameFilesInput {
 /// the client capability: `workspace.workspaceEdit.failureHandling`
 structure WorkspaceEdit {
     /// Holds changes to existing resources.
-    changes: MapOf_String_to_ListOf_TextEdit
+    changes: MapOfString2ListOfTextEdit
     /// Depending on the client capability `workspace.workspaceEdit.resourceOperations` document changes
     /// are either an array of `TextDocumentEdit`s to express changes to n different text documents
     /// where each text document edit addresses a specific version of a text document. Or it can contain
@@ -5895,7 +5896,7 @@ structure WorkspaceEdit {
     /// 
     /// If a client neither supports `documentChanges` nor `workspace.workspaceEdit.resourceOperations` then
     /// only plain `TextEdit`s using the `changes` property are supported.
-    documentChanges: ListOf_AnonymousUnion
+    documentChanges: ListOfFileOrTextDocumentEdit
     /// A map of change annotations that can be referenced in `AnnotatedTextEdit`s or create, rename and
     /// delete file / folder operations.
     /// 
@@ -5903,7 +5904,7 @@ structure WorkspaceEdit {
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    changeAnnotations: MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation
+    changeAnnotations: MapOfChangeAnnotationIdentifier2ChangeAnnotation
 }
 
 structure WorkspaceEditClientCapabilities {
@@ -5914,7 +5915,7 @@ structure WorkspaceEditClientCapabilities {
     /// 
     /// @since 3.13.0
     @since("3.13.0")
-    resourceOperations: ListOf_ResourceOperationKind
+    resourceOperations: ListOfResourceOperationKind
     /// The failure handling strategy of a client if applying the workspace edit
     /// fails.
     /// 
@@ -5943,7 +5944,7 @@ structure WorkspaceExecuteCommandOpInput {
 }
 
 structure WorkspaceExecuteCommandOpOutput {
-    result: LUnion
+    result: LSPAnyOrNULL
 }
 
 /// A workspace folder inside a client.
@@ -5961,10 +5962,10 @@ structure WorkspaceFolder {
 structure WorkspaceFoldersChangeEvent {
     /// The array of added workspace folders
     @required
-    added: ListOf_WorkspaceFolder
+    added: ListOfWorkspaceFolder
     /// The array of the removed workspace folders
     @required
-    removed: ListOf_WorkspaceFolder
+    removed: ListOfWorkspaceFolder
 }
 
 structure WorkspaceFoldersInitializeParams {
@@ -6048,7 +6049,7 @@ structure WorkspaceSymbol {
     /// 
     /// See SymbolInformation#location for more details.
     @required
-    location: LocationUnion
+    location: LocationOrLocationUriOnly
     /// A data entry field that is preserved on a workspace symbol between a
     /// workspace symbol request and a workspace symbol resolve request.
     data: Document
@@ -6080,7 +6081,7 @@ structure WorkspaceSymbolOpInput {
 }
 
 structure WorkspaceSymbolOpOutput {
-    result: AnonymousUnion
+    result: ListOfSymbolOrNULL
 }
 
 /// Server capabilities for a {@link WorkspaceSymbolRequest}.
@@ -6162,419 +6163,653 @@ structure WorkspaceWorkspaceFoldersOpOutput {
     result: ListOfWorkspaceFolderOrNULL
 }
 
-union AnonymousUnion {
-    case0: Range
-    case1: PrepareRenamePlaceholder
-    case2: PrepareRenameDefaultBehavior
+@untagged()
+union BooleanOrCallHierarchyOptions {
+    case0: Boolean
+    case1: CallHierarchyOptions
+    case2: CallHierarchyRegistrationOptions
 }
 
+@untagged()
 union BooleanOrClientSemanticTokensRequestFullDelta {
     case0: Boolean
     case1: ClientSemanticTokensRequestFullDelta
 }
 
+@untagged()
 union BooleanOrCodeActionOptions {
     case0: Boolean
     case1: CodeActionOptions
 }
 
+@untagged()
+union BooleanOrDeclarationOptions {
+    case0: Boolean
+    case1: DeclarationOptions
+    case2: DeclarationRegistrationOptions
+}
+
+@untagged()
 union BooleanOrDefinitionOptions {
     case0: Boolean
     case1: DefinitionOptions
 }
 
+@untagged()
+union BooleanOrDocumentColorOptions {
+    case0: Boolean
+    case1: DocumentColorOptions
+    case2: DocumentColorRegistrationOptions
+}
+
+@untagged()
 union BooleanOrDocumentFormattingOptions {
     case0: Boolean
     case1: DocumentFormattingOptions
 }
 
+@untagged()
 union BooleanOrDocumentHighlightOptions {
     case0: Boolean
     case1: DocumentHighlightOptions
 }
 
+@untagged()
 union BooleanOrDocumentRangeFormattingOptions {
     case0: Boolean
     case1: DocumentRangeFormattingOptions
 }
 
+@untagged()
 union BooleanOrDocumentSymbolOptions {
     case0: Boolean
     case1: DocumentSymbolOptions
 }
 
+@untagged()
+union BooleanOrFoldingRangeOptions {
+    case0: Boolean
+    case1: FoldingRangeOptions
+    case2: FoldingRangeRegistrationOptions
+}
+
+@untagged()
 union BooleanOrHoverOptions {
     case0: Boolean
     case1: HoverOptions
 }
 
+@untagged()
+union BooleanOrImplementationOptions {
+    case0: Boolean
+    case1: ImplementationOptions
+    case2: ImplementationRegistrationOptions
+}
+
+@untagged()
+union BooleanOrInlayHintOptions {
+    case0: Boolean
+    case1: InlayHintOptions
+    case2: InlayHintRegistrationOptions
+}
+
+@untagged()
+union BooleanOrInlineValueOptions {
+    case0: Boolean
+    case1: InlineValueOptions
+    case2: InlineValueRegistrationOptions
+}
+
+@untagged()
+union BooleanOrLinkedEditingRangeOptions {
+    case0: Boolean
+    case1: LinkedEditingRangeOptions
+    case2: LinkedEditingRangeRegistrationOptions
+}
+
+@untagged()
+union BooleanOrMonikerOptions {
+    case0: Boolean
+    case1: MonikerOptions
+    case2: MonikerRegistrationOptions
+}
+
+@untagged()
 union BooleanOrReferenceOptions {
     case0: Boolean
     case1: ReferenceOptions
 }
 
+@untagged()
 union BooleanOrRenameOptions {
     case0: Boolean
     case1: RenameOptions
 }
 
+@untagged()
 union BooleanOrSaveOptions {
     case0: Boolean
     case1: SaveOptions
 }
 
+@untagged()
+union BooleanOrSelectionRangeOptions {
+    case0: Boolean
+    case1: SelectionRangeOptions
+    case2: SelectionRangeRegistrationOptions
+}
+
+@untagged()
 union BooleanOrSemanticTokensFullDelta {
     case0: Boolean
     case1: SemanticTokensFullDelta
 }
 
+@untagged()
+union BooleanOrTypeDefinitionOptions {
+    case0: Boolean
+    case1: TypeDefinitionOptions
+    case2: TypeDefinitionRegistrationOptions
+}
+
+@untagged()
+union BooleanOrTypeHierarchyOptions {
+    case0: Boolean
+    case1: TypeHierarchyOptions
+    case2: TypeHierarchyRegistrationOptions
+}
+
+@untagged()
 union BooleanOrWorkspaceSymbolOptions {
     case0: Boolean
     case1: WorkspaceSymbolOptions
 }
 
+@untagged()
 union BooleanUnion {
     case0: Boolean
     case1: InlineStruct_a32dc9f64f1df03a8ce970b71df42503
 }
 
+@untagged()
 union CommandOrCodeAction {
     case0: Command
     case1: CodeAction
 }
 
+@untagged()
 union Declaration {
     case0: Location
-    case1: ListOf_Location
+    case1: ListOfLocation
 }
 
+@untagged()
+union DeclarationOrNULL {
+    case0: Declaration
+    case1: ListOfDeclarationLink
+    case2: Unit
+}
+
+@untagged()
 union Definition {
     case0: Location
-    case1: ListOf_Location
+    case1: ListOfLocation
 }
 
+@untagged()
+union DefinitionOrNULL {
+    case0: Definition
+    case1: ListOfDefinitionLink
+    case2: Unit
+}
+
+@untagged()
 union DiagnosticOptionsUnion {
     case0: DiagnosticOptions
     case1: DiagnosticRegistrationOptions
 }
 
+@untagged()
 union DocumentDiagnosticReport {
     case0: RelatedFullDocumentDiagnosticReport
     case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
+@untagged()
 union DocumentDiagnosticReportUnion {
     case0: FullDocumentDiagnosticReport
     case1: UnchangedDocumentDiagnosticReport
 }
 
+@untagged()
 union DocumentFilter {
     case0: TextDocumentFilter
     case1: NotebookCellTextDocumentFilter
 }
 
+@untagged()
 union DocumentSelectorOrNULL {
     case0: DocumentSelector
     case1: Unit
 }
 
+@untagged()
 union DocumentUriOrNULL {
     case0: String
     case1: Unit
 }
 
-union EditUnion {
-    case0: TextEdit
-    case1: InsertReplaceEdit
+@untagged()
+union FileOrTextDocumentEdit {
+    case0: TextDocumentEdit
+    case1: CreateFile
+    case2: RenameFile
+    case3: DeleteFile
 }
 
+@untagged()
 union GlobPattern {
     case0: Pattern
     case1: RelativePattern
 }
 
+@untagged()
 union HoverOrNULL {
     case0: Hover
     case1: Unit
 }
 
+@untagged()
 union InlineValue {
     case0: InlineValueText
     case1: InlineValueVariableLookup
     case2: InlineValueEvaluatableExpression
 }
 
+@untagged()
 union InlineValueUnion {
     case0: InlineValueText
     case1: InlineValueVariableLookup
     case2: InlineValueEvaluatableExpression
 }
 
+@untagged()
 union IntegerOrNULL {
     case0: Integer
     case1: Unit
 }
 
+@untagged()
 union IntegerOrString {
     case0: Integer
     case1: String
 }
 
+@untagged()
 union LinkedEditingRangesOrNULL {
     case0: LinkedEditingRanges
     case1: Unit
 }
 
+@untagged()
+union ListCompletionOrNULL {
+    case0: ListOfCompletionItem
+    case1: CompletionList
+    case2: Unit
+}
+
+@untagged()
 union ListOfCallHierarchyIncomingCallOrNULL {
-    case0: ListOf_CallHierarchyIncomingCall
+    case0: ListOfCallHierarchyIncomingCall
     case1: Unit
 }
 
+@untagged()
 union ListOfCallHierarchyItemOrNULL {
-    case0: ListOf_CallHierarchyItem
+    case0: ListOfCallHierarchyItem
     case1: Unit
 }
 
+@untagged()
 union ListOfCallHierarchyOutgoingCallOrNULL {
-    case0: ListOf_CallHierarchyOutgoingCall
+    case0: ListOfCallHierarchyOutgoingCall
     case1: Unit
 }
 
+@untagged()
 union ListOfCodeLensOrNULL {
-    case0: ListOf_CodeLens
+    case0: ListOfCodeLens
     case1: Unit
 }
 
+@untagged()
 union ListOfDocumentHighlightOrNULL {
-    case0: ListOf_DocumentHighlight
+    case0: ListOfDocumentHighlight
     case1: Unit
 }
 
+@untagged()
 union ListOfDocumentLinkOrNULL {
-    case0: ListOf_DocumentLink
+    case0: ListOfDocumentLink
     case1: Unit
 }
 
+@untagged()
 union ListOfFoldingRangeOrNULL {
-    case0: ListOf_FoldingRange
+    case0: ListOfFoldingRange
     case1: Unit
 }
 
+@untagged()
 union ListOfInlayHintOrNULL {
-    case0: ListOf_InlayHint
+    case0: ListOfInlayHint
     case1: Unit
 }
 
+@untagged()
 union ListOfInlineValueOrNULL {
-    case0: ListOf_InlineValue
+    case0: ListOfInlineValue
     case1: Unit
 }
 
+@untagged()
 union ListOfLocationOrNULL {
-    case0: ListOf_Location
+    case0: ListOfLocation
     case1: Unit
 }
 
+@untagged()
 union ListOfMonikerOrNULL {
-    case0: ListOf_Moniker
+    case0: ListOfMoniker
     case1: Unit
 }
 
+@untagged()
 union ListOfOrNULL {
-    case0: ListOf_CommandOrCodeAction
+    case0: ListOfCommandOrCodeAction
     case1: Unit
 }
 
+@untagged()
 union ListOfSelectionRangeOrNULL {
-    case0: ListOf_SelectionRange
+    case0: ListOfSelectionRange
     case1: Unit
 }
 
+@untagged()
+union ListOfSymbolOrNULL {
+    case0: ListOfSymbolInformation
+    case1: ListOfWorkspaceSymbol
+    case2: Unit
+}
+
+@untagged()
 union ListOfTextEditOrNULL {
-    case0: ListOf_TextEdit
+    case0: ListOfTextEdit
     case1: Unit
 }
 
+@untagged()
 union ListOfTypeHierarchyItemOrNULL {
-    case0: ListOf_TypeHierarchyItem
+    case0: ListOfTypeHierarchyItem
     case1: Unit
 }
 
+@untagged()
 union ListOfWorkspaceFolderOrNULL {
-    case0: ListOf_WorkspaceFolder
+    case0: ListOfWorkspaceFolder
     case1: Unit
 }
 
-union LocationUnion {
+@untagged()
+union LocationOrListOfLocation {
     case0: Location
-    case1: ListOf_Location
+    case1: ListOfLocation
 }
 
-union LUnion {
+@untagged()
+union LocationOrLocationUriOnly {
+    case0: Location
+    case1: LocationUriOnly
+}
+
+@untagged()
+union LSPAnyOrNULL {
     case0: Document
     case1: Unit
 }
 
+@untagged()
 union MarkedString {
     case0: String
     case1: MarkedStringWithLanguage
 }
 
+@untagged()
+union MarkedStringOrMarkupContent {
+    case0: MarkupContent
+    case1: MarkedString
+    case2: ListOfMarkedString
+}
+
+@untagged()
 union MessageActionItemOrNULL {
     case0: MessageActionItem
     case1: Unit
 }
 
+@untagged()
 union NotebookDocumentFilter {
     case0: NotebookDocumentFilterNotebookType
     case1: NotebookDocumentFilterScheme
     case2: NotebookDocumentFilterPattern
 }
 
+@untagged()
 union NotebookDocumentFilterUnion {
     case0: NotebookDocumentFilterNotebookType
     case1: NotebookDocumentFilterScheme
     case2: NotebookDocumentFilterPattern
 }
 
+@untagged()
 union NotebookDocumentFilterWithUnion {
     case0: NotebookDocumentFilterWithNotebook
     case1: NotebookDocumentFilterWithCells
 }
 
+@untagged()
 union NotebookDocumentSyncOptionsUnion {
     case0: NotebookDocumentSyncOptions
     case1: NotebookDocumentSyncRegistrationOptions
 }
 
-union PatternUnion {
+@untagged()
+union NULLOrSemanticTokens {
+    case0: SemanticTokens
+    case1: SemanticTokensDelta
+    case2: Unit
+}
+
+@untagged()
+union PatternOrRelativePattern {
     case0: Pattern
     case1: RelativePattern
 }
 
+@untagged()
+union PrepareRenameOrRange {
+    case0: Range
+    case1: PrepareRenamePlaceholder
+    case2: PrepareRenameDefaultBehavior
+}
+
+@untagged()
 union PrepareRenameResult {
     case0: Range
     case1: PrepareRenamePlaceholder
     case2: PrepareRenameDefaultBehavior
 }
 
+@untagged()
 union PrepareRenameResultOrNULL {
     case0: PrepareRenameResult
     case1: Unit
 }
 
+@untagged()
 union ProgressToken {
     case0: Integer
     case1: String
 }
 
-union RangeUnion {
+@untagged()
+union RangeOrEditRangeWithInsertReplace {
     case0: Range
     case1: EditRangeWithInsertReplace
 }
 
+@untagged()
 union RelatedDocumentDiagnosticReportUnion {
     case0: RelatedFullDocumentDiagnosticReport
     case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
+@untagged()
 union SemanticTokensOptionsUnion {
     case0: SemanticTokensOptions
     case1: SemanticTokensRegistrationOptions
 }
 
+@untagged()
 union SemanticTokensOrNULL {
     case0: SemanticTokens
     case1: Unit
 }
 
+@untagged()
 union SignatureHelpOrNULL {
     case0: SignatureHelp
     case1: Unit
 }
 
+@untagged()
 union StringOrBoolean {
     case0: String
     case1: Boolean
 }
 
+@untagged()
 union StringOrListOfInlayHintLabelPart {
     case0: String
-    case1: ListOf_InlayHintLabelPart
+    case1: ListOfInlayHintLabelPart
 }
 
+@untagged()
+union StringOrListOfString {
+    case0: String
+    case1: ListOfString
+}
+
+@untagged()
+union StringOrMarkedStringWithLanguage {
+    case0: String
+    case1: MarkedStringWithLanguage
+}
+
+@untagged()
 union StringOrMarkupContent {
     case0: String
     case1: MarkupContent
 }
 
+@untagged()
 union StringOrNotebookDocumentFilter {
     case0: String
     case1: NotebookDocumentFilter
 }
 
+@untagged()
 union StringOrNULL {
     case0: String
     case1: Unit
 }
 
+@untagged()
 union StringUnion {
     case0: String
-    case1: MarkedStringWithLanguage
+    case1: TupleOfInteger
 }
 
+@untagged()
 union TextDocumentContentChangeEvent {
     case0: TextDocumentContentChangePartial
     case1: TextDocumentContentChangeWholeDocument
 }
 
+@untagged()
 union TextDocumentContentChangeUnion {
     case0: TextDocumentContentChangePartial
     case1: TextDocumentContentChangeWholeDocument
 }
 
+@untagged()
 union TextDocumentFilter {
     case0: TextDocumentFilterLanguage
     case1: TextDocumentFilterScheme
     case2: TextDocumentFilterPattern
 }
 
+@untagged()
 union TextDocumentFilterUnion {
     case0: TextDocumentFilterLanguage
     case1: TextDocumentFilterScheme
     case2: TextDocumentFilterPattern
 }
 
+@untagged()
 union TextDocumentSyncUnion {
     case0: TextDocumentSyncOptions
     case1: TextDocumentSyncKind
 }
 
+@untagged()
+union TextEditOrInsertReplaceEdit {
+    case0: TextEdit
+    case1: InsertReplaceEdit
+}
+
+@untagged()
 union TextEditUnion {
     case0: TextEdit
     case1: AnnotatedTextEdit
 }
 
+@untagged()
 union UintegerOrNULL {
     case0: Integer
     case1: Unit
 }
 
+@untagged()
 union WorkspaceDocumentDiagnosticReport {
     case0: WorkspaceFullDocumentDiagnosticReport
     case1: WorkspaceUnchangedDocumentDiagnosticReport
 }
 
+@untagged()
 union WorkspaceDocumentDiagnosticReportUnion {
     case0: WorkspaceFullDocumentDiagnosticReport
     case1: WorkspaceUnchangedDocumentDiagnosticReport
 }
 
+@untagged()
 union WorkspaceEditOrNULL {
     case0: WorkspaceEdit
     case1: Unit
 }
 
+@untagged()
 union WorkspaceFolderOrUri {
     case0: WorkspaceFolder
     case1: String
@@ -6584,287 +6819,287 @@ list DocumentSelector {
     member: DocumentFilter
 }
 
-list ListOf_AnonymousUnion {
-    member: AnonymousUnion
-}
-
-list ListOf_CallHierarchyIncomingCall {
+list ListOfCallHierarchyIncomingCall {
     member: CallHierarchyIncomingCall
 }
 
-list ListOf_CallHierarchyItem {
+list ListOfCallHierarchyItem {
     member: CallHierarchyItem
 }
 
-list ListOf_CallHierarchyOutgoingCall {
+list ListOfCallHierarchyOutgoingCall {
     member: CallHierarchyOutgoingCall
 }
 
-list ListOf_CodeActionKind {
+list ListOfCodeActionKind {
     member: CodeActionKind
 }
 
-list ListOf_CodeActionTag {
+list ListOfCodeActionTag {
     member: CodeActionTag
 }
 
-list ListOf_CodeLens {
+list ListOfCodeLens {
     member: CodeLens
 }
 
-list ListOf_ColorInformation {
+list ListOfColorInformation {
     member: ColorInformation
 }
 
-list ListOf_ColorPresentation {
+list ListOfColorPresentation {
     member: ColorPresentation
 }
 
-list ListOf_CommandOrCodeAction {
+list ListOfCommandOrCodeAction {
     member: CommandOrCodeAction
 }
 
-list ListOf_CompletionItem {
+list ListOfCompletionItem {
     member: CompletionItem
 }
 
-list ListOf_CompletionItemKind {
+list ListOfCompletionItemKind {
     member: CompletionItemKind
 }
 
-list ListOf_CompletionItemTag {
+list ListOfCompletionItemTag {
     member: CompletionItemTag
 }
 
-list ListOf_ConfigurationItem {
+list ListOfConfigurationItem {
     member: ConfigurationItem
 }
 
-list ListOf_DeclarationLink {
+list ListOfDeclarationLink {
     member: DeclarationLink
 }
 
-list ListOf_DefinitionLink {
+list ListOfDefinitionLink {
     member: DefinitionLink
 }
 
-list ListOf_Diagnostic {
+list ListOfDiagnostic {
     member: Diagnostic
 }
 
-list ListOf_DiagnosticRelatedInformation {
+list ListOfDiagnosticRelatedInformation {
     member: DiagnosticRelatedInformation
 }
 
-list ListOf_DiagnosticTag {
+list ListOfDiagnosticTag {
     member: DiagnosticTag
 }
 
-list ListOf_Document {
+list ListOfDocument {
     member: Document
 }
 
-list ListOf_DocumentFilter {
+list ListOfDocumentFilter {
     member: DocumentFilter
 }
 
-list ListOf_DocumentHighlight {
+list ListOfDocumentHighlight {
     member: DocumentHighlight
 }
 
-list ListOf_DocumentLink {
+list ListOfDocumentLink {
     member: DocumentLink
 }
 
-list ListOf_DocumentSymbol {
+list ListOfDocumentSymbol {
     member: DocumentSymbol
 }
 
-list ListOf_FileCreate {
+list ListOfFileCreate {
     member: FileCreate
 }
 
-list ListOf_FileDelete {
+list ListOfFileDelete {
     member: FileDelete
 }
 
-list ListOf_FileEvent {
+list ListOfFileEvent {
     member: FileEvent
 }
 
-list ListOf_FileOperationFilter {
+list ListOfFileOperationFilter {
     member: FileOperationFilter
 }
 
-list ListOf_FileRename {
+list ListOfFileOrTextDocumentEdit {
+    member: FileOrTextDocumentEdit
+}
+
+list ListOfFileRename {
     member: FileRename
 }
 
-list ListOf_FileSystemWatcher {
+list ListOfFileSystemWatcher {
     member: FileSystemWatcher
 }
 
-list ListOf_FoldingRange {
+list ListOfFoldingRange {
     member: FoldingRange
 }
 
-list ListOf_FoldingRangeKind {
+list ListOfFoldingRangeKind {
     member: FoldingRangeKind
 }
 
-list ListOf_InlayHint {
+list ListOfInlayHint {
     member: InlayHint
 }
 
-list ListOf_InlayHintLabelPart {
+list ListOfInlayHintLabelPart {
     member: InlayHintLabelPart
 }
 
-list ListOf_InlineValue {
+list ListOfInlineValue {
     member: InlineValue
 }
 
-list ListOf_InsertTextMode {
+list ListOfInsertTextMode {
     member: InsertTextMode
 }
 
-list ListOf_Integer {
+list ListOfInteger {
     member: Integer
 }
 
-list ListOf_Location {
+list ListOfLocation {
     member: Location
 }
 
-list ListOf_MarkedString {
+list ListOfMarkedString {
     member: MarkedString
 }
 
-list ListOf_MarkupKind {
+list ListOfMarkupKind {
     member: MarkupKind
 }
 
-list ListOf_MessageActionItem {
+list ListOfMessageActionItem {
     member: MessageActionItem
 }
 
-list ListOf_Moniker {
+list ListOfMoniker {
     member: Moniker
 }
 
-list ListOf_NotebookCell {
+list ListOfNotebookCell {
     member: NotebookCell
 }
 
-list ListOf_NotebookCellLanguage {
+list ListOfNotebookCellLanguage {
     member: NotebookCellLanguage
 }
 
-list ListOf_NotebookDocumentCellContentChanges {
+list ListOfNotebookDocumentCellContentChanges {
     member: NotebookDocumentCellContentChanges
 }
 
-list ListOf_NotebookDocumentFilterWithUnion {
+list ListOfNotebookDocumentFilterWithUnion {
     member: NotebookDocumentFilterWithUnion
 }
 
-list ListOf_ParameterInformation {
+list ListOfParameterInformation {
     member: ParameterInformation
 }
 
-list ListOf_Position {
+list ListOfPosition {
     member: Position
 }
 
-list ListOf_PositionEncodingKind {
+list ListOfPositionEncodingKind {
     member: PositionEncodingKind
 }
 
-list ListOf_PreviousResultId {
+list ListOfPreviousResultId {
     member: PreviousResultId
 }
 
-list ListOf_Range {
+list ListOfRange {
     member: Range
 }
 
-list ListOf_Registration {
+list ListOfRegistration {
     member: Registration
 }
 
-list ListOf_ResourceOperationKind {
+list ListOfResourceOperationKind {
     member: ResourceOperationKind
 }
 
-list ListOf_SelectionRange {
+list ListOfSelectionRange {
     member: SelectionRange
 }
 
-list ListOf_SemanticTokensEdit {
+list ListOfSemanticTokensEdit {
     member: SemanticTokensEdit
 }
 
-list ListOf_SignatureInformation {
+list ListOfSignatureInformation {
     member: SignatureInformation
 }
 
-list ListOf_String {
+list ListOfString {
     member: String
 }
 
-list ListOf_SymbolInformation {
+list ListOfSymbolInformation {
     member: SymbolInformation
 }
 
-list ListOf_SymbolKind {
+list ListOfSymbolKind {
     member: SymbolKind
 }
 
-list ListOf_SymbolTag {
+list ListOfSymbolTag {
     member: SymbolTag
 }
 
-list ListOf_TextDocumentContentChangeEvent {
+list ListOfTextDocumentContentChangeEvent {
     member: TextDocumentContentChangeEvent
 }
 
-list ListOf_TextDocumentIdentifier {
+list ListOfTextDocumentIdentifier {
     member: TextDocumentIdentifier
 }
 
-list ListOf_TextDocumentItem {
+list ListOfTextDocumentItem {
     member: TextDocumentItem
 }
 
-list ListOf_TextEdit {
+list ListOfTextEdit {
     member: TextEdit
 }
 
-list ListOf_TextEditUnion {
+list ListOfTextEditUnion {
     member: TextEditUnion
 }
 
-list ListOf_TokenFormat {
+list ListOfTokenFormat {
     member: TokenFormat
 }
 
-list ListOf_TypeHierarchyItem {
+list ListOfTypeHierarchyItem {
     member: TypeHierarchyItem
 }
 
-list ListOf_Unregistration {
+list ListOfUnregistration {
     member: Unregistration
 }
 
-list ListOf_WorkspaceDocumentDiagnosticReport {
+list ListOfWorkspaceDocumentDiagnosticReport {
     member: WorkspaceDocumentDiagnosticReport
 }
 
-list ListOf_WorkspaceFolder {
+list ListOfWorkspaceFolder {
     member: WorkspaceFolder
 }
 
-list ListOf_WorkspaceSymbol {
+list ListOfWorkspaceSymbol {
     member: WorkspaceSymbol
 }
 
@@ -6872,7 +7107,7 @@ list LSPArray {
     member: Document
 }
 
-list Tuple_of_Integer {
+list TupleOfInteger {
     member: Integer
 }
 
@@ -6881,24 +7116,24 @@ map LSPObject {
     value: Document
 }
 
-map MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation {
+map MapOfChangeAnnotationIdentifier2ChangeAnnotation {
     key: ChangeAnnotationIdentifier
     value: ChangeAnnotation
 }
 
-map MapOf_String_to_Document {
+map MapOfString2Document {
     key: String
     value: Document
 }
 
-map MapOf_String_to_DocumentDiagnosticReportUnion {
+map MapOfString2DocumentDiagnosticReportUnion {
     key: String
     value: DocumentDiagnosticReportUnion
 }
 
-map MapOf_String_to_ListOf_TextEdit {
+map MapOfString2ListOfTextEdit {
     key: String
-    value: ListOf_TextEdit
+    value: ListOfTextEdit
 }
 
 /// Defines how values from a set of defaults and an individual item will be

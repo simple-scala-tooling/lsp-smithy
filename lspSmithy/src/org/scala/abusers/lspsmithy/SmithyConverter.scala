@@ -1,5 +1,6 @@
 package org.scala.abusers.lspsmithy
 
+import alloy.UntaggedUnionTrait
 import cats.data.State
 import cats.syntax.all.*
 import jsonrpclib.JsonNotificationTrait
@@ -51,12 +52,27 @@ object SmithyConverter:
   private[lspsmithy] def unionNameFor(types: Vector[Type]): String =
     val names = types.map(extractTypeName).filter(_.nonEmpty).distinct
 
-    val commonSeq = longestCommonPascalSubsequence(names)
-    if commonSeq.nonEmpty then commonSeq.mkString + "Union"
+    val suffix = longestCommonPascalSubsequence(names)
+    if suffix.nonEmpty && suffix.length >= 2 then suffix.mkString + "Union"
+    else if names.length == 2 then s"${names(0)}Or${names(1)}"
     else
-      names match
-        case Seq(a, b) => s"${a}Or${b}"
-        case _         => "AnonymousUnion"
+      // heurystyka "all but one" → wspólna sekwencja
+      val candidates =
+        names.indices
+          .map { i =>
+            val subset = names.patch(i, Nil, 1)
+            val common = longestCommonPascalSubsequence(subset)
+            (i, common)
+          }
+          .filter(_._2.nonEmpty)
+
+      if candidates.length == 1 then
+        val (missingIdx, common) = candidates.head
+        val outlier              = names(missingIdx)
+        val parts                = List(common.mkString, outlier).sorted
+        s"${parts(0)}Or${parts(1)}"
+      else if suffix.nonEmpty then suffix.mkString + "Union"
+      else s"Union_${nextUUID().toString.replace("-", "")}"
 
   private def extractTypeName(t: Type): String = t match
     case Type.ReferenceType(name)                               => name.value
@@ -144,7 +160,7 @@ object SmithyConverter:
       case ArrayType(element) =>
         smithyType(element, namespace)
           .flatMap { innerId =>
-            val listId = ShapeId.fromParts(namespace, s"ListOf_${innerId.getName}")
+            val listId = ShapeId.fromParts(namespace, s"ListOf${innerId.getName}")
             State { shapes =>
               val listShape = ListShape
                 .builder()
@@ -160,7 +176,7 @@ object SmithyConverter:
         for
           keyId   <- smithyType(key, namespace)
           valueId <- smithyType(value, namespace)
-          mapId = ShapeId.fromParts(namespace, s"MapOf_${keyId.getName}_to_${valueId.getName}")
+          mapId = ShapeId.fromParts(namespace, s"MapOf${keyId.getName}2${valueId.getName}")
           result <- State[Set[Shape], ShapeId] { shapes =>
             val mapShape = MapShape
               .builder()
@@ -184,7 +200,7 @@ object SmithyConverter:
           unifiedType = items_.distinct match
             case Seq(one) => one
             case _        => ShapeId.from("smithy.api#String") // TODO: fallback
-          listId = ShapeId.fromParts(namespace, s"Tuple_of_${unifiedType.getName}")
+          listId = ShapeId.fromParts(namespace, s"TupleOf${unifiedType.getName}")
           result <- State[Set[Shape], ShapeId] { shapes =>
             val listShape = ListShape
               .builder()
@@ -207,11 +223,18 @@ object SmithyConverter:
                 .build()
             }
           }
-          .map(_.foldLeft(UnionShape.builder().id(id)) { case (acc, item) =>
-            // TODO: this shape gets filtered out as it is marked as proposed
-            if item.getTarget.toString == "lsp#SnippetTextEdit" then acc
-            else acc.addMember(item)
-          }.build())
+          .map(
+            _.foldLeft(
+              UnionShape
+                .builder()
+                .id(id)
+                .addTrait(new UntaggedUnionTrait.Provider().createTrait(UntaggedUnionTrait.ID, Node.objectNode))
+            ) { case (acc, item) =>
+              // TODO: this shape gets filtered out as it is marked as proposed
+              if item.getTarget.toString == "lsp#SnippetTextEdit" then acc
+              else acc.addMember(item)
+            }.build()
+          )
           .flatMap { unionShape =>
             State(shapes => (shapes + unionShape, id))
           }
@@ -469,7 +492,9 @@ object SmithyConverter:
 
         builder.output(ShapeId.from("smithy.api#Unit"))
         val notifiShapeOp = builder
-          .addTrait(new JsonNotificationTrait.Provider().createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value)))
+          .addTrait(
+            new JsonNotificationTrait.Provider().createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
+          )
           .build()
 
         State.modify(shapes => shapes + notifiShapeOp)
