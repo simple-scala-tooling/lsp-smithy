@@ -170,8 +170,11 @@ object SmithyConverter:
           }
         yield result
 
-      case StringLiteralType(_) | BooleanLiteralType(_) =>
+      case StringLiteralType(_) =>
         ShapeId.from("smithy.api#String").pure // literal values treated as base
+
+      case BooleanLiteralType(_) =>
+        ShapeId.from("smithy.api#Boolean").pure
 
       case TupleType(items) =>
         for
