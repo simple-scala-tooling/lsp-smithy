@@ -2,6 +2,8 @@ package org.scala.abusers.lspsmithy
 
 import cats.data.State
 import cats.syntax.all.*
+import jsonrpclib.JsonNotificationTrait
+import jsonrpclib.JsonRequestTrait
 import langoustine.meta.*
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
@@ -448,6 +450,7 @@ object SmithyConverter:
             .id(opId)
             .input(inputShapeId)
             .output(outputShapeId)
+            .addTrait(new JsonRequestTrait.Provider().createTrait(JsonRequestTrait.ID, Node.from(req.method.value)))
             .build()
           shapes ++ Set(opShape, outputShape)
         }
@@ -465,7 +468,9 @@ object SmithyConverter:
         builder.input(inputShapeId)
 
         builder.output(ShapeId.from("smithy.api#Unit"))
-        val notifiShapeOp = builder.build()
+        val notifiShapeOp = builder
+          .addTrait(new JsonNotificationTrait.Provider().createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value)))
+          .build()
 
         State.modify(shapes => shapes + notifiShapeOp)
       }

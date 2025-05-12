@@ -55,6 +55,7 @@ object lspSmithy extends CommonScalaModule {
     ivy"tech.neander::langoustine-meta::0.0.23",
     ivy"com.lihaoyi::os-lib:0.11.4",
     ivy"software.amazon.smithy:smithy-model:1.57.1",
+    ivy"tech.neander:jsonrpclib-smithy:0.0.8+28-1e49f02a-SNAPSHOT",
   )
 
   def scalacOptions = Seq(

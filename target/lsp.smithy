@@ -2,451 +2,544 @@ $version: "2.0"
 
 namespace lsp
 
+use jsonrpclib#jsonNotification
+use jsonrpclib#jsonRequest
+
+@jsonRequest("callHierarchy/incomingCalls")
 operation CallHierarchyIncomingCallsOp {
     input: CallHierarchyIncomingCallsOpInput
     output: CallHierarchyIncomingCallsOpOutput
 }
 
+@jsonRequest("callHierarchy/outgoingCalls")
 operation CallHierarchyOutgoingCallsOp {
     input: CallHierarchyOutgoingCallsOpInput
     output: CallHierarchyOutgoingCallsOpOutput
 }
 
+@jsonNotification("$/cancelRequest")
 operation CancelRequest {
     input: CancelRequestInput
     output: Unit
 }
 
+@jsonRequest("client/registerCapability")
 operation ClientRegisterCapabilityOp {
     input: ClientRegisterCapabilityOpInput
     output: ClientRegisterCapabilityOpOutput
 }
 
+@jsonRequest("client/unregisterCapability")
 operation ClientUnregisterCapabilityOp {
     input: ClientUnregisterCapabilityOpInput
     output: ClientUnregisterCapabilityOpOutput
 }
 
+@jsonRequest("codeAction/resolve")
 operation CodeActionResolveOp {
     input: CodeActionResolveOpInput
     output: CodeActionResolveOpOutput
 }
 
+@jsonRequest("codeLens/resolve")
 operation CodeLensResolveOp {
     input: CodeLensResolveOpInput
     output: CodeLensResolveOpOutput
 }
 
+@jsonRequest("completionItem/resolve")
 operation CompletionItemResolveOp {
     input: CompletionItemResolveOpInput
     output: CompletionItemResolveOpOutput
 }
 
+@jsonRequest("documentLink/resolve")
 operation DocumentLinkResolveOp {
     input: DocumentLinkResolveOpInput
     output: DocumentLinkResolveOpOutput
 }
 
+@jsonNotification("exit")
 operation Exit {
     input: ExitInput
     output: Unit
 }
 
+@jsonNotification("initialized")
 operation Initialized {
     input: InitializedInput
     output: Unit
 }
 
+@jsonRequest("initialize")
 operation InitializeOp {
     input: InitializeOpInput
     output: InitializeOpOutput
 }
 
+@jsonRequest("inlayHint/resolve")
 operation InlayHintResolveOp {
     input: InlayHintResolveOpInput
     output: InlayHintResolveOpOutput
 }
 
+@jsonNotification("$/logTrace")
 operation LogTrace {
     input: LogTraceInput
     output: Unit
 }
 
+@jsonNotification("notebookDocument/didChange")
 operation NotebookDocumentDidChange {
     input: NotebookDocumentDidChangeInput
     output: Unit
 }
 
+@jsonNotification("notebookDocument/didClose")
 operation NotebookDocumentDidClose {
     input: NotebookDocumentDidCloseInput
     output: Unit
 }
 
+@jsonNotification("notebookDocument/didOpen")
 operation NotebookDocumentDidOpen {
     input: NotebookDocumentDidOpenInput
     output: Unit
 }
 
+@jsonNotification("notebookDocument/didSave")
 operation NotebookDocumentDidSave {
     input: NotebookDocumentDidSaveInput
     output: Unit
 }
 
+@jsonNotification("$/progress")
 operation Progress {
     input: ProgressInput
     output: Unit
 }
 
+@jsonNotification("$/setTrace")
 operation SetTrace {
     input: SetTraceInput
     output: Unit
 }
 
+@jsonRequest("shutdown")
 operation ShutdownOp {
     input: ShutdownOpInput
     output: ShutdownOpOutput
 }
 
+@jsonNotification("telemetry/event")
 operation TelemetryEvent {
     input: TelemetryEventInput
     output: Unit
 }
 
+@jsonRequest("textDocument/codeAction")
 operation TextDocumentCodeActionOp {
     input: TextDocumentCodeActionOpInput
     output: TextDocumentCodeActionOpOutput
 }
 
+@jsonRequest("textDocument/codeLens")
 operation TextDocumentCodeLensOp {
     input: TextDocumentCodeLensOpInput
     output: TextDocumentCodeLensOpOutput
 }
 
+@jsonRequest("textDocument/colorPresentation")
 operation TextDocumentColorPresentationOp {
     input: TextDocumentColorPresentationOpInput
     output: TextDocumentColorPresentationOpOutput
 }
 
+@jsonRequest("textDocument/completion")
 operation TextDocumentCompletionOp {
     input: TextDocumentCompletionOpInput
     output: TextDocumentCompletionOpOutput
 }
 
+@jsonRequest("textDocument/declaration")
 operation TextDocumentDeclarationOp {
     input: TextDocumentDeclarationOpInput
     output: TextDocumentDeclarationOpOutput
 }
 
+@jsonRequest("textDocument/definition")
 operation TextDocumentDefinitionOp {
     input: TextDocumentDefinitionOpInput
     output: TextDocumentDefinitionOpOutput
 }
 
+@jsonRequest("textDocument/diagnostic")
 operation TextDocumentDiagnosticOp {
     input: TextDocumentDiagnosticOpInput
     output: TextDocumentDiagnosticOpOutput
 }
 
+@jsonNotification("textDocument/didChange")
 operation TextDocumentDidChange {
     input: TextDocumentDidChangeInput
     output: Unit
 }
 
+@jsonNotification("textDocument/didClose")
 operation TextDocumentDidClose {
     input: TextDocumentDidCloseInput
     output: Unit
 }
 
+@jsonNotification("textDocument/didOpen")
 operation TextDocumentDidOpen {
     input: TextDocumentDidOpenInput
     output: Unit
 }
 
+@jsonNotification("textDocument/didSave")
 operation TextDocumentDidSave {
     input: TextDocumentDidSaveInput
     output: Unit
 }
 
+@jsonRequest("textDocument/documentColor")
 operation TextDocumentDocumentColorOp {
     input: TextDocumentDocumentColorOpInput
     output: TextDocumentDocumentColorOpOutput
 }
 
+@jsonRequest("textDocument/documentHighlight")
 operation TextDocumentDocumentHighlightOp {
     input: TextDocumentDocumentHighlightOpInput
     output: TextDocumentDocumentHighlightOpOutput
 }
 
+@jsonRequest("textDocument/documentLink")
 operation TextDocumentDocumentLinkOp {
     input: TextDocumentDocumentLinkOpInput
     output: TextDocumentDocumentLinkOpOutput
 }
 
+@jsonRequest("textDocument/documentSymbol")
 operation TextDocumentDocumentSymbolOp {
     input: TextDocumentDocumentSymbolOpInput
     output: TextDocumentDocumentSymbolOpOutput
 }
 
+@jsonRequest("textDocument/foldingRange")
 operation TextDocumentFoldingRangeOp {
     input: TextDocumentFoldingRangeOpInput
     output: TextDocumentFoldingRangeOpOutput
 }
 
+@jsonRequest("textDocument/formatting")
 operation TextDocumentFormattingOp {
     input: TextDocumentFormattingOpInput
     output: TextDocumentFormattingOpOutput
 }
 
+@jsonRequest("textDocument/hover")
 operation TextDocumentHoverOp {
     input: TextDocumentHoverOpInput
     output: TextDocumentHoverOpOutput
 }
 
+@jsonRequest("textDocument/implementation")
 operation TextDocumentImplementationOp {
     input: TextDocumentImplementationOpInput
     output: TextDocumentImplementationOpOutput
 }
 
+@jsonRequest("textDocument/inlayHint")
 operation TextDocumentInlayHintOp {
     input: TextDocumentInlayHintOpInput
     output: TextDocumentInlayHintOpOutput
 }
 
+@jsonRequest("textDocument/inlineValue")
 operation TextDocumentInlineValueOp {
     input: TextDocumentInlineValueOpInput
     output: TextDocumentInlineValueOpOutput
 }
 
+@jsonRequest("textDocument/linkedEditingRange")
 operation TextDocumentLinkedEditingRangeOp {
     input: TextDocumentLinkedEditingRangeOpInput
     output: TextDocumentLinkedEditingRangeOpOutput
 }
 
+@jsonRequest("textDocument/moniker")
 operation TextDocumentMonikerOp {
     input: TextDocumentMonikerOpInput
     output: TextDocumentMonikerOpOutput
 }
 
+@jsonRequest("textDocument/onTypeFormatting")
 operation TextDocumentOnTypeFormattingOp {
     input: TextDocumentOnTypeFormattingOpInput
     output: TextDocumentOnTypeFormattingOpOutput
 }
 
+@jsonRequest("textDocument/prepareCallHierarchy")
 operation TextDocumentPrepareCallHierarchyOp {
     input: TextDocumentPrepareCallHierarchyOpInput
     output: TextDocumentPrepareCallHierarchyOpOutput
 }
 
+@jsonRequest("textDocument/prepareRename")
 operation TextDocumentPrepareRenameOp {
     input: TextDocumentPrepareRenameOpInput
     output: TextDocumentPrepareRenameOpOutput
 }
 
+@jsonRequest("textDocument/prepareTypeHierarchy")
 operation TextDocumentPrepareTypeHierarchyOp {
     input: TextDocumentPrepareTypeHierarchyOpInput
     output: TextDocumentPrepareTypeHierarchyOpOutput
 }
 
+@jsonNotification("textDocument/publishDiagnostics")
 operation TextDocumentPublishDiagnostics {
     input: TextDocumentPublishDiagnosticsInput
     output: Unit
 }
 
+@jsonRequest("textDocument/rangeFormatting")
 operation TextDocumentRangeFormattingOp {
     input: TextDocumentRangeFormattingOpInput
     output: TextDocumentRangeFormattingOpOutput
 }
 
+@jsonRequest("textDocument/references")
 operation TextDocumentReferencesOp {
     input: TextDocumentReferencesOpInput
     output: TextDocumentReferencesOpOutput
 }
 
+@jsonRequest("textDocument/rename")
 operation TextDocumentRenameOp {
     input: TextDocumentRenameOpInput
     output: TextDocumentRenameOpOutput
 }
 
+@jsonRequest("textDocument/selectionRange")
 operation TextDocumentSelectionRangeOp {
     input: TextDocumentSelectionRangeOpInput
     output: TextDocumentSelectionRangeOpOutput
 }
 
+@jsonRequest("textDocument/semanticTokens/full/delta")
 operation TextDocumentSemanticTokensFullDeltaOp {
     input: TextDocumentSemanticTokensFullDeltaOpInput
     output: TextDocumentSemanticTokensFullDeltaOpOutput
 }
 
+@jsonRequest("textDocument/semanticTokens/full")
 operation TextDocumentSemanticTokensFullOp {
     input: TextDocumentSemanticTokensFullOpInput
     output: TextDocumentSemanticTokensFullOpOutput
 }
 
+@jsonRequest("textDocument/semanticTokens/range")
 operation TextDocumentSemanticTokensRangeOp {
     input: TextDocumentSemanticTokensRangeOpInput
     output: TextDocumentSemanticTokensRangeOpOutput
 }
 
+@jsonRequest("textDocument/signatureHelp")
 operation TextDocumentSignatureHelpOp {
     input: TextDocumentSignatureHelpOpInput
     output: TextDocumentSignatureHelpOpOutput
 }
 
+@jsonRequest("textDocument/typeDefinition")
 operation TextDocumentTypeDefinitionOp {
     input: TextDocumentTypeDefinitionOpInput
     output: TextDocumentTypeDefinitionOpOutput
 }
 
+@jsonNotification("textDocument/willSave")
 operation TextDocumentWillSave {
     input: TextDocumentWillSaveInput
     output: Unit
 }
 
+@jsonRequest("textDocument/willSaveWaitUntil")
 operation TextDocumentWillSaveWaitUntilOp {
     input: TextDocumentWillSaveWaitUntilOpInput
     output: TextDocumentWillSaveWaitUntilOpOutput
 }
 
+@jsonRequest("typeHierarchy/subtypes")
 operation TypeHierarchySubtypesOp {
     input: TypeHierarchySubtypesOpInput
     output: TypeHierarchySubtypesOpOutput
 }
 
+@jsonRequest("typeHierarchy/supertypes")
 operation TypeHierarchySupertypesOp {
     input: TypeHierarchySupertypesOpInput
     output: TypeHierarchySupertypesOpOutput
 }
 
+@jsonNotification("window/logMessage")
 operation WindowLogMessage {
     input: WindowLogMessageInput
     output: Unit
 }
 
+@jsonRequest("window/showDocument")
 operation WindowShowDocumentOp {
     input: WindowShowDocumentOpInput
     output: WindowShowDocumentOpOutput
 }
 
+@jsonNotification("window/showMessage")
 operation WindowShowMessage {
     input: WindowShowMessageInput
     output: Unit
 }
 
+@jsonRequest("window/showMessageRequest")
 operation WindowShowMessageRequestOp {
     input: WindowShowMessageRequestOpInput
     output: WindowShowMessageRequestOpOutput
 }
 
+@jsonNotification("window/workDoneProgress/cancel")
 operation WindowWorkDoneProgressCancel {
     input: WindowWorkDoneProgressCancelInput
     output: Unit
 }
 
+@jsonRequest("window/workDoneProgress/create")
 operation WindowWorkDoneProgressCreateOp {
     input: WindowWorkDoneProgressCreateOpInput
     output: WindowWorkDoneProgressCreateOpOutput
 }
 
+@jsonRequest("workspace/applyEdit")
 operation WorkspaceApplyEditOp {
     input: WorkspaceApplyEditOpInput
     output: WorkspaceApplyEditOpOutput
 }
 
+@jsonRequest("workspace/codeLens/refresh")
 operation WorkspaceCodeLensRefreshOp {
     input: WorkspaceCodeLensRefreshOpInput
     output: WorkspaceCodeLensRefreshOpOutput
 }
 
+@jsonRequest("workspace/configuration")
 operation WorkspaceConfigurationOp {
     input: WorkspaceConfigurationOpInput
     output: WorkspaceConfigurationOpOutput
 }
 
+@jsonRequest("workspace/diagnostic")
 operation WorkspaceDiagnosticOp {
     input: WorkspaceDiagnosticOpInput
     output: WorkspaceDiagnosticOpOutput
 }
 
+@jsonRequest("workspace/diagnostic/refresh")
 operation WorkspaceDiagnosticRefreshOp {
     input: WorkspaceDiagnosticRefreshOpInput
     output: WorkspaceDiagnosticRefreshOpOutput
 }
 
+@jsonNotification("workspace/didChangeConfiguration")
 operation WorkspaceDidChangeConfiguration {
     input: WorkspaceDidChangeConfigurationInput
     output: Unit
 }
 
+@jsonNotification("workspace/didChangeWatchedFiles")
 operation WorkspaceDidChangeWatchedFiles {
     input: WorkspaceDidChangeWatchedFilesInput
     output: Unit
 }
 
+@jsonNotification("workspace/didChangeWorkspaceFolders")
 operation WorkspaceDidChangeWorkspaceFolders {
     input: WorkspaceDidChangeWorkspaceFoldersInput
     output: Unit
 }
 
+@jsonNotification("workspace/didCreateFiles")
 operation WorkspaceDidCreateFiles {
     input: WorkspaceDidCreateFilesInput
     output: Unit
 }
 
+@jsonNotification("workspace/didDeleteFiles")
 operation WorkspaceDidDeleteFiles {
     input: WorkspaceDidDeleteFilesInput
     output: Unit
 }
 
+@jsonNotification("workspace/didRenameFiles")
 operation WorkspaceDidRenameFiles {
     input: WorkspaceDidRenameFilesInput
     output: Unit
 }
 
+@jsonRequest("workspace/executeCommand")
 operation WorkspaceExecuteCommandOp {
     input: WorkspaceExecuteCommandOpInput
     output: WorkspaceExecuteCommandOpOutput
 }
 
+@jsonRequest("workspace/inlayHint/refresh")
 operation WorkspaceInlayHintRefreshOp {
     input: WorkspaceInlayHintRefreshOpInput
     output: WorkspaceInlayHintRefreshOpOutput
 }
 
+@jsonRequest("workspace/inlineValue/refresh")
 operation WorkspaceInlineValueRefreshOp {
     input: WorkspaceInlineValueRefreshOpInput
     output: WorkspaceInlineValueRefreshOpOutput
 }
 
+@jsonRequest("workspace/semanticTokens/refresh")
 operation WorkspaceSemanticTokensRefreshOp {
     input: WorkspaceSemanticTokensRefreshOpInput
     output: WorkspaceSemanticTokensRefreshOpOutput
 }
 
+@jsonRequest("workspace/symbol")
 operation WorkspaceSymbolOp {
     input: WorkspaceSymbolOpInput
     output: WorkspaceSymbolOpOutput
 }
 
+@jsonRequest("workspaceSymbol/resolve")
 operation WorkspaceSymbolResolveOp {
     input: WorkspaceSymbolResolveOpInput
     output: WorkspaceSymbolResolveOpOutput
 }
 
+@jsonRequest("workspace/willCreateFiles")
 operation WorkspaceWillCreateFilesOp {
     input: WorkspaceWillCreateFilesOpInput
     output: WorkspaceWillCreateFilesOpOutput
 }
 
+@jsonRequest("workspace/willDeleteFiles")
 operation WorkspaceWillDeleteFilesOp {
     input: WorkspaceWillDeleteFilesOpInput
     output: WorkspaceWillDeleteFilesOpOutput
 }
 
+@jsonRequest("workspace/willRenameFiles")
 operation WorkspaceWillRenameFilesOp {
     input: WorkspaceWillRenameFilesOpInput
     output: WorkspaceWillRenameFilesOpOutput
 }
 
+@jsonRequest("workspace/workspaceFolders")
 operation WorkspaceWorkspaceFoldersOp {
     input: WorkspaceWorkspaceFoldersOpInput
     output: WorkspaceWorkspaceFoldersOpOutput
