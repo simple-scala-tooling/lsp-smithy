@@ -6808,34 +6808,105 @@ map MapOf_String_to_ListOf_TextEdit {
     value: ListOf_TextEdit
 }
 
+/// Defines how values from a set of defaults and an individual item will be
+/// merged.
+/// 
+/// @since 3.18.0
+@since("3.18.0")
 intEnum ApplyKind {
+    /// The value from the individual item (if provided and not `null`) will be
+    /// used instead of the default.
     REPLACE = 1
+    /// The value from the item will be merged with the default.
+    /// 
+    /// The specific rules for mergeing values are defined against each field
+    /// that supports merging.
     MERGE = 2
 }
 
 string ChangeAnnotationIdentifier
 
 enum CodeActionKind {
+    /// Base kind for quickfix actions: 'quickfix'
     QUICK_FIX = "quickfix"
+    /// Base kind for refactoring actions: 'refactor'
     REFACTOR = "refactor"
+    /// Base kind for refactoring extraction actions: 'refactor.extract'
+    /// 
+    /// Example extract actions:
+    /// 
+    /// - Extract method
+    /// - Extract function
+    /// - Extract variable
+    /// - Extract interface from class
+    /// - ...
     REFACTOR_EXTRACT = "refactor.extract"
+    /// Base kind for refactoring inline actions: 'refactor.inline'
+    /// 
+    /// Example inline actions:
+    /// 
+    /// - Inline function
+    /// - Inline variable
+    /// - Inline constant
+    /// - ...
     REFACTOR_INLINE = "refactor.inline"
+    /// Base kind for refactoring rewrite actions: 'refactor.rewrite'
+    /// 
+    /// Example rewrite actions:
+    /// 
+    /// - Convert JavaScript function to class
+    /// - Add or remove parameter
+    /// - Encapsulate field
+    /// - Make method static
+    /// - Move method to base class
+    /// - ...
     REFACTOR_REWRITE = "refactor.rewrite"
+    /// Base kind for source actions: `source`
+    /// 
+    /// Source code actions apply to the entire file.
     SOURCE = "source"
+    /// Base kind for an organize imports source action: `source.organizeImports`
     SOURCE_ORGANIZE_IMPORTS = "source.organizeImports"
+    /// Base kind for auto-fix source actions: `source.fixAll`.
+    /// 
+    /// Fix all actions automatically fix errors that have a clear fix that do not require user input.
+    /// They should not suppress errors or perform unsafe fixes such as generating new types or classes.
+    /// 
+    /// @since 3.15.0
+    @since("3.15.0")
     SOURCE_FIX_ALL = "source.fixAll"
+    /// Base kind for all code actions applying to the entire notebook's scope. CodeActionKinds using
+    /// this should always begin with `notebook.`
+    /// 
+    /// @since 3.18.0
+    @since("3.18.0")
     NOTEBOOK = "notebook"
 }
 
+/// Code action tags are extra annotations that tweak the behavior of a code action.
+/// 
+/// @since 3.18.0 - proposed
+@since("3.18.0 - proposed")
 intEnum CodeActionTag {
+    /// Marks the code action as LLM-generated.
     LLM_GENERATED = 1
 }
 
+/// The reason why code actions were requested.
+/// 
+/// @since 3.17.0
+@since("3.17.0")
 intEnum CodeActionTriggerKind {
+    /// Code actions were explicitly requested by the user or by an extension.
     INVOKED = 1
+    /// Code actions were requested automatically.
+    /// 
+    /// This typically happens when current selection in a file changes, but can
+    /// also be triggered when file content changes.
     AUTOMATIC = 2
 }
 
+/// The kind of a completion entry.
 intEnum CompletionItemKind {
     TEXT = 1
     METHOD = 2
@@ -6864,85 +6935,176 @@ intEnum CompletionItemKind {
     TYPE_PARAMETER = 25
 }
 
+/// Completion item tags are extra annotations that tweak the rendering of a completion
+/// item.
+/// 
+/// @since 3.15.0
+@since("3.15.0")
 intEnum CompletionItemTag {
+    /// Render a completion as obsolete, usually using a strike-out.
     DEPRECATED = 1
 }
 
+/// How a completion was triggered
 intEnum CompletionTriggerKind {
+    /// Completion was triggered by typing an identifier (24x7 code
+    /// complete), manual invocation (e.g Ctrl+Space) or via API.
     INVOKED = 1
+    /// Completion was triggered by a trigger character specified by
+    /// the `triggerCharacters` properties of the `CompletionRegistrationOptions`.
     TRIGGER_CHARACTER = 2
+    /// Completion was re-triggered as current completion list is incomplete
     TRIGGER_FOR_INCOMPLETE_COMPLETIONS = 3
 }
 
+/// The diagnostic's severity.
 intEnum DiagnosticSeverity {
+    /// Reports an error.
     ERROR = 1
+    /// Reports a warning.
     WARNING = 2
+    /// Reports an information.
     INFORMATION = 3
+    /// Reports a hint.
     HINT = 4
 }
 
+/// The diagnostic tags.
+/// 
+/// @since 3.15.0
+@since("3.15.0")
 intEnum DiagnosticTag {
+    /// Unused or unnecessary code.
+    /// 
+    /// Clients are allowed to render diagnostics with this tag faded out instead of having
+    /// an error squiggle.
     UNNECESSARY = 1
+    /// Deprecated or obsolete code.
+    /// 
+    /// Clients are allowed to rendered diagnostics with this tag strike through.
     DEPRECATED = 2
 }
 
 enum DocumentDiagnosticReportKind {
+    /// A diagnostic report with a full
+    /// set of problems.
     FULL = "full"
+    /// A report indicating that the last
+    /// returned report is still accurate.
     UNCHANGED = "unchanged"
 }
 
+/// A document highlight kind.
 intEnum DocumentHighlightKind {
+    /// A textual occurrence.
     TEXT = 1
+    /// Read-access of a symbol, like reading a variable.
     READ = 2
+    /// Write-access of a symbol, like writing to a variable.
     WRITE = 3
 }
 
+/// Predefined error codes.
 intEnum ErrorCodes {
     PARSE_ERROR = -32700
     INVALID_REQUEST = -32600
     METHOD_NOT_FOUND = -32601
     INVALID_PARAMS = -32602
     INTERNAL_ERROR = -32603
+    /// Error code indicating that a server received a notification or
+    /// request before the server has received the `initialize` request.
     SERVER_NOT_INITIALIZED = -32002
     UNKNOWN_ERROR_CODE = -32001
 }
 
 enum FailureHandlingKind {
+    /// Applying the workspace change is simply aborted if one of the changes provided
+    /// fails. All operations executed before the failing operation stay executed.
     ABORT = "abort"
+    /// All operations are executed transactional. That means they either all
+    /// succeed or no changes at all are applied to the workspace.
     TRANSACTIONAL = "transactional"
+    /// If the workspace edit contains only textual file changes they are executed transactional.
+    /// If resource changes (create, rename or delete file) are part of the change the failure
+    /// handling strategy is abort.
     TEXT_ONLY_TRANSACTIONAL = "textOnlyTransactional"
+    /// The client tries to undo the operations already executed. But there is no
+    /// guarantee that this is succeeding.
     UNDO = "undo"
 }
 
+/// The file event type
 intEnum FileChangeType {
+    /// The file got created.
     CREATED = 1
+    /// The file got changed.
     CHANGED = 2
+    /// The file got deleted.
     DELETED = 3
 }
 
 enum FileOperationPatternKind {
+    /// The pattern matches a file only.
     FILE = "file"
+    /// The pattern matches a folder only.
     FOLDER = "folder"
 }
 
 enum FoldingRangeKind {
+    /// Folding range for a comment
     COMMENT = "comment"
+    /// Folding range for an import or include
     IMPORTS = "imports"
+    /// Folding range for a region (e.g. `#region`)
     REGION = "region"
 }
 
+/// Inlay hint kinds.
+/// 
+/// @since 3.17.0
+@since("3.17.0")
 intEnum InlayHintKind {
+    /// An inlay hint that for a type annotation.
     TYPE = 1
+    /// An inlay hint that is for a parameter.
     PARAMETER = 2
 }
 
+/// Defines whether the insert text in a completion item should be interpreted as
+/// plain text or a snippet.
 intEnum InsertTextFormat {
+    /// The primary text to be inserted is treated as a plain string.
     PLAIN_TEXT = 1
+    /// The primary text to be inserted is treated as a snippet.
+    /// 
+    /// A snippet can define tab stops and placeholders with `$1`, `$2`
+    /// and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+    /// the end of the snippet. Placeholders with equal identifiers are linked,
+    /// that is typing in one will update others too.
+    /// 
+    /// See also: https://microsoft.github.io/language-server-protocol/specifications/specification-current/#snippet_syntax
     SNIPPET = 2
 }
 
+/// How whitespace and indentation is handled during completion
+/// item insertion.
+/// 
+/// @since 3.16.0
+@since("3.16.0")
 intEnum InsertTextMode {
+    /// The insertion or replace strings is taken as it is. If the
+    /// value is multi line the lines below the cursor will be
+    /// inserted using the indentation defined in the string value.
+    /// The client will not apply any kind of adjustments to the
+    /// string.
     AS_IS = 1
+    /// The editor adjusts leading whitespace of new lines so that
+    /// they match the indentation up to the cursor of the line for
+    /// which the item is accepted.
+    /// 
+    /// Consider a line like this: <2tabs><cursor><3tabs>foo. Accepting a
+    /// multi line completion item is indented using 2 tabs and all
+    /// following lines inserted will be indented using 2 tabs as well.
     ADJUST_INDENTATION = 2
 }
 
@@ -7008,52 +7170,107 @@ enum LanguageKind {
 }
 
 intEnum LSPErrorCodes {
+    /// A request failed but it was syntactically correct, e.g the
+    /// method name was known and the parameters were valid. The error
+    /// message should contain human readable information about why
+    /// the request failed.
+    /// 
+    /// @since 3.17.0
+    @since("3.17.0")
     REQUEST_FAILED = -32803
+    /// The server cancelled the request. This error code should
+    /// only be used for requests that explicitly support being
+    /// server cancellable.
+    /// 
+    /// @since 3.17.0
+    @since("3.17.0")
     SERVER_CANCELLED = -32802
+    /// The server detected that the content of a document got
+    /// modified outside normal conditions. A server should
+    /// NOT send this error code if it detects a content change
+    /// in it unprocessed messages. The result even computed
+    /// on an older state might still be useful for the client.
+    /// 
+    /// If a client decides that a result is not of any use anymore
+    /// the client should cancel the request.
     CONTENT_MODIFIED = -32801
+    /// The client has canceled a request and a server has detected
+    /// the cancel.
     REQUEST_CANCELLED = -32800
 }
 
 enum MarkupKind {
+    /// Plain text is supported as a content format
     PLAIN_TEXT = "plaintext"
+    /// Markdown is supported as a content format
     MARKDOWN = "markdown"
 }
 
+/// The message type
 intEnum MessageType {
+    /// An error message.
     ERROR = 1
+    /// A warning message.
     WARNING = 2
+    /// An information message.
     INFO = 3
+    /// A log message.
     LOG = 4
 }
 
 enum MonikerKind {
+    /// The moniker represent a symbol that is imported into a project
     IMPORT = "import"
+    /// The moniker represents a symbol that is exported from a project
     EXPORT = "export"
+    /// The moniker represents a symbol that is local to a project (e.g. a local
+    /// variable of a function, a class not visible outside the project, ...)
     LOCAL = "local"
 }
 
+/// A notebook cell kind.
+/// 
+/// @since 3.17.0
+@since("3.17.0")
 intEnum NotebookCellKind {
+    /// A markup-cell is formatted source that is used for display.
     MARKUP = 1
+    /// A code-cell is source code.
     CODE = 2
 }
 
 string Pattern
 
 enum PositionEncodingKind {
+    /// Character offsets count UTF-8 code units (e.g. bytes).
     UTF8 = "utf-8"
+    /// Character offsets count UTF-16 code units.
+    /// 
+    /// This is the default and must always be supported
+    /// by servers
     UTF16 = "utf-16"
+    /// Character offsets count UTF-32 code units.
+    /// 
+    /// Implementation note: these are the same as Unicode codepoints,
+    /// so this `PositionEncodingKind` may also be used for an
+    /// encoding-agnostic representation of character offsets.
     UTF32 = "utf-32"
 }
 
 intEnum PrepareSupportDefaultBehavior {
+    /// The client's default behavior is to select the identifier
+    /// according the to language's syntax rule.
     IDENTIFIER = 1
 }
 
 string RegularExpressionEngineKind
 
 enum ResourceOperationKind {
+    /// Supports creating new files and folders.
     CREATE = "create"
+    /// Supports renaming existing files and folders.
     RENAME = "rename"
+    /// Supports deleting existing files and folders.
     DELETE = "delete"
 }
 
@@ -7072,6 +7289,8 @@ enum SemanticTokenModifiers {
 
 enum SemanticTokenTypes {
     NAMESPACE = "namespace"
+    /// Represents a generic type. Acts as a fallback for types which can't be mapped to
+    /// a specific type like class or enum.
     TYPE = "type"
     CLASS = "class"
     ENUM = "enum"
@@ -7093,16 +7312,28 @@ enum SemanticTokenTypes {
     NUMBER = "number"
     REGEXP = "regexp"
     OPERATOR = "operator"
+    /// @since 3.17.0
+    @since("3.17.0")
     DECORATOR = "decorator"
+    /// @since 3.18.0
+    @since("3.18.0")
     LABEL = "label"
 }
 
+/// How a signature help was triggered.
+/// 
+/// @since 3.15.0
+@since("3.15.0")
 intEnum SignatureHelpTriggerKind {
+    /// Signature help was invoked manually by the user or by a command.
     INVOKED = 1
+    /// Signature help was triggered by a trigger character.
     TRIGGER_CHARACTER = 2
+    /// Signature help was triggered by the cursor moving or by the document content changing.
     CONTENT_CHANGE = 3
 }
 
+/// A symbol kind.
 intEnum SymbolKind {
     FILE = 1
     MODULE = 2
@@ -7132,19 +7363,37 @@ intEnum SymbolKind {
     TYPE_PARAMETER = 26
 }
 
+/// Symbol tags are extra annotations that tweak the rendering of a symbol.
+/// 
+/// @since 3.16
+@since("3.16")
 intEnum SymbolTag {
+    /// Render a symbol as obsolete, usually using a strike-out.
     DEPRECATED = 1
 }
 
+/// Represents reasons why a text document is saved.
 intEnum TextDocumentSaveReason {
+    /// Manually triggered, e.g. by the user pressing save, by starting debugging,
+    /// or by an API call.
     MANUAL = 1
+    /// Automatic after a delay.
     AFTER_DELAY = 2
+    /// When the editor lost focus.
     FOCUS_OUT = 3
 }
 
+/// Defines how the host (editor) should sync
+/// document changes to the language server.
 intEnum TextDocumentSyncKind {
+    /// Documents should not be synced at all.
     NONE = 0
+    /// Documents are synced by always sending the full content
+    /// of the document.
     FULL = 1
+    /// Documents are synced by sending the full content on open.
+    /// After that only incremental updates to the document are
+    /// send.
     INCREMENTAL = 2
 }
 
@@ -7153,21 +7402,32 @@ enum TokenFormat {
 }
 
 enum TraceValue {
+    /// Turn tracing off.
     OFF = "off"
+    /// Trace messages only.
     MESSAGES = "messages"
+    /// Verbose message tracing.
     VERBOSE = "verbose"
 }
 
 enum UniquenessLevel {
+    /// The moniker is only unique inside a document
     DOCUMENT = "document"
+    /// The moniker is unique inside a project for which a dump got created
     PROJECT = "project"
+    /// The moniker is unique inside the group to which a project belongs
     GROUP = "group"
+    /// The moniker is unique inside the moniker scheme.
     SCHEME = "scheme"
+    /// The moniker is globally unique
     GLOBAL = "global"
 }
 
 intEnum WatchKind {
+    /// Interested in create events.
     CREATE = 1
+    /// Interested in change events
     CHANGE = 2
+    /// Interested in delete events
     DELETE = 4
 }

@@ -80,12 +80,19 @@ object SmithyConverter:
       val shapeId = ShapeId.fromParts(namespace, enum_.name.value)
       val enumShape = enum_.values.map(t => t.value).head match
         case _: Int =>
-          val builder = IntEnumShape.builder().id(shapeId)
+          val builder = IntEnumShape
+            .builder()
+            .id(shapeId)
+            .tap(maybeAddDocs(enum_.documentation.toOption.map(_.value), enum_.since.toOption))
           enum_.values
             .distinctBy(_.value)
             .filterNot(_.proposed)
             .foldLeft(builder) { case (acc, entry) =>
-              acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.intValue)
+              acc.addMember(
+                toUpperSnakeCase(entry.name.value),
+                entry.value.intValue,
+                _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
+              )
             }
             .build()
         case _: String =>
@@ -96,7 +103,11 @@ object SmithyConverter:
             // Smithy doesn't allow enum values: https://github.com/smithy-lang/smithy/issues/2626
             .filter(_.value.stringValue.nonEmpty)
             .foldLeft(builder) { case (acc, entry) =>
-              acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.stringValue)
+              acc.addMember(
+                toUpperSnakeCase(entry.name.value),
+                entry.value.stringValue,
+                _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
+              )
             }
             .build()
 
