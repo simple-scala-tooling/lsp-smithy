@@ -29,7 +29,7 @@ object UnionNameGeneratorSpec extends SimpleIOSuite:
       Type.ReferenceType(TypeName("Beta")),
       Type.ReferenceType(TypeName("Gamma")),
     )
-    expect(unionNameFor(input) == "Union_e1121b0805e8b107f0f5b4f22d0cd0f1")
+    expect(unionNameFor(input) == "Union_814558099")
   }
 
   pureTest("unionNameFor skips empty extracted names") {

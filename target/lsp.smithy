@@ -1018,7 +1018,7 @@ structure ClientSemanticTokensRequestFullDelta {
 structure ClientSemanticTokensRequestOptions {
     /// The client will send the `textDocument/semanticTokens/range` request if
     /// the server provides a corresponding handler.
-    range: BooleanUnion
+    range: BooleanOrLiteral0
     /// The client will send the `textDocument/semanticTokens/full` request if
     /// the server provides a corresponding handler.
     full: BooleanOrClientSemanticTokensRequestFullDelta
@@ -3184,9 +3184,7 @@ structure InlayHintWorkspaceClientCapabilities {
     refreshSupport: Boolean
 }
 
-structure InlineStruct_a32dc9f64f1df03a8ce970b71df42503 {}
-
-structure InlineStruct_bb20b45fd4d951383d93cb799b3970be {}
+structure InlineStruct0 {}
 
 /// Client capabilities specific to inline values.
 /// 
@@ -4348,7 +4346,7 @@ structure SemanticTokensOptions with [WorkDoneProgressOptions] {
     legend: SemanticTokensLegend
     /// Server supports providing semantic tokens for a specific range
     /// of a document.
-    range: BooleanUnion
+    range: BooleanOrLiteral0
     /// Server supports providing semantic tokens for a full document.
     full: BooleanOrSemanticTokensFullDelta
 }
@@ -6268,6 +6266,12 @@ union BooleanOrLinkedEditingRangeOptions {
 }
 
 @untagged()
+union BooleanOrLiteral0 {
+    case0: Boolean
+    case1: InlineStruct0
+}
+
+@untagged()
 union BooleanOrMonikerOptions {
     case0: Boolean
     case1: MonikerOptions
@@ -6323,12 +6327,6 @@ union BooleanOrTypeHierarchyOptions {
 union BooleanOrWorkspaceSymbolOptions {
     case0: Boolean
     case1: WorkspaceSymbolOptions
-}
-
-@untagged()
-union BooleanUnion {
-    case0: Boolean
-    case1: InlineStruct_a32dc9f64f1df03a8ce970b71df42503
 }
 
 @untagged()

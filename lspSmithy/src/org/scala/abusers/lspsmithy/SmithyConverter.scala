@@ -6,6 +6,7 @@ import cats.syntax.all.*
 import jsonrpclib.JsonNotificationTrait
 import jsonrpclib.JsonRequestTrait
 import langoustine.meta.*
+import lsp.TupleTrait
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
@@ -15,20 +16,15 @@ import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
-import java.util.UUID
 import scala.jdk.CollectionConverters.*
 import scala.util.chaining.*
-import scala.util.Random
-
-import lsp.TupleTrait
+import scala.util.hashing.MurmurHash3
 
 object SmithyConverter:
 
   type ShapeState[A] = State[Set[Shape], A]
 
-  private val namespace: String   = "lsp"
-  private val deterministicRandom = new Random(0)
-  private def nextUUID()          = new UUID(deterministicRandom.nextLong(), deterministicRandom.nextLong())
+  private val namespace: String = "lsp"
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val referencedAsMixin: Set[String] = meta.structures
@@ -74,7 +70,7 @@ object SmithyConverter:
         val parts                = List(common.mkString, outlier).sorted
         s"${parts(0)}Or${parts(1)}"
       else if suffix.nonEmpty then suffix.mkString + "Union"
-      else s"Union_${nextUUID().toString.replace("-", "")}"
+      else s"Union_${MurmurHash3.indexedSeqHash(types, 0)}"
 
   private def extractTypeName(t: Type): String = t match
     case Type.ReferenceType(name)                               => name.value
@@ -82,6 +78,7 @@ object SmithyConverter:
     case Type.ArrayType(inner)                                  => s"ListOf${extractTypeName(inner)}"
     case Type.MapType(k, v)                                     => s"MapOf${extractTypeName(k)}To${extractTypeName(v)}"
     case Type.StringLiteralType(_) | Type.BooleanLiteralType(_) => "Literal"
+    case Type.StructureLiteralType(StructureLiteral(props, _))  => s"Literal${MurmurHash3.indexedSeqHash(props, 0)}"
     case _                                                      => ""
 
   private def splitPascal(s: String): List[String] =
@@ -142,9 +139,6 @@ object SmithyConverter:
 
   private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] =
     import Type.*
-
-    def uniqueShapeId(prefix: String): ShapeId =
-      ShapeId.fromParts(namespace, s"${prefix}_${nextUUID().toString.replace("-", "")}")
 
     t match
       case BaseType(BaseTypes.string)   => ShapeId.from("smithy.api#String").pure
@@ -243,7 +237,7 @@ object SmithyConverter:
           }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
-        val id = uniqueShapeId("InlineStruct")
+        val id = ShapeId.fromParts(namespace, s"InlineStruct${MurmurHash3.indexedSeqHash(properties, 0)}")
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
