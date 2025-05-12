@@ -46,7 +46,7 @@ object SmithyConverter:
     shapes.foreach(assembler.addShape)
     assembler.assemble()
 
-  private def unionNameFor(types: Vector[Type]): String =
+  private[lspsmithy] def unionNameFor(types: Vector[Type]): String =
     val names = types.map(extractTypeName).filter(_.nonEmpty).distinct
 
     val commonSeq = longestCommonPascalSubsequence(names)
