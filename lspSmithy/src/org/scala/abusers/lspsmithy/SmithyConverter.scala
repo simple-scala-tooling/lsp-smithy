@@ -8,10 +8,13 @@ import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
 import software.amazon.smithy.model.traits.MixinTrait
 import software.amazon.smithy.model.traits.RequiredTrait
+import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
 import java.util.UUID
+import scala.jdk.CollectionConverters.*
+import scala.util.chaining.*
 import scala.util.Random
 
 object SmithyConverter:
@@ -280,6 +283,15 @@ object SmithyConverter:
     }.void
 
   def convertStructures(structures: Vector[Structure], referencedAsMixin: Set[String]): ShapeState[Unit] =
+    def addMixinTrait(name: String)(b: StructureShape.Builder) =
+      if referencedAsMixin.contains(name) then b.addTrait(MixinTrait.builder().build())
+      else b
+
+    def addMixins(shapes: Set[Shape], mixinIds: Set[ShapeId])(b: StructureShape.Builder) =
+      val shapeMap = shapes.map(s => s.getId -> s).toMap
+      mixinIds.flatMap(shapeMap.get).foreach(b.addMixin)
+      b
+
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
 
@@ -289,26 +301,42 @@ object SmithyConverter:
         mixinIds <- struct.mixins // TODO add exteds?
           .filterNot(_.isInstanceOf[Type.BaseType])
           .traverse(t => smithyType(t, namespace))
+          .map(_.toSet)
 
         result <- State.apply[Set[Shape], ShapeId] { shapes =>
-          val builder = StructureShape.builder().id(shapeId)
+          val shape =
+            StructureShape
+              .builder()
+              .id(shapeId)
+              .tap(maybeAddDocs(struct.documentation.toOption.map(_.value), struct.since.toOption))
+              .tap(addMixinTrait(struct.name.value))
+              .tap(addMixins(shapes, mixinIds))
+              .tap(b => members.foreach(b.addMember))
+              .build()
 
-          if referencedAsMixin.contains(struct.name.value) then builder.addTrait(MixinTrait.builder().build())
-
-          val shapeMap = shapes.map(s => s.getId -> s).toMap
-
-          members.foreach(builder.addMember)
-          mixinIds.flatMap(shapeMap.get).foreach(builder.addMixin)
-
-          struct.documentation.toOption.foreach { doc =>
-            builder.addTrait(new DocumentationTrait(doc.value))
-          }
-
-          val shape = builder.build()
           (shapes + shape, shapeId)
         }
       yield result
     }.void
+
+  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](
+      text: Option[String],
+      since: Option[String],
+  )(
+      b: B
+  ): Unit =
+    b.addTraits(
+      List
+        .concat(
+          // technically we could try to strip the text of `since` if present
+          // but in some cases there's more than one @since, and only one `since` property (though there should be multiple sinceTags).
+          // so we just leave it be for simplicity, it's just docstrings
+          // example: https://github.com/microsoft/language-server-protocol/blob/5500ef8fb35925106ee222173a95c57595882b0a/_specifications/lsp/3.18/metaModel/metaModel.json#L7234-L7235
+          text.map(new DocumentationTrait(_)),
+          since.map(new SinceTrait(_)),
+        )
+        .asJava
+    )
 
   private def sanitizeMethodName(m: RequestMethod): String =
     m.value.split("/").toList.map(_.capitalize).mkString.replaceAll("\\$", "")
@@ -353,26 +381,22 @@ object SmithyConverter:
     }
 
   private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] =
+    def makeRequired(prop: Property): MemberShape.Builder => Unit =
+      if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+      else identity
+
     properties
       .filterNot(_.proposed)
       .traverse { prop =>
         val memberId = id.withMember(prop.name.value)
         smithyType(prop.tpe, namespace).map { target =>
-          val member = MemberShape
+          MemberShape
             .builder()
             .id(memberId)
             .target(target)
-
-          val withOptional =
-            if prop.optional.no then
-              member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode()))
-            else member
-
-          prop.documentation.toOption.foreach { doc =>
-            withOptional.addTrait(new DocumentationTrait(doc.value))
-          }
-
-          withOptional.build()
+            .tap(makeRequired(prop))
+            .tap(maybeAddDocs(prop.documentation.toOption.map(_.value), prop.since.toOption))
+            .build()
         }
       }
 
