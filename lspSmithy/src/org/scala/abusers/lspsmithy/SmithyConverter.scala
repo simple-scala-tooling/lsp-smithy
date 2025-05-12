@@ -20,6 +20,8 @@ import scala.jdk.CollectionConverters.*
 import scala.util.chaining.*
 import scala.util.Random
 
+import lsp.TupleTrait
+
 object SmithyConverter:
 
   type ShapeState[A] = State[Set[Shape], A]
@@ -205,6 +207,7 @@ object SmithyConverter:
             val listShape = ListShape
               .builder()
               .id(listId)
+              .addTrait(TupleTrait.builder().build())
               .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
               .build()
             (shapes + listShape, listId)

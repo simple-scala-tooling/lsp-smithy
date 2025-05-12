@@ -7107,6 +7107,7 @@ list LSPArray {
     member: Document
 }
 
+@tuple()
 list TupleOfInteger {
     member: Integer
 }
