@@ -1,0 +1,46 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Scala CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Run tests
+        run: ./mill _.test
+
+      - name: Run smithy gen
+        run: ./mill lspSmithy.run
+
+      - name: Ensure working tree is clean
+        run: |
+          # ensure working tree in git is clean, otherwise fail
+          OUT=$(git status --porcelain)
+          if [ -n "$OUT" ]; then
+              echo "Working tree is not clean, aborting. Some uncommitted changes were found. Here's a list of them:"
+              # git diff won't show any changes for new untracked files so we need both diff and status
+              git diff
+              git status
+              exit 1
+          fi
