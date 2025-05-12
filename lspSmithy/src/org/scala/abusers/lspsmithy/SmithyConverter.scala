@@ -6,7 +6,6 @@ import langoustine.meta.*
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
-import software.amazon.smithy.model.traits.EnumValueTrait
 import software.amazon.smithy.model.traits.MixinTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.validation.ValidatedResult
@@ -74,7 +73,6 @@ object SmithyConverter:
     else Nil
 
   private def convertEnums(enumerations: Vector[Enumeration]): ShapeState[Unit] =
-    // Enums
     val smithyEnums = enumerations.map { enum_ =>
       val shapeId = ShapeId.fromParts(namespace, enum_.name.value)
       val enumShape = enum_.values.map(t => t.value).head match
@@ -83,8 +81,9 @@ object SmithyConverter:
           enum_.values
             .distinctBy(_.value)
             .filterNot(_.proposed)
-            .map(convertEnumValues(shapeId, _))
-            .foldLeft(builder) { case (acc, item) => acc.addMember(item) }
+            .foldLeft(builder) { case (acc, entry) =>
+              acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.intValue)
+            }
             .build()
         case _: String =>
           val builder = EnumShape.builder().id(shapeId)
@@ -93,11 +92,12 @@ object SmithyConverter:
             .filterNot(_.proposed)
             .filter {
               _.value match
-                case _: Int      => true
+                case _: Int      => false
                 case str: String => str.nonEmpty
             }
-            .map(convertEnumValues(shapeId, _))
-            .foldLeft(builder) { case (acc, item) => acc.addMember(item) }
+            .foldLeft(builder) { case (acc, entry) =>
+              acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.stringValue)
+            }
             .build()
 
       shapeId -> enumShape
@@ -108,20 +108,6 @@ object SmithyConverter:
     s.replaceAll("([a-z])([A-Z])", "$1_$2")
       .replaceAll("([A-Z])([A-Z][a-z])", "$1_$2")
       .toUpperCase
-
-  private def convertEnumValues(shapeId: ShapeId, entry: EnumerationEntry) =
-    val memberId = shapeId.withMember(toUpperSnakeCase(entry.name.value))
-    val memberBuilder = MemberShape
-      .builder()
-      .id(memberId)
-      .target("smithy.api#Unit")
-
-    val enumValueTrait = entry.value match
-      case i: Int    => EnumValueTrait.builder().intValue(i).build()
-      case s: String => EnumValueTrait.builder().stringValue(s).build()
-
-    memberBuilder.addTrait(enumValueTrait)
-    memberBuilder.build()
 
   private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] =
     import Type.*
@@ -212,22 +198,7 @@ object SmithyConverter:
 
       case StructureLiteralType(StructureLiteral(properties, _)) =>
         val id = uniqueShapeId("InlineStruct")
-        properties
-          .traverse { prop =>
-            val memberId = id.withMember(prop.name.value)
-            smithyType(prop.tpe, namespace).map { target =>
-              val member = MemberShape
-                .builder()
-                .id(memberId)
-                .target(target)
-              val memberOpt =
-                if prop.optional.no then
-                  member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-                else member
-
-              memberOpt.build()
-            }
-          }
+        structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
             State(shapes => (shapes + (id -> structureShape), id))
@@ -310,35 +281,13 @@ object SmithyConverter:
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
 
       for
-        members <- struct.properties
-          .filterNot(_.proposed)
-          .traverse { prop =>
-            val memberId = shapeId.withMember(prop.name.value)
-            smithyType(prop.tpe, namespace).map { target =>
-              val member = MemberShape
-                .builder()
-                .id(memberId)
-                .target(target)
-
-              val withOptional =
-                if prop.optional.no then
-                  member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode()))
-                else member
-
-              prop.documentation.toOption.foreach { doc =>
-                withOptional.addTrait(new DocumentationTrait(doc.value))
-              }
-
-              withOptional.build()
-            }
-          }
-
+        members <- structureMembers(shapeId, struct.properties)
         // mixins: both `extends` and `mixins`
         mixinIds <- struct.mixins // TODO add exteds?
           .filterNot(_.isInstanceOf[Type.BaseType])
           .traverse(t => smithyType(t, namespace))
 
-        result <- State.modify[Map[ShapeId, Shape]] { shapes =>
+        result <- State.apply[Map[ShapeId, Shape], ShapeId] { shapes =>
           val builder = StructureShape.builder().id(shapeId)
 
           if referencedAsMixin.contains(struct.name.value) then builder.addTrait(MixinTrait.builder().build())
@@ -351,7 +300,7 @@ object SmithyConverter:
           }
 
           val shape = builder.build()
-          shapes + (shapeId -> shape)
+          (shapes + (shapeId -> shape), shapeId)
         }
       yield result
     }.void
@@ -396,8 +345,31 @@ object SmithyConverter:
 
     inputStruct.flatMap { inputShape =>
       State(shapes => (shapes + (inputShape.getId -> inputShape), inputShape.getId))
-
     }
+
+  private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] =
+    properties
+      .filterNot(_.proposed)
+      .traverse { prop =>
+        val memberId = id.withMember(prop.name.value)
+        smithyType(prop.tpe, namespace).map { target =>
+          val member = MemberShape
+            .builder()
+            .id(memberId)
+            .target(target)
+
+          val withOptional =
+            if prop.optional.no then
+              member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode()))
+            else member
+
+          prop.documentation.toOption.foreach { doc =>
+            withOptional.addTrait(new DocumentationTrait(doc.value))
+          }
+
+          withOptional.build()
+        }
+      }
 
   def convertRequests(requests: Vector[Request]): ShapeState[Unit] =
     requests.traverse { req =>
