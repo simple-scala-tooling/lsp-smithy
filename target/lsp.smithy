@@ -2,6 +2,456 @@ $version: "2.0"
 
 namespace lsp
 
+operation CallHierarchyIncomingCallsOp {
+    input: CallHierarchyIncomingCallsOpInput
+    output: CallHierarchyIncomingCallsOpOutput
+}
+
+operation CallHierarchyOutgoingCallsOp {
+    input: CallHierarchyOutgoingCallsOpInput
+    output: CallHierarchyOutgoingCallsOpOutput
+}
+
+operation CancelRequest {
+    input: CancelRequestInput
+    output: Unit
+}
+
+operation ClientRegisterCapabilityOp {
+    input: ClientRegisterCapabilityOpInput
+    output: ClientRegisterCapabilityOpOutput
+}
+
+operation ClientUnregisterCapabilityOp {
+    input: ClientUnregisterCapabilityOpInput
+    output: ClientUnregisterCapabilityOpOutput
+}
+
+operation CodeActionResolveOp {
+    input: CodeActionResolveOpInput
+    output: CodeActionResolveOpOutput
+}
+
+operation CodeLensResolveOp {
+    input: CodeLensResolveOpInput
+    output: CodeLensResolveOpOutput
+}
+
+operation CompletionItemResolveOp {
+    input: CompletionItemResolveOpInput
+    output: CompletionItemResolveOpOutput
+}
+
+operation DocumentLinkResolveOp {
+    input: DocumentLinkResolveOpInput
+    output: DocumentLinkResolveOpOutput
+}
+
+operation Exit {
+    input: ExitInput
+    output: Unit
+}
+
+operation Initialized {
+    input: InitializedInput
+    output: Unit
+}
+
+operation InitializeOp {
+    input: InitializeOpInput
+    output: InitializeOpOutput
+}
+
+operation InlayHintResolveOp {
+    input: InlayHintResolveOpInput
+    output: InlayHintResolveOpOutput
+}
+
+operation LogTrace {
+    input: LogTraceInput
+    output: Unit
+}
+
+operation NotebookDocumentDidChange {
+    input: NotebookDocumentDidChangeInput
+    output: Unit
+}
+
+operation NotebookDocumentDidClose {
+    input: NotebookDocumentDidCloseInput
+    output: Unit
+}
+
+operation NotebookDocumentDidOpen {
+    input: NotebookDocumentDidOpenInput
+    output: Unit
+}
+
+operation NotebookDocumentDidSave {
+    input: NotebookDocumentDidSaveInput
+    output: Unit
+}
+
+operation Progress {
+    input: ProgressInput
+    output: Unit
+}
+
+operation SetTrace {
+    input: SetTraceInput
+    output: Unit
+}
+
+operation ShutdownOp {
+    input: ShutdownOpInput
+    output: ShutdownOpOutput
+}
+
+operation TelemetryEvent {
+    input: TelemetryEventInput
+    output: Unit
+}
+
+operation TextDocumentCodeActionOp {
+    input: TextDocumentCodeActionOpInput
+    output: TextDocumentCodeActionOpOutput
+}
+
+operation TextDocumentCodeLensOp {
+    input: TextDocumentCodeLensOpInput
+    output: TextDocumentCodeLensOpOutput
+}
+
+operation TextDocumentColorPresentationOp {
+    input: TextDocumentColorPresentationOpInput
+    output: TextDocumentColorPresentationOpOutput
+}
+
+operation TextDocumentCompletionOp {
+    input: TextDocumentCompletionOpInput
+    output: TextDocumentCompletionOpOutput
+}
+
+operation TextDocumentDeclarationOp {
+    input: TextDocumentDeclarationOpInput
+    output: TextDocumentDeclarationOpOutput
+}
+
+operation TextDocumentDefinitionOp {
+    input: TextDocumentDefinitionOpInput
+    output: TextDocumentDefinitionOpOutput
+}
+
+operation TextDocumentDiagnosticOp {
+    input: TextDocumentDiagnosticOpInput
+    output: TextDocumentDiagnosticOpOutput
+}
+
+operation TextDocumentDidChange {
+    input: TextDocumentDidChangeInput
+    output: Unit
+}
+
+operation TextDocumentDidClose {
+    input: TextDocumentDidCloseInput
+    output: Unit
+}
+
+operation TextDocumentDidOpen {
+    input: TextDocumentDidOpenInput
+    output: Unit
+}
+
+operation TextDocumentDidSave {
+    input: TextDocumentDidSaveInput
+    output: Unit
+}
+
+operation TextDocumentDocumentColorOp {
+    input: TextDocumentDocumentColorOpInput
+    output: TextDocumentDocumentColorOpOutput
+}
+
+operation TextDocumentDocumentHighlightOp {
+    input: TextDocumentDocumentHighlightOpInput
+    output: TextDocumentDocumentHighlightOpOutput
+}
+
+operation TextDocumentDocumentLinkOp {
+    input: TextDocumentDocumentLinkOpInput
+    output: TextDocumentDocumentLinkOpOutput
+}
+
+operation TextDocumentDocumentSymbolOp {
+    input: TextDocumentDocumentSymbolOpInput
+    output: TextDocumentDocumentSymbolOpOutput
+}
+
+operation TextDocumentFoldingRangeOp {
+    input: TextDocumentFoldingRangeOpInput
+    output: TextDocumentFoldingRangeOpOutput
+}
+
+operation TextDocumentFormattingOp {
+    input: TextDocumentFormattingOpInput
+    output: TextDocumentFormattingOpOutput
+}
+
+operation TextDocumentHoverOp {
+    input: TextDocumentHoverOpInput
+    output: TextDocumentHoverOpOutput
+}
+
+operation TextDocumentImplementationOp {
+    input: TextDocumentImplementationOpInput
+    output: TextDocumentImplementationOpOutput
+}
+
+operation TextDocumentInlayHintOp {
+    input: TextDocumentInlayHintOpInput
+    output: TextDocumentInlayHintOpOutput
+}
+
+operation TextDocumentInlineValueOp {
+    input: TextDocumentInlineValueOpInput
+    output: TextDocumentInlineValueOpOutput
+}
+
+operation TextDocumentLinkedEditingRangeOp {
+    input: TextDocumentLinkedEditingRangeOpInput
+    output: TextDocumentLinkedEditingRangeOpOutput
+}
+
+operation TextDocumentMonikerOp {
+    input: TextDocumentMonikerOpInput
+    output: TextDocumentMonikerOpOutput
+}
+
+operation TextDocumentOnTypeFormattingOp {
+    input: TextDocumentOnTypeFormattingOpInput
+    output: TextDocumentOnTypeFormattingOpOutput
+}
+
+operation TextDocumentPrepareCallHierarchyOp {
+    input: TextDocumentPrepareCallHierarchyOpInput
+    output: TextDocumentPrepareCallHierarchyOpOutput
+}
+
+operation TextDocumentPrepareRenameOp {
+    input: TextDocumentPrepareRenameOpInput
+    output: TextDocumentPrepareRenameOpOutput
+}
+
+operation TextDocumentPrepareTypeHierarchyOp {
+    input: TextDocumentPrepareTypeHierarchyOpInput
+    output: TextDocumentPrepareTypeHierarchyOpOutput
+}
+
+operation TextDocumentPublishDiagnostics {
+    input: TextDocumentPublishDiagnosticsInput
+    output: Unit
+}
+
+operation TextDocumentRangeFormattingOp {
+    input: TextDocumentRangeFormattingOpInput
+    output: TextDocumentRangeFormattingOpOutput
+}
+
+operation TextDocumentReferencesOp {
+    input: TextDocumentReferencesOpInput
+    output: TextDocumentReferencesOpOutput
+}
+
+operation TextDocumentRenameOp {
+    input: TextDocumentRenameOpInput
+    output: TextDocumentRenameOpOutput
+}
+
+operation TextDocumentSelectionRangeOp {
+    input: TextDocumentSelectionRangeOpInput
+    output: TextDocumentSelectionRangeOpOutput
+}
+
+operation TextDocumentSemanticTokensFullDeltaOp {
+    input: TextDocumentSemanticTokensFullDeltaOpInput
+    output: TextDocumentSemanticTokensFullDeltaOpOutput
+}
+
+operation TextDocumentSemanticTokensFullOp {
+    input: TextDocumentSemanticTokensFullOpInput
+    output: TextDocumentSemanticTokensFullOpOutput
+}
+
+operation TextDocumentSemanticTokensRangeOp {
+    input: TextDocumentSemanticTokensRangeOpInput
+    output: TextDocumentSemanticTokensRangeOpOutput
+}
+
+operation TextDocumentSignatureHelpOp {
+    input: TextDocumentSignatureHelpOpInput
+    output: TextDocumentSignatureHelpOpOutput
+}
+
+operation TextDocumentTypeDefinitionOp {
+    input: TextDocumentTypeDefinitionOpInput
+    output: TextDocumentTypeDefinitionOpOutput
+}
+
+operation TextDocumentWillSave {
+    input: TextDocumentWillSaveInput
+    output: Unit
+}
+
+operation TextDocumentWillSaveWaitUntilOp {
+    input: TextDocumentWillSaveWaitUntilOpInput
+    output: TextDocumentWillSaveWaitUntilOpOutput
+}
+
+operation TypeHierarchySubtypesOp {
+    input: TypeHierarchySubtypesOpInput
+    output: TypeHierarchySubtypesOpOutput
+}
+
+operation TypeHierarchySupertypesOp {
+    input: TypeHierarchySupertypesOpInput
+    output: TypeHierarchySupertypesOpOutput
+}
+
+operation WindowLogMessage {
+    input: WindowLogMessageInput
+    output: Unit
+}
+
+operation WindowShowDocumentOp {
+    input: WindowShowDocumentOpInput
+    output: WindowShowDocumentOpOutput
+}
+
+operation WindowShowMessage {
+    input: WindowShowMessageInput
+    output: Unit
+}
+
+operation WindowShowMessageRequestOp {
+    input: WindowShowMessageRequestOpInput
+    output: WindowShowMessageRequestOpOutput
+}
+
+operation WindowWorkDoneProgressCancel {
+    input: WindowWorkDoneProgressCancelInput
+    output: Unit
+}
+
+operation WindowWorkDoneProgressCreateOp {
+    input: WindowWorkDoneProgressCreateOpInput
+    output: WindowWorkDoneProgressCreateOpOutput
+}
+
+operation WorkspaceApplyEditOp {
+    input: WorkspaceApplyEditOpInput
+    output: WorkspaceApplyEditOpOutput
+}
+
+operation WorkspaceCodeLensRefreshOp {
+    input: WorkspaceCodeLensRefreshOpInput
+    output: WorkspaceCodeLensRefreshOpOutput
+}
+
+operation WorkspaceConfigurationOp {
+    input: WorkspaceConfigurationOpInput
+    output: WorkspaceConfigurationOpOutput
+}
+
+operation WorkspaceDiagnosticOp {
+    input: WorkspaceDiagnosticOpInput
+    output: WorkspaceDiagnosticOpOutput
+}
+
+operation WorkspaceDiagnosticRefreshOp {
+    input: WorkspaceDiagnosticRefreshOpInput
+    output: WorkspaceDiagnosticRefreshOpOutput
+}
+
+operation WorkspaceDidChangeConfiguration {
+    input: WorkspaceDidChangeConfigurationInput
+    output: Unit
+}
+
+operation WorkspaceDidChangeWatchedFiles {
+    input: WorkspaceDidChangeWatchedFilesInput
+    output: Unit
+}
+
+operation WorkspaceDidChangeWorkspaceFolders {
+    input: WorkspaceDidChangeWorkspaceFoldersInput
+    output: Unit
+}
+
+operation WorkspaceDidCreateFiles {
+    input: WorkspaceDidCreateFilesInput
+    output: Unit
+}
+
+operation WorkspaceDidDeleteFiles {
+    input: WorkspaceDidDeleteFilesInput
+    output: Unit
+}
+
+operation WorkspaceDidRenameFiles {
+    input: WorkspaceDidRenameFilesInput
+    output: Unit
+}
+
+operation WorkspaceExecuteCommandOp {
+    input: WorkspaceExecuteCommandOpInput
+    output: WorkspaceExecuteCommandOpOutput
+}
+
+operation WorkspaceInlayHintRefreshOp {
+    input: WorkspaceInlayHintRefreshOpInput
+    output: WorkspaceInlayHintRefreshOpOutput
+}
+
+operation WorkspaceInlineValueRefreshOp {
+    input: WorkspaceInlineValueRefreshOpInput
+    output: WorkspaceInlineValueRefreshOpOutput
+}
+
+operation WorkspaceSemanticTokensRefreshOp {
+    input: WorkspaceSemanticTokensRefreshOpInput
+    output: WorkspaceSemanticTokensRefreshOpOutput
+}
+
+operation WorkspaceSymbolOp {
+    input: WorkspaceSymbolOpInput
+    output: WorkspaceSymbolOpOutput
+}
+
+operation WorkspaceSymbolResolveOp {
+    input: WorkspaceSymbolResolveOpInput
+    output: WorkspaceSymbolResolveOpOutput
+}
+
+operation WorkspaceWillCreateFilesOp {
+    input: WorkspaceWillCreateFilesOpInput
+    output: WorkspaceWillCreateFilesOpOutput
+}
+
+operation WorkspaceWillDeleteFilesOp {
+    input: WorkspaceWillDeleteFilesOpInput
+    output: WorkspaceWillDeleteFilesOpOutput
+}
+
+operation WorkspaceWillRenameFilesOp {
+    input: WorkspaceWillRenameFilesOpInput
+    output: WorkspaceWillRenameFilesOpOutput
+}
+
+operation WorkspaceWorkspaceFoldersOp {
+    input: WorkspaceWorkspaceFoldersOpInput
+    output: WorkspaceWorkspaceFoldersOpOutput
+}
+
 structure _InitializeParams {
     @required
     processId: IntegerOrNULL
@@ -12,7 +462,7 @@ structure _InitializeParams {
     rootUri: DocumentUriOrNULL
     @required
     capabilities: ClientCapabilities
-    initializationOptions: LSPAny
+    initializationOptions: Document
     trace: TraceValue
 }
 
@@ -25,7 +475,6 @@ structure ApplyWorkspaceEditParams {
     label: String
     @required
     edit: WorkspaceEdit
-    metadata: WorkspaceEditMetadata
 }
 
 structure ApplyWorkspaceEditResult {
@@ -55,6 +504,14 @@ structure CallHierarchyIncomingCall {
     fromRanges: ListOf_Range
 }
 
+structure CallHierarchyIncomingCallsOpInput {
+    params: CallHierarchyIncomingCallsParams
+}
+
+structure CallHierarchyIncomingCallsOpOutput {
+    result: ListOfCallHierarchyIncomingCallOrNULL
+}
+
 structure CallHierarchyIncomingCallsParams {
     @required
     item: CallHierarchyItem
@@ -73,7 +530,7 @@ structure CallHierarchyItem {
     range: Range
     @required
     selectionRange: Range
-    data: LSPAny
+    data: Document
 }
 
 structure CallHierarchyOptions {}
@@ -83,6 +540,14 @@ structure CallHierarchyOutgoingCall {
     to: CallHierarchyItem
     @required
     fromRanges: ListOf_Range
+}
+
+structure CallHierarchyOutgoingCallsOpInput {
+    params: CallHierarchyOutgoingCallsParams
+}
+
+structure CallHierarchyOutgoingCallsOpOutput {
+    result: ListOfCallHierarchyOutgoingCallOrNULL
 }
 
 structure CallHierarchyOutgoingCallsParams {
@@ -97,6 +562,10 @@ structure CallHierarchyRegistrationOptions {}
 structure CancelParams {
     @required
     id: IntegerOrString
+}
+
+structure CancelRequestInput {
+    params: CancelParams
 }
 
 structure ChangeAnnotation {
@@ -116,7 +585,7 @@ structure ClientCapabilities {
     notebookDocument: NotebookDocumentClientCapabilities
     window: WindowClientCapabilities
     general: GeneralClientCapabilities
-    experimental: LSPAny
+    experimental: Document
 }
 
 structure ClientCodeActionKindOptions {
@@ -190,6 +659,12 @@ structure ClientInlayHintResolveOptions {
     properties: ListOf_String
 }
 
+structure ClientRegisterCapabilityOpInput {
+    params: RegistrationParams
+}
+
+structure ClientRegisterCapabilityOpOutput {}
+
 structure ClientSemanticTokensRequestFullDelta {
     delta: Boolean
 }
@@ -207,7 +682,6 @@ structure ClientSignatureInformationOptions {
     documentationFormat: ListOf_MarkupKind
     parameterInformation: ClientSignatureParameterInformationOptions
     activeParameterSupport: Boolean
-    noActiveParameterSupport: Boolean
 }
 
 structure ClientSignatureParameterInformationOptions {
@@ -228,6 +702,12 @@ structure ClientSymbolTagOptions {
     valueSet: ListOf_SymbolTag
 }
 
+structure ClientUnregisterCapabilityOpInput {
+    params: UnregistrationParams
+}
+
+structure ClientUnregisterCapabilityOpOutput {}
+
 structure CodeAction {
     @required
     title: String
@@ -237,7 +717,7 @@ structure CodeAction {
     disabled: CodeActionDisabled
     edit: WorkspaceEdit
     command: Command
-    data: LSPAny
+    data: Document
     tags: ListOf_CodeActionTag
 }
 
@@ -249,7 +729,6 @@ structure CodeActionClientCapabilities {
     dataSupport: Boolean
     resolveSupport: ClientCodeActionResolveOptions
     honorsChangeAnnotations: Boolean
-    documentationSupport: Boolean
     tagSupport: CodeActionTagOptions
 }
 
@@ -274,7 +753,6 @@ structure CodeActionKindDocumentation {
 
 structure CodeActionOptions {
     codeActionKinds: ListOf_CodeActionKind
-    documentation: ListOf_CodeActionKindDocumentation
     resolveProvider: Boolean
 }
 
@@ -288,6 +766,14 @@ structure CodeActionParams {
 }
 
 structure CodeActionRegistrationOptions {}
+
+structure CodeActionResolveOpInput {
+    params: CodeAction
+}
+
+structure CodeActionResolveOpOutput {
+    result: CodeAction
+}
 
 structure CodeActionTagOptions {
     @required
@@ -303,7 +789,7 @@ structure CodeLens {
     @required
     range: Range
     command: Command
-    data: LSPAny
+    data: Document
 }
 
 structure CodeLensClientCapabilities {
@@ -321,6 +807,14 @@ structure CodeLensParams {
 }
 
 structure CodeLensRegistrationOptions {}
+
+structure CodeLensResolveOpInput {
+    params: CodeLens
+}
+
+structure CodeLensResolveOpOutput {
+    result: CodeLens
+}
 
 structure CodeLensWorkspaceClientCapabilities {
     refreshSupport: Boolean
@@ -363,10 +857,9 @@ structure ColorPresentationParams {
 structure Command {
     @required
     title: String
-    tooltip: String
     @required
     command: String
-    arguments: ListOf_LSPAny
+    arguments: ListOf_Document
 }
 
 structure CompletionClientCapabilities {
@@ -404,7 +897,7 @@ structure CompletionItem {
     additionalTextEdits: ListOf_TextEdit
     commitCharacters: ListOf_String
     command: Command
-    data: LSPAny
+    data: Document
 }
 
 structure CompletionItemApplyKinds {
@@ -417,12 +910,20 @@ structure CompletionItemDefaults {
     editRange: RangeUnion
     insertTextFormat: InsertTextFormat
     insertTextMode: InsertTextMode
-    data: LSPAny
+    data: Document
 }
 
 structure CompletionItemLabelDetails {
     detail: String
     description: String
+}
+
+structure CompletionItemResolveOpInput {
+    params: CompletionItem
+}
+
+structure CompletionItemResolveOpOutput {
+    result: CompletionItem
 }
 
 structure CompletionItemTagOptions {
@@ -490,6 +991,16 @@ structure DeclarationClientCapabilities {
     linkSupport: Boolean
 }
 
+structure DeclarationLink {
+    originSelectionRange: Range
+    @required
+    targetUri: String
+    @required
+    targetRange: Range
+    @required
+    targetSelectionRange: Range
+}
+
 structure DeclarationOptions {}
 
 structure DeclarationParams {}
@@ -499,6 +1010,16 @@ structure DeclarationRegistrationOptions {}
 structure DefinitionClientCapabilities {
     dynamicRegistration: Boolean
     linkSupport: Boolean
+}
+
+structure DefinitionLink {
+    originSelectionRange: Range
+    @required
+    targetUri: String
+    @required
+    targetRange: Range
+    @required
+    targetSelectionRange: Range
 }
 
 structure DefinitionOptions {}
@@ -536,7 +1057,7 @@ structure Diagnostic {
     message: String
     tags: ListOf_DiagnosticTag
     relatedInformation: ListOf_DiagnosticRelatedInformation
-    data: LSPAny
+    data: Document
 }
 
 structure DiagnosticClientCapabilities {
@@ -583,7 +1104,7 @@ structure DidChangeConfigurationClientCapabilities {
 
 structure DidChangeConfigurationParams {
     @required
-    settings: LSPAny
+    settings: Document
 }
 
 structure DidChangeConfigurationRegistrationOptions {
@@ -720,7 +1241,7 @@ structure DocumentLink {
     range: Range
     target: String
     tooltip: String
-    data: LSPAny
+    data: Document
 }
 
 structure DocumentLinkClientCapabilities {
@@ -738,6 +1259,14 @@ structure DocumentLinkParams {
 }
 
 structure DocumentLinkRegistrationOptions {}
+
+structure DocumentLinkResolveOpInput {
+    params: DocumentLink
+}
+
+structure DocumentLinkResolveOpOutput {
+    result: DocumentLink
+}
 
 structure DocumentOnTypeFormattingClientCapabilities {
     dynamicRegistration: Boolean
@@ -764,12 +1293,9 @@ structure DocumentOnTypeFormattingRegistrationOptions {}
 
 structure DocumentRangeFormattingClientCapabilities {
     dynamicRegistration: Boolean
-    rangesSupport: Boolean
 }
 
-structure DocumentRangeFormattingOptions {
-    rangesSupport: Boolean
-}
+structure DocumentRangeFormattingOptions {}
 
 structure DocumentRangeFormattingParams {
     @required
@@ -844,7 +1370,7 @@ structure ExecuteCommandOptions {
 structure ExecuteCommandParams {
     @required
     command: String
-    arguments: ListOf_LSPAny
+    arguments: ListOf_Document
 }
 
 structure ExecuteCommandRegistrationOptions {}
@@ -854,6 +1380,8 @@ structure ExecutionSummary {
     executionOrder: Integer
     success: Boolean
 }
+
+structure ExitInput {}
 
 structure FileCreate {
     @required
@@ -954,9 +1482,7 @@ structure FoldingRangeParams {
 
 structure FoldingRangeRegistrationOptions {}
 
-structure FoldingRangeWorkspaceClientCapabilities {
-    refreshSupport: Boolean
-}
+structure FoldingRangeWorkspaceClientCapabilities {}
 
 structure FormattingOptions {
     @required
@@ -1011,11 +1537,23 @@ structure ImplementationParams {}
 
 structure ImplementationRegistrationOptions {}
 
+structure InitializedInput {
+    params: InitializedParams
+}
+
 structure InitializedParams {}
 
 structure InitializeError {
     @required
     retry: Boolean
+}
+
+structure InitializeOpInput {
+    params: InitializeParams
+}
+
+structure InitializeOpOutput {
+    result: InitializeResult
 }
 
 structure InitializeParams {}
@@ -1036,7 +1574,7 @@ structure InlayHint {
     tooltip: StringOrMarkupContent
     paddingLeft: Boolean
     paddingRight: Boolean
-    data: LSPAny
+    data: Document
 }
 
 structure InlayHintClientCapabilities {
@@ -1064,6 +1602,14 @@ structure InlayHintParams {
 }
 
 structure InlayHintRegistrationOptions {}
+
+structure InlayHintResolveOpInput {
+    params: InlayHint
+}
+
+structure InlayHintResolveOpOutput {
+    result: InlayHint
+}
 
 structure InlayHintWorkspaceClientCapabilities {
     refreshSupport: Boolean
@@ -1101,9 +1647,9 @@ structure InlineCompletionParams {
 
 structure InlineCompletionRegistrationOptions {}
 
-structure InlineStruct_2cd6640e2bde4f1580720fa2ca576e6d {}
+structure InlineStruct_3778279148b949edb4c8793d172fa1c4 {}
 
-structure InlineStruct_9066251c6d0f406dac3074e7dd572a9e {}
+structure InlineStruct_5a3fb4d0c4e94292af87818ff542d7d1 {}
 
 structure InlineValueClientCapabilities {
     dynamicRegistration: Boolean
@@ -1206,6 +1752,10 @@ structure LogMessageParams {
     type: MessageType
     @required
     message: String
+}
+
+structure LogTraceInput {
+    params: LogTraceParams
 }
 
 structure LogTraceParams {
@@ -1330,6 +1880,22 @@ structure NotebookDocumentClientCapabilities {
     synchronization: NotebookDocumentSyncClientCapabilities
 }
 
+structure NotebookDocumentDidChangeInput {
+    params: DidChangeNotebookDocumentParams
+}
+
+structure NotebookDocumentDidCloseInput {
+    params: DidCloseNotebookDocumentParams
+}
+
+structure NotebookDocumentDidOpenInput {
+    params: DidOpenNotebookDocumentParams
+}
+
+structure NotebookDocumentDidSaveInput {
+    params: DidSaveNotebookDocumentParams
+}
+
 structure NotebookDocumentFilterNotebookType {
     @required
     notebookType: String
@@ -1424,11 +1990,15 @@ structure PreviousResultId {
     value: String
 }
 
+structure ProgressInput {
+    params: ProgressParams
+}
+
 structure ProgressParams {
     @required
     token: ProgressToken
     @required
-    value: LSPAny
+    value: Document
 }
 
 structure PublishDiagnosticsClientCapabilities {
@@ -1473,7 +2043,7 @@ structure Registration {
     id: String
     @required
     method: String
-    registerOptions: LSPAny
+    registerOptions: Document
 }
 
 structure RegistrationParams {
@@ -1705,9 +2275,8 @@ structure ServerCapabilities {
     inlineValueProvider: AnonymousUnion
     inlayHintProvider: AnonymousUnion
     diagnosticProvider: DiagnosticOptionsUnion
-    inlineCompletionProvider: BooleanOrInlineCompletionOptions
     workspace: WorkspaceOptions
-    experimental: LSPAny
+    experimental: Document
 }
 
 structure ServerCompletionItemOptions {
@@ -1718,6 +2287,10 @@ structure ServerInfo {
     @required
     name: String
     version: String
+}
+
+structure SetTraceInput {
+    params: SetTraceParams
 }
 
 structure SetTraceParams {
@@ -1761,6 +2334,10 @@ structure ShowMessageRequestParams {
     message: String
     actions: ListOf_MessageActionItem
 }
+
+structure ShutdownOpInput {}
+
+structure ShutdownOpOutput {}
 
 structure SignatureHelp {
     @required
@@ -1835,6 +2412,10 @@ structure SymbolInformation {
     location: Location
 }
 
+structure TelemetryEventInput {
+    params: Document
+}
+
 structure TextDocumentChangeRegistrationOptions {
     @required
     syncKind: TextDocumentSyncKind
@@ -1872,7 +2453,38 @@ structure TextDocumentClientCapabilities {
     inlineValue: InlineValueClientCapabilities
     inlayHint: InlayHintClientCapabilities
     diagnostic: DiagnosticClientCapabilities
-    inlineCompletion: InlineCompletionClientCapabilities
+}
+
+structure TextDocumentCodeActionOpInput {
+    params: CodeActionParams
+}
+
+structure TextDocumentCodeActionOpOutput {
+    result: ListOfOrNULL
+}
+
+structure TextDocumentCodeLensOpInput {
+    params: CodeLensParams
+}
+
+structure TextDocumentCodeLensOpOutput {
+    result: ListOfCodeLensOrNULL
+}
+
+structure TextDocumentColorPresentationOpInput {
+    params: ColorPresentationParams
+}
+
+structure TextDocumentColorPresentationOpOutput {
+    result: ListOf_ColorPresentation
+}
+
+structure TextDocumentCompletionOpInput {
+    params: CompletionParams
+}
+
+structure TextDocumentCompletionOpOutput {
+    result: AnonymousUnion
 }
 
 structure TextDocumentContentChangePartial {
@@ -1914,6 +2526,78 @@ structure TextDocumentContentResult {
     text: String
 }
 
+structure TextDocumentDeclarationOpInput {
+    params: DeclarationParams
+}
+
+structure TextDocumentDeclarationOpOutput {
+    result: AnonymousUnion
+}
+
+structure TextDocumentDefinitionOpInput {
+    params: DefinitionParams
+}
+
+structure TextDocumentDefinitionOpOutput {
+    result: AnonymousUnion
+}
+
+structure TextDocumentDiagnosticOpInput {
+    params: DocumentDiagnosticParams
+}
+
+structure TextDocumentDiagnosticOpOutput {
+    result: DocumentDiagnosticReport
+}
+
+structure TextDocumentDidChangeInput {
+    params: DidChangeTextDocumentParams
+}
+
+structure TextDocumentDidCloseInput {
+    params: DidCloseTextDocumentParams
+}
+
+structure TextDocumentDidOpenInput {
+    params: DidOpenTextDocumentParams
+}
+
+structure TextDocumentDidSaveInput {
+    params: DidSaveTextDocumentParams
+}
+
+structure TextDocumentDocumentColorOpInput {
+    params: DocumentColorParams
+}
+
+structure TextDocumentDocumentColorOpOutput {
+    result: ListOf_ColorInformation
+}
+
+structure TextDocumentDocumentHighlightOpInput {
+    params: DocumentHighlightParams
+}
+
+structure TextDocumentDocumentHighlightOpOutput {
+    result: ListOfDocumentHighlightOrNULL
+}
+
+structure TextDocumentDocumentLinkOpInput {
+    params: DocumentLinkParams
+}
+
+structure TextDocumentDocumentLinkOpOutput {
+    result: ListOfDocumentLinkOrNULL
+}
+
+structure TextDocumentDocumentSymbolOpInput {
+    params: DocumentSymbolParams
+}
+
+structure TextDocumentDocumentSymbolOpOutput {
+    result: AnonymousUnion
+}
+
 structure TextDocumentEdit {
     @required
     textDocument: OptionalVersionedTextDocumentIdentifier
@@ -1946,9 +2630,57 @@ structure TextDocumentFilterScheme {
     pattern: GlobPattern
 }
 
+structure TextDocumentFoldingRangeOpInput {
+    params: FoldingRangeParams
+}
+
+structure TextDocumentFoldingRangeOpOutput {
+    result: ListOfFoldingRangeOrNULL
+}
+
+structure TextDocumentFormattingOpInput {
+    params: DocumentFormattingParams
+}
+
+structure TextDocumentFormattingOpOutput {
+    result: ListOfTextEditOrNULL
+}
+
+structure TextDocumentHoverOpInput {
+    params: HoverParams
+}
+
+structure TextDocumentHoverOpOutput {
+    result: HoverOrNULL
+}
+
 structure TextDocumentIdentifier {
     @required
     uri: String
+}
+
+structure TextDocumentImplementationOpInput {
+    params: ImplementationParams
+}
+
+structure TextDocumentImplementationOpOutput {
+    result: AnonymousUnion
+}
+
+structure TextDocumentInlayHintOpInput {
+    params: InlayHintParams
+}
+
+structure TextDocumentInlayHintOpOutput {
+    result: ListOfInlayHintOrNULL
+}
+
+structure TextDocumentInlineValueOpInput {
+    params: InlineValueParams
+}
+
+structure TextDocumentInlineValueOpOutput {
+    result: ListOfInlineValueOrNULL
 }
 
 structure TextDocumentItem {
@@ -1962,6 +2694,30 @@ structure TextDocumentItem {
     text: String
 }
 
+structure TextDocumentLinkedEditingRangeOpInput {
+    params: LinkedEditingRangeParams
+}
+
+structure TextDocumentLinkedEditingRangeOpOutput {
+    result: LinkedEditingRangesOrNULL
+}
+
+structure TextDocumentMonikerOpInput {
+    params: MonikerParams
+}
+
+structure TextDocumentMonikerOpOutput {
+    result: ListOfMonikerOrNULL
+}
+
+structure TextDocumentOnTypeFormattingOpInput {
+    params: DocumentOnTypeFormattingParams
+}
+
+structure TextDocumentOnTypeFormattingOpOutput {
+    result: ListOfTextEditOrNULL
+}
+
 structure TextDocumentPositionParams {
     @required
     textDocument: TextDocumentIdentifier
@@ -1969,12 +2725,104 @@ structure TextDocumentPositionParams {
     position: Position
 }
 
+structure TextDocumentPrepareCallHierarchyOpInput {
+    params: CallHierarchyPrepareParams
+}
+
+structure TextDocumentPrepareCallHierarchyOpOutput {
+    result: ListOfCallHierarchyItemOrNULL
+}
+
+structure TextDocumentPrepareRenameOpInput {
+    params: PrepareRenameParams
+}
+
+structure TextDocumentPrepareRenameOpOutput {
+    result: PrepareRenameResultOrNULL
+}
+
+structure TextDocumentPrepareTypeHierarchyOpInput {
+    params: TypeHierarchyPrepareParams
+}
+
+structure TextDocumentPrepareTypeHierarchyOpOutput {
+    result: ListOfTypeHierarchyItemOrNULL
+}
+
+structure TextDocumentPublishDiagnosticsInput {
+    params: PublishDiagnosticsParams
+}
+
+structure TextDocumentRangeFormattingOpInput {
+    params: DocumentRangeFormattingParams
+}
+
+structure TextDocumentRangeFormattingOpOutput {
+    result: ListOfTextEditOrNULL
+}
+
+structure TextDocumentReferencesOpInput {
+    params: ReferenceParams
+}
+
+structure TextDocumentReferencesOpOutput {
+    result: ListOfLocationOrNULL
+}
+
 structure TextDocumentRegistrationOptions {
     @required
     documentSelector: DocumentSelectorOrNULL
 }
 
+structure TextDocumentRenameOpInput {
+    params: RenameParams
+}
+
+structure TextDocumentRenameOpOutput {
+    result: WorkspaceEditOrNULL
+}
+
 structure TextDocumentSaveRegistrationOptions {}
+
+structure TextDocumentSelectionRangeOpInput {
+    params: SelectionRangeParams
+}
+
+structure TextDocumentSelectionRangeOpOutput {
+    result: ListOfSelectionRangeOrNULL
+}
+
+structure TextDocumentSemanticTokensFullDeltaOpInput {
+    params: SemanticTokensDeltaParams
+}
+
+structure TextDocumentSemanticTokensFullDeltaOpOutput {
+    result: AnonymousUnion
+}
+
+structure TextDocumentSemanticTokensFullOpInput {
+    params: SemanticTokensParams
+}
+
+structure TextDocumentSemanticTokensFullOpOutput {
+    result: SemanticTokensOrNULL
+}
+
+structure TextDocumentSemanticTokensRangeOpInput {
+    params: SemanticTokensRangeParams
+}
+
+structure TextDocumentSemanticTokensRangeOpOutput {
+    result: SemanticTokensOrNULL
+}
+
+structure TextDocumentSignatureHelpOpInput {
+    params: SignatureHelpParams
+}
+
+structure TextDocumentSignatureHelpOpOutput {
+    result: SignatureHelpOrNULL
+}
 
 structure TextDocumentSyncClientCapabilities {
     dynamicRegistration: Boolean
@@ -1989,6 +2837,26 @@ structure TextDocumentSyncOptions {
     willSave: Boolean
     willSaveWaitUntil: Boolean
     save: BooleanOrSaveOptions
+}
+
+structure TextDocumentTypeDefinitionOpInput {
+    params: TypeDefinitionParams
+}
+
+structure TextDocumentTypeDefinitionOpOutput {
+    result: AnonymousUnion
+}
+
+structure TextDocumentWillSaveInput {
+    params: WillSaveTextDocumentParams
+}
+
+structure TextDocumentWillSaveWaitUntilOpInput {
+    params: WillSaveTextDocumentParams
+}
+
+structure TextDocumentWillSaveWaitUntilOpOutput {
+    result: ListOfTextEditOrNULL
 }
 
 structure TextEdit {
@@ -2026,7 +2894,7 @@ structure TypeHierarchyItem {
     range: Range
     @required
     selectionRange: Range
-    data: LSPAny
+    data: Document
 }
 
 structure TypeHierarchyOptions {}
@@ -2035,9 +2903,25 @@ structure TypeHierarchyPrepareParams {}
 
 structure TypeHierarchyRegistrationOptions {}
 
+structure TypeHierarchySubtypesOpInput {
+    params: TypeHierarchySubtypesParams
+}
+
+structure TypeHierarchySubtypesOpOutput {
+    result: ListOfTypeHierarchyItemOrNULL
+}
+
 structure TypeHierarchySubtypesParams {
     @required
     item: TypeHierarchyItem
+}
+
+structure TypeHierarchySupertypesOpInput {
+    params: TypeHierarchySupertypesParams
+}
+
+structure TypeHierarchySupertypesOpOutput {
+    result: ListOfTypeHierarchyItemOrNULL
 }
 
 structure TypeHierarchySupertypesParams {
@@ -2089,6 +2973,40 @@ structure WindowClientCapabilities {
     showDocument: ShowDocumentClientCapabilities
 }
 
+structure WindowLogMessageInput {
+    params: LogMessageParams
+}
+
+structure WindowShowDocumentOpInput {
+    params: ShowDocumentParams
+}
+
+structure WindowShowDocumentOpOutput {
+    result: ShowDocumentResult
+}
+
+structure WindowShowMessageInput {
+    params: ShowMessageParams
+}
+
+structure WindowShowMessageRequestOpInput {
+    params: ShowMessageRequestParams
+}
+
+structure WindowShowMessageRequestOpOutput {
+    result: MessageActionItemOrNULL
+}
+
+structure WindowWorkDoneProgressCancelInput {
+    params: WorkDoneProgressCancelParams
+}
+
+structure WindowWorkDoneProgressCreateOpInput {
+    params: WorkDoneProgressCreateParams
+}
+
+structure WindowWorkDoneProgressCreateOpOutput {}
+
 structure WorkDoneProgressBegin {
     @required
     kind: String
@@ -2131,6 +3049,14 @@ structure WorkDoneProgressReport {
     percentage: Integer
 }
 
+structure WorkspaceApplyEditOpInput {
+    params: ApplyWorkspaceEditParams
+}
+
+structure WorkspaceApplyEditOpOutput {
+    result: ApplyWorkspaceEditResult
+}
+
 structure WorkspaceClientCapabilities {
     applyEdit: Boolean
     workspaceEdit: WorkspaceEditClientCapabilities
@@ -2146,8 +3072,26 @@ structure WorkspaceClientCapabilities {
     inlineValue: InlineValueWorkspaceClientCapabilities
     inlayHint: InlayHintWorkspaceClientCapabilities
     diagnostics: DiagnosticWorkspaceClientCapabilities
-    foldingRange: FoldingRangeWorkspaceClientCapabilities
-    textDocumentContent: TextDocumentContentClientCapabilities
+}
+
+structure WorkspaceCodeLensRefreshOpInput {}
+
+structure WorkspaceCodeLensRefreshOpOutput {}
+
+structure WorkspaceConfigurationOpInput {
+    params: ConfigurationParams
+}
+
+structure WorkspaceConfigurationOpOutput {
+    result: ListOf_Document
+}
+
+structure WorkspaceDiagnosticOpInput {
+    params: WorkspaceDiagnosticParams
+}
+
+structure WorkspaceDiagnosticOpOutput {
+    result: WorkspaceDiagnosticReport
 }
 
 structure WorkspaceDiagnosticParams {
@@ -2155,6 +3099,10 @@ structure WorkspaceDiagnosticParams {
     @required
     previousResultIds: ListOf_PreviousResultId
 }
+
+structure WorkspaceDiagnosticRefreshOpInput {}
+
+structure WorkspaceDiagnosticRefreshOpOutput {}
 
 structure WorkspaceDiagnosticReport {
     @required
@@ -2164,6 +3112,30 @@ structure WorkspaceDiagnosticReport {
 structure WorkspaceDiagnosticReportPartialResult {
     @required
     items: ListOf_WorkspaceDocumentDiagnosticReport
+}
+
+structure WorkspaceDidChangeConfigurationInput {
+    params: DidChangeConfigurationParams
+}
+
+structure WorkspaceDidChangeWatchedFilesInput {
+    params: DidChangeWatchedFilesParams
+}
+
+structure WorkspaceDidChangeWorkspaceFoldersInput {
+    params: DidChangeWorkspaceFoldersParams
+}
+
+structure WorkspaceDidCreateFilesInput {
+    params: CreateFilesParams
+}
+
+structure WorkspaceDidDeleteFilesInput {
+    params: DeleteFilesParams
+}
+
+structure WorkspaceDidRenameFilesInput {
+    params: RenameFilesParams
 }
 
 structure WorkspaceEdit {
@@ -2178,12 +3150,18 @@ structure WorkspaceEditClientCapabilities {
     failureHandling: FailureHandlingKind
     normalizesLineEndings: Boolean
     changeAnnotationSupport: ChangeAnnotationsSupportOptions
-    metadataSupport: Boolean
-    snippetEditSupport: Boolean
 }
 
 structure WorkspaceEditMetadata {
     isRefactoring: Boolean
+}
+
+structure WorkspaceExecuteCommandOpInput {
+    params: ExecuteCommandParams
+}
+
+structure WorkspaceExecuteCommandOpOutput {
+    result: LUnion
 }
 
 structure WorkspaceFolder {
@@ -2216,16 +3194,27 @@ structure WorkspaceFullDocumentDiagnosticReport {
     version: IntegerOrNULL
 }
 
+structure WorkspaceInlayHintRefreshOpInput {}
+
+structure WorkspaceInlayHintRefreshOpOutput {}
+
+structure WorkspaceInlineValueRefreshOpInput {}
+
+structure WorkspaceInlineValueRefreshOpOutput {}
+
 structure WorkspaceOptions {
     workspaceFolders: WorkspaceFoldersServerCapabilities
     fileOperations: FileOperationOptions
-    textDocumentContent: TextDocumentContentOptionsUnion
 }
+
+structure WorkspaceSemanticTokensRefreshOpInput {}
+
+structure WorkspaceSemanticTokensRefreshOpOutput {}
 
 structure WorkspaceSymbol {
     @required
     location: LocationUnion
-    data: LSPAny
+    data: Document
 }
 
 structure WorkspaceSymbolClientCapabilities {
@@ -2233,6 +3222,14 @@ structure WorkspaceSymbolClientCapabilities {
     symbolKind: ClientSymbolKindOptions
     tagSupport: ClientSymbolTagOptions
     resolveSupport: ClientSymbolResolveOptions
+}
+
+structure WorkspaceSymbolOpInput {
+    params: WorkspaceSymbolParams
+}
+
+structure WorkspaceSymbolOpOutput {
+    result: AnonymousUnion
 }
 
 structure WorkspaceSymbolOptions {
@@ -2246,6 +3243,14 @@ structure WorkspaceSymbolParams {
 
 structure WorkspaceSymbolRegistrationOptions {}
 
+structure WorkspaceSymbolResolveOpInput {
+    params: WorkspaceSymbol
+}
+
+structure WorkspaceSymbolResolveOpOutput {
+    result: WorkspaceSymbol
+}
+
 structure WorkspaceUnchangedDocumentDiagnosticReport {
     @required
     uri: String
@@ -2253,10 +3258,40 @@ structure WorkspaceUnchangedDocumentDiagnosticReport {
     version: IntegerOrNULL
 }
 
+structure WorkspaceWillCreateFilesOpInput {
+    params: CreateFilesParams
+}
+
+structure WorkspaceWillCreateFilesOpOutput {
+    result: WorkspaceEditOrNULL
+}
+
+structure WorkspaceWillDeleteFilesOpInput {
+    params: DeleteFilesParams
+}
+
+structure WorkspaceWillDeleteFilesOpOutput {
+    result: WorkspaceEditOrNULL
+}
+
+structure WorkspaceWillRenameFilesOpInput {
+    params: RenameFilesParams
+}
+
+structure WorkspaceWillRenameFilesOpOutput {
+    result: WorkspaceEditOrNULL
+}
+
+structure WorkspaceWorkspaceFoldersOpInput {}
+
+structure WorkspaceWorkspaceFoldersOpOutput {
+    result: ListOfWorkspaceFolderOrNULL
+}
+
 union AnonymousUnion {
-    case0: Boolean
-    case1: InlayHintOptions
-    case2: InlayHintRegistrationOptions
+    case0: Range
+    case1: PrepareRenamePlaceholder
+    case2: PrepareRenameDefaultBehavior
 }
 
 union BooleanOrClientSemanticTokensRequestFullDelta {
@@ -2299,11 +3334,6 @@ union BooleanOrHoverOptions {
     case1: HoverOptions
 }
 
-union BooleanOrInlineCompletionOptions {
-    case0: Boolean
-    case1: InlineCompletionOptions
-}
-
 union BooleanOrReferenceOptions {
     case0: Boolean
     case1: ReferenceOptions
@@ -2331,7 +3361,22 @@ union BooleanOrWorkspaceSymbolOptions {
 
 union BooleanUnion {
     case0: Boolean
-    case1: InlineStruct_2cd6640e2bde4f1580720fa2ca576e6d
+    case1: InlineStruct_3778279148b949edb4c8793d172fa1c4
+}
+
+union CommandOrCodeAction {
+    case0: Command
+    case1: CodeAction
+}
+
+union Declaration {
+    case0: Location
+    case1: ListOf_Location
+}
+
+union Definition {
+    case0: Location
+    case1: ListOf_Location
 }
 
 union DiagnosticOptionsUnion {
@@ -2339,9 +3384,19 @@ union DiagnosticOptionsUnion {
     case1: DiagnosticRegistrationOptions
 }
 
+union DocumentDiagnosticReport {
+    case0: RelatedFullDocumentDiagnosticReport
+    case1: RelatedUnchangedDocumentDiagnosticReport
+}
+
 union DocumentDiagnosticReportUnion {
     case0: FullDocumentDiagnosticReport
     case1: UnchangedDocumentDiagnosticReport
+}
+
+union DocumentFilter {
+    case0: TextDocumentFilter
+    case1: NotebookCellTextDocumentFilter
 }
 
 union DocumentSelectorOrNULL {
@@ -2359,6 +3414,28 @@ union EditUnion {
     case1: InsertReplaceEdit
 }
 
+union GlobPattern {
+    case0: Pattern
+    case1: RelativePattern
+}
+
+union HoverOrNULL {
+    case0: Hover
+    case1: Unit
+}
+
+union InlineValue {
+    case0: InlineValueText
+    case1: InlineValueVariableLookup
+    case2: InlineValueEvaluatableExpression
+}
+
+union InlineValueUnion {
+    case0: InlineValueText
+    case1: InlineValueVariableLookup
+    case2: InlineValueEvaluatableExpression
+}
+
 union IntegerOrNULL {
     case0: Integer
     case1: Unit
@@ -2369,6 +3446,86 @@ union IntegerOrString {
     case1: String
 }
 
+union LinkedEditingRangesOrNULL {
+    case0: LinkedEditingRanges
+    case1: Unit
+}
+
+union ListOfCallHierarchyIncomingCallOrNULL {
+    case0: ListOf_CallHierarchyIncomingCall
+    case1: Unit
+}
+
+union ListOfCallHierarchyItemOrNULL {
+    case0: ListOf_CallHierarchyItem
+    case1: Unit
+}
+
+union ListOfCallHierarchyOutgoingCallOrNULL {
+    case0: ListOf_CallHierarchyOutgoingCall
+    case1: Unit
+}
+
+union ListOfCodeLensOrNULL {
+    case0: ListOf_CodeLens
+    case1: Unit
+}
+
+union ListOfDocumentHighlightOrNULL {
+    case0: ListOf_DocumentHighlight
+    case1: Unit
+}
+
+union ListOfDocumentLinkOrNULL {
+    case0: ListOf_DocumentLink
+    case1: Unit
+}
+
+union ListOfFoldingRangeOrNULL {
+    case0: ListOf_FoldingRange
+    case1: Unit
+}
+
+union ListOfInlayHintOrNULL {
+    case0: ListOf_InlayHint
+    case1: Unit
+}
+
+union ListOfInlineValueOrNULL {
+    case0: ListOf_InlineValue
+    case1: Unit
+}
+
+union ListOfLocationOrNULL {
+    case0: ListOf_Location
+    case1: Unit
+}
+
+union ListOfMonikerOrNULL {
+    case0: ListOf_Moniker
+    case1: Unit
+}
+
+union ListOfOrNULL {
+    case0: ListOf_CommandOrCodeAction
+    case1: Unit
+}
+
+union ListOfSelectionRangeOrNULL {
+    case0: ListOf_SelectionRange
+    case1: Unit
+}
+
+union ListOfTextEditOrNULL {
+    case0: ListOf_TextEdit
+    case1: Unit
+}
+
+union ListOfTypeHierarchyItemOrNULL {
+    case0: ListOf_TypeHierarchyItem
+    case1: Unit
+}
+
 union ListOfWorkspaceFolderOrNULL {
     case0: ListOf_WorkspaceFolder
     case1: Unit
@@ -2376,7 +3533,34 @@ union ListOfWorkspaceFolderOrNULL {
 
 union LocationUnion {
     case0: Location
-    case1: LocationUriOnly
+    case1: ListOf_Location
+}
+
+union LUnion {
+    case0: Document
+    case1: Unit
+}
+
+union MarkedString {
+    case0: String
+    case1: MarkedStringWithLanguage
+}
+
+union MessageActionItemOrNULL {
+    case0: MessageActionItem
+    case1: Unit
+}
+
+union NotebookDocumentFilter {
+    case0: NotebookDocumentFilterNotebookType
+    case1: NotebookDocumentFilterScheme
+    case2: NotebookDocumentFilterPattern
+}
+
+union NotebookDocumentFilterUnion {
+    case0: NotebookDocumentFilterNotebookType
+    case1: NotebookDocumentFilterScheme
+    case2: NotebookDocumentFilterPattern
 }
 
 union NotebookDocumentFilterWithUnion {
@@ -2389,14 +3573,50 @@ union NotebookDocumentSyncOptionsUnion {
     case1: NotebookDocumentSyncRegistrationOptions
 }
 
+union PatternUnion {
+    case0: Pattern
+    case1: RelativePattern
+}
+
+union PrepareRenameResult {
+    case0: Range
+    case1: PrepareRenamePlaceholder
+    case2: PrepareRenameDefaultBehavior
+}
+
+union PrepareRenameResultOrNULL {
+    case0: PrepareRenameResult
+    case1: Unit
+}
+
+union ProgressToken {
+    case0: Integer
+    case1: String
+}
+
 union RangeUnion {
     case0: Range
     case1: EditRangeWithInsertReplace
 }
 
+union RelatedDocumentDiagnosticReportUnion {
+    case0: RelatedFullDocumentDiagnosticReport
+    case1: RelatedUnchangedDocumentDiagnosticReport
+}
+
 union SemanticTokensOptionsUnion {
     case0: SemanticTokensOptions
     case1: SemanticTokensRegistrationOptions
+}
+
+union SemanticTokensOrNULL {
+    case0: SemanticTokens
+    case1: Unit
+}
+
+union SignatureHelpOrNULL {
+    case0: SignatureHelp
+    case1: Unit
 }
 
 union StringOrBoolean {
@@ -2426,12 +3646,29 @@ union StringOrNULL {
 
 union StringUnion {
     case0: String
-    case1: Tuple_of_Integer
+    case1: MarkedStringWithLanguage
 }
 
-union TextDocumentContentOptionsUnion {
-    case0: TextDocumentContentOptions
-    case1: TextDocumentContentRegistrationOptions
+union TextDocumentContentChangeEvent {
+    case0: TextDocumentContentChangePartial
+    case1: TextDocumentContentChangeWholeDocument
+}
+
+union TextDocumentContentChangeUnion {
+    case0: TextDocumentContentChangePartial
+    case1: TextDocumentContentChangeWholeDocument
+}
+
+union TextDocumentFilter {
+    case0: TextDocumentFilterLanguage
+    case1: TextDocumentFilterScheme
+    case2: TextDocumentFilterPattern
+}
+
+union TextDocumentFilterUnion {
+    case0: TextDocumentFilterLanguage
+    case1: TextDocumentFilterScheme
+    case2: TextDocumentFilterPattern
 }
 
 union TextDocumentSyncUnion {
@@ -2450,25 +3687,68 @@ union UintegerOrNULL {
     case1: Unit
 }
 
+union WorkspaceDocumentDiagnosticReport {
+    case0: WorkspaceFullDocumentDiagnosticReport
+    case1: WorkspaceUnchangedDocumentDiagnosticReport
+}
+
+union WorkspaceDocumentDiagnosticReportUnion {
+    case0: WorkspaceFullDocumentDiagnosticReport
+    case1: WorkspaceUnchangedDocumentDiagnosticReport
+}
+
+union WorkspaceEditOrNULL {
+    case0: WorkspaceEdit
+    case1: Unit
+}
+
 union WorkspaceFolderOrUri {
     case0: WorkspaceFolder
     case1: String
+}
+
+list DocumentSelector {
+    member: DocumentFilter
 }
 
 list ListOf_AnonymousUnion {
     member: AnonymousUnion
 }
 
+list ListOf_CallHierarchyIncomingCall {
+    member: CallHierarchyIncomingCall
+}
+
+list ListOf_CallHierarchyItem {
+    member: CallHierarchyItem
+}
+
+list ListOf_CallHierarchyOutgoingCall {
+    member: CallHierarchyOutgoingCall
+}
+
 list ListOf_CodeActionKind {
     member: CodeActionKind
 }
 
-list ListOf_CodeActionKindDocumentation {
-    member: CodeActionKindDocumentation
-}
-
 list ListOf_CodeActionTag {
     member: CodeActionTag
+}
+
+list ListOf_CodeLens {
+    member: CodeLens
+}
+
+list ListOf_ColorInformation {
+    member: ColorInformation
+}
+
+list ListOf_ColorPresentation {
+    member: ColorPresentation
+}
+
+list ListOf_CommandOrCodeAction {
+    member: CommandOrCodeAction
 }
 
 list ListOf_CompletionItem {
@@ -2487,6 +3767,14 @@ list ListOf_ConfigurationItem {
     member: ConfigurationItem
 }
 
+list ListOf_DeclarationLink {
+    member: DeclarationLink
+}
+
+list ListOf_DefinitionLink {
+    member: DefinitionLink
+}
+
 list ListOf_Diagnostic {
     member: Diagnostic
 }
@@ -2497,6 +3785,22 @@ list ListOf_DiagnosticRelatedInformation {
 
 list ListOf_DiagnosticTag {
     member: DiagnosticTag
+}
+
+list ListOf_Document {
+    member: Document
+}
+
+list ListOf_DocumentFilter {
+    member: DocumentFilter
+}
+
+list ListOf_DocumentHighlight {
+    member: DocumentHighlight
+}
+
+list ListOf_DocumentLink {
+    member: DocumentLink
 }
 
 list ListOf_DocumentSymbol {
@@ -2527,8 +3831,16 @@ list ListOf_FileSystemWatcher {
     member: FileSystemWatcher
 }
 
+list ListOf_FoldingRange {
+    member: FoldingRange
+}
+
 list ListOf_FoldingRangeKind {
     member: FoldingRangeKind
+}
+
+list ListOf_InlayHint {
+    member: InlayHint
 }
 
 list ListOf_InlayHintLabelPart {
@@ -2539,6 +3851,10 @@ list ListOf_InlineCompletionItem {
     member: InlineCompletionItem
 }
 
+list ListOf_InlineValue {
+    member: InlineValue
+}
+
 list ListOf_InsertTextMode {
     member: InsertTextMode
 }
@@ -2547,8 +3863,8 @@ list ListOf_Integer {
     member: Integer
 }
 
-list ListOf_LSPAny {
-    member: LSPAny
+list ListOf_Location {
+    member: Location
 }
 
 list ListOf_MarkedString {
@@ -2561,6 +3877,10 @@ list ListOf_MarkupKind {
 
 list ListOf_MessageActionItem {
     member: MessageActionItem
+}
+
+list ListOf_Moniker {
+    member: Moniker
 }
 
 list ListOf_NotebookCell {
@@ -2607,6 +3927,10 @@ list ListOf_ResourceOperationKind {
     member: ResourceOperationKind
 }
 
+list ListOf_SelectionRange {
+    member: SelectionRange
+}
+
 list ListOf_SemanticTokensEdit {
     member: SemanticTokensEdit
 }
@@ -2617,6 +3941,10 @@ list ListOf_SignatureInformation {
 
 list ListOf_String {
     member: String
+}
+
+list ListOf_SymbolInformation {
+    member: SymbolInformation
 }
 
 list ListOf_SymbolKind {
@@ -2651,6 +3979,10 @@ list ListOf_TokenFormat {
     member: TokenFormat
 }
 
+list ListOf_TypeHierarchyItem {
+    member: TypeHierarchyItem
+}
+
 list ListOf_Unregistration {
     member: Unregistration
 }
@@ -2663,13 +3995,31 @@ list ListOf_WorkspaceFolder {
     member: WorkspaceFolder
 }
 
+list ListOf_WorkspaceSymbol {
+    member: WorkspaceSymbol
+}
+
+list LSPArray {
+    member: Document
+}
+
 list Tuple_of_Integer {
     member: Integer
+}
+
+map LSPObject {
+    key: String
+    value: Document
 }
 
 map MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation {
     key: ChangeAnnotationIdentifier
     value: ChangeAnnotation
+}
+
+map MapOf_String_to_Document {
+    key: String
+    value: Document
 }
 
 map MapOf_String_to_DocumentDiagnosticReportUnion {
@@ -2683,270 +4033,238 @@ map MapOf_String_to_ListOf_TextEdit {
 }
 
 intEnum ApplyKind {
-    Replace = 1
-    Merge = 2
+    REPLACE = 1
+    MERGE = 2
 }
 
 string ChangeAnnotationIdentifier
 
 enum CodeActionKind {
-    QuickFix = "quickfix"
-    Refactor = "refactor"
-    RefactorExtract = "refactor.extract"
-    RefactorInline = "refactor.inline"
-    RefactorMove = "refactor.move"
-    RefactorRewrite = "refactor.rewrite"
-    Source = "source"
-    SourceOrganizeImports = "source.organizeImports"
-    SourceFixAll = "source.fixAll"
-    Notebook = "notebook"
+    QUICK_FIX = "quickfix"
+    REFACTOR = "refactor"
+    REFACTOR_EXTRACT = "refactor.extract"
+    REFACTOR_INLINE = "refactor.inline"
+    REFACTOR_REWRITE = "refactor.rewrite"
+    SOURCE = "source"
+    SOURCE_ORGANIZE_IMPORTS = "source.organizeImports"
+    SOURCE_FIX_ALL = "source.fixAll"
+    NOTEBOOK = "notebook"
 }
 
 intEnum CodeActionTag {
-    LLMGenerated = 1
+    LLM_GENERATED = 1
 }
 
 intEnum CodeActionTriggerKind {
-    Invoked = 1
-    Automatic = 2
+    INVOKED = 1
+    AUTOMATIC = 2
 }
 
 intEnum CompletionItemKind {
-    Text = 1
-    Method = 2
-    Function = 3
-    Constructor = 4
-    Field = 5
-    Variable = 6
-    Class = 7
-    Interface = 8
-    Module = 9
-    Property = 10
-    Unit = 11
-    Value = 12
-    Enum = 13
-    Keyword = 14
-    Snippet = 15
-    Color = 16
-    File = 17
-    Reference = 18
-    Folder = 19
-    EnumMember = 20
-    Constant = 21
-    Struct = 22
-    Event = 23
-    Operator = 24
-    TypeParameter = 25
+    TEXT = 1
+    METHOD = 2
+    FUNCTION = 3
+    CONSTRUCTOR = 4
+    FIELD = 5
+    VARIABLE = 6
+    CLASS = 7
+    INTERFACE = 8
+    MODULE = 9
+    PROPERTY = 10
+    UNIT = 11
+    VALUE = 12
+    ENUM = 13
+    KEYWORD = 14
+    SNIPPET = 15
+    COLOR = 16
+    FILE = 17
+    REFERENCE = 18
+    FOLDER = 19
+    ENUM_MEMBER = 20
+    CONSTANT = 21
+    STRUCT = 22
+    EVENT = 23
+    OPERATOR = 24
+    TYPE_PARAMETER = 25
 }
 
 intEnum CompletionItemTag {
-    Deprecated = 1
+    DEPRECATED = 1
 }
 
 intEnum CompletionTriggerKind {
-    Invoked = 1
-    TriggerCharacter = 2
-    TriggerForIncompleteCompletions = 3
+    INVOKED = 1
+    TRIGGER_CHARACTER = 2
+    TRIGGER_FOR_INCOMPLETE_COMPLETIONS = 3
 }
 
-string Declaration
-
-string DeclarationLink
-
-string Definition
-
-string DefinitionLink
-
 intEnum DiagnosticSeverity {
-    Error = 1
-    Warning = 2
-    Information = 3
-    Hint = 4
+    ERROR = 1
+    WARNING = 2
+    INFORMATION = 3
+    HINT = 4
 }
 
 intEnum DiagnosticTag {
-    Unnecessary = 1
-    Deprecated = 2
+    UNNECESSARY = 1
+    DEPRECATED = 2
 }
-
-string DocumentDiagnosticReport
 
 enum DocumentDiagnosticReportKind {
-    Full = "full"
-    Unchanged = "unchanged"
+    FULL = "full"
+    UNCHANGED = "unchanged"
 }
-
-string DocumentFilter
 
 intEnum DocumentHighlightKind {
-    Text = 1
-    Read = 2
-    Write = 3
+    TEXT = 1
+    READ = 2
+    WRITE = 3
 }
 
-string DocumentSelector
-
 intEnum ErrorCodes {
-    ParseError = -32700
-    InvalidRequest = -32600
-    MethodNotFound = -32601
-    InvalidParams = -32602
-    InternalError = -32603
-    ServerNotInitialized = -32002
-    UnknownErrorCode = -32001
+    PARSE_ERROR = -32700
+    INVALID_REQUEST = -32600
+    METHOD_NOT_FOUND = -32601
+    INVALID_PARAMS = -32602
+    INTERNAL_ERROR = -32603
+    SERVER_NOT_INITIALIZED = -32002
+    UNKNOWN_ERROR_CODE = -32001
 }
 
 enum FailureHandlingKind {
-    Abort = "abort"
-    Transactional = "transactional"
-    TextOnlyTransactional = "textOnlyTransactional"
-    Undo = "undo"
+    ABORT = "abort"
+    TRANSACTIONAL = "transactional"
+    TEXT_ONLY_TRANSACTIONAL = "textOnlyTransactional"
+    UNDO = "undo"
 }
 
 intEnum FileChangeType {
-    Created = 1
-    Changed = 2
-    Deleted = 3
+    CREATED = 1
+    CHANGED = 2
+    DELETED = 3
 }
 
 enum FileOperationPatternKind {
-    file
-    folder
+    FILE = "file"
+    FOLDER = "folder"
 }
 
 enum FoldingRangeKind {
-    Comment = "comment"
-    Imports = "imports"
-    Region = "region"
+    COMMENT = "comment"
+    IMPORTS = "imports"
+    REGION = "region"
 }
 
-string GlobPattern
-
 intEnum InlayHintKind {
-    Type = 1
-    Parameter = 2
+    TYPE = 1
+    PARAMETER = 2
 }
 
 intEnum InlineCompletionTriggerKind {
-    Invoked = 1
-    Automatic = 2
+    INVOKED = 1
+    AUTOMATIC = 2
 }
 
-string InlineValue
-
 intEnum InsertTextFormat {
-    PlainText = 1
-    Snippet = 2
+    PLAIN_TEXT = 1
+    SNIPPET = 2
 }
 
 intEnum InsertTextMode {
-    asIs = 1
-    adjustIndentation = 2
+    AS_IS = 1
+    ADJUST_INDENTATION = 2
 }
 
 enum LanguageKind {
     ABAP = "abap"
-    WindowsBat = "bat"
-    BibTeX = "bibtex"
-    Clojure = "clojure"
-    Coffeescript = "coffeescript"
+    WINDOWS_BAT = "bat"
+    BIB_TE_X = "bibtex"
+    CLOJURE = "clojure"
+    COFFEESCRIPT = "coffeescript"
     C = "c"
     CPP = "cpp"
-    CSharp = "csharp"
+    C_SHARP = "csharp"
     CSS = "css"
-    D = "d"
-    Delphi = "pascal"
-    Diff = "diff"
-    Dart = "dart"
-    Dockerfile = "dockerfile"
-    Elixir = "elixir"
-    Erlang = "erlang"
-    FSharp = "fsharp"
-    GitCommit = "git-commit"
-    GitRebase = "rebase"
-    Go = "go"
-    Groovy = "groovy"
-    Handlebars = "handlebars"
-    Haskell = "haskell"
+    DIFF = "diff"
+    DART = "dart"
+    DOCKERFILE = "dockerfile"
+    ELIXIR = "elixir"
+    ERLANG = "erlang"
+    F_SHARP = "fsharp"
+    GIT_COMMIT = "git-commit"
+    GIT_REBASE = "rebase"
+    GO = "go"
+    GROOVY = "groovy"
+    HANDLEBARS = "handlebars"
+    HASKELL = "haskell"
     HTML = "html"
-    Ini = "ini"
-    Java = "java"
-    JavaScript = "javascript"
-    JavaScriptReact = "javascriptreact"
+    INI = "ini"
+    JAVA = "java"
+    JAVA_SCRIPT = "javascript"
+    JAVA_SCRIPT_REACT = "javascriptreact"
     JSON = "json"
-    LaTeX = "latex"
-    Less = "less"
-    Lua = "lua"
-    Makefile = "makefile"
-    Markdown = "markdown"
-    ObjectiveC = "objective-c"
-    ObjectiveCPP = "objective-cpp"
-    Perl = "perl"
-    Perl6 = "perl6"
+    LA_TE_X = "latex"
+    LESS = "less"
+    LUA = "lua"
+    MAKEFILE = "makefile"
+    MARKDOWN = "markdown"
+    OBJECTIVE_C = "objective-c"
+    OBJECTIVE_CPP = "objective-cpp"
+    PERL = "perl"
+    PERL6 = "perl6"
     PHP = "php"
-    Powershell = "powershell"
-    Pug = "jade"
-    Python = "python"
+    POWERSHELL = "powershell"
+    PUG = "jade"
+    PYTHON = "python"
     R = "r"
-    Razor = "razor"
-    Ruby = "ruby"
-    Rust = "rust"
+    RAZOR = "razor"
+    RUBY = "ruby"
+    RUST = "rust"
     SCSS = "scss"
     SASS = "sass"
-    Scala = "scala"
-    ShaderLab = "shaderlab"
-    ShellScript = "shellscript"
+    SCALA = "scala"
+    SHADER_LAB = "shaderlab"
+    SHELL_SCRIPT = "shellscript"
     SQL = "sql"
-    Swift = "swift"
-    TypeScript = "typescript"
-    TypeScriptReact = "typescriptreact"
-    TeX = "tex"
-    VisualBasic = "vb"
+    SWIFT = "swift"
+    TYPE_SCRIPT = "typescript"
+    TYPE_SCRIPT_REACT = "typescriptreact"
+    TE_X = "tex"
+    VISUAL_BASIC = "vb"
     XML = "xml"
     XSL = "xsl"
     YAML = "yaml"
 }
 
-string LSPAny
-
-string LSPArray
-
 intEnum LSPErrorCodes {
-    RequestFailed = -32803
-    ServerCancelled = -32802
-    ContentModified = -32801
-    RequestCancelled = -32800
+    REQUEST_FAILED = -32803
+    SERVER_CANCELLED = -32802
+    CONTENT_MODIFIED = -32801
+    REQUEST_CANCELLED = -32800
 }
 
-string LSPObject
-
-string MarkedString
-
 enum MarkupKind {
-    PlainText = "plaintext"
-    Markdown = "markdown"
+    PLAIN_TEXT = "plaintext"
+    MARKDOWN = "markdown"
 }
 
 intEnum MessageType {
-    Error = 1
-    Warning = 2
-    Info = 3
-    Log = 4
-    Debug = 5
+    ERROR = 1
+    WARNING = 2
+    INFO = 3
+    LOG = 4
 }
 
 enum MonikerKind {
-    import
-    export
-    local
+    IMPORT = "import"
+    EXPORT = "export"
+    LOCAL = "local"
 }
 
 intEnum NotebookCellKind {
-    Markup = 1
-    Code = 2
+    MARKUP = 1
+    CODE = 2
 }
-
-string NotebookDocumentFilter
 
 string Pattern
 
@@ -2956,139 +4274,129 @@ enum PositionEncodingKind {
     UTF32 = "utf-32"
 }
 
-string PrepareRenameResult
-
 intEnum PrepareSupportDefaultBehavior {
-    Identifier = 1
+    IDENTIFIER = 1
 }
-
-string ProgressToken
 
 string RegularExpressionEngineKind
 
 enum ResourceOperationKind {
-    Create = "create"
-    Rename = "rename"
-    Delete = "delete"
+    CREATE = "create"
+    RENAME = "rename"
+    DELETE = "delete"
 }
 
 enum SemanticTokenModifiers {
-    declaration
-    definition
-    readonly
-    static
-    deprecated
-    abstract
-    async
-    modification
-    documentation
-    defaultLibrary
+    DECLARATION = "declaration"
+    DEFINITION = "definition"
+    READONLY = "readonly"
+    STATIC = "static"
+    DEPRECATED = "deprecated"
+    ABSTRACT = "abstract"
+    ASYNC = "async"
+    MODIFICATION = "modification"
+    DOCUMENTATION = "documentation"
+    DEFAULT_LIBRARY = "defaultLibrary"
 }
 
 enum SemanticTokenTypes {
-    namespace
-    type
-    class
-    enum
-    interface
-    struct
-    typeParameter
-    parameter
-    variable
-    property
-    enumMember
-    event
-    function
-    method
-    macro
-    keyword
-    modifier
-    comment
-    string
-    number
-    regexp
-    operator
-    decorator
-    label
+    NAMESPACE = "namespace"
+    TYPE = "type"
+    CLASS = "class"
+    ENUM = "enum"
+    INTERFACE = "interface"
+    STRUCT = "struct"
+    TYPE_PARAMETER = "typeParameter"
+    PARAMETER = "parameter"
+    VARIABLE = "variable"
+    PROPERTY = "property"
+    ENUM_MEMBER = "enumMember"
+    EVENT = "event"
+    FUNCTION = "function"
+    METHOD = "method"
+    MACRO = "macro"
+    KEYWORD = "keyword"
+    MODIFIER = "modifier"
+    COMMENT = "comment"
+    STRING = "string"
+    NUMBER = "number"
+    REGEXP = "regexp"
+    OPERATOR = "operator"
+    DECORATOR = "decorator"
+    LABEL = "label"
 }
 
 intEnum SignatureHelpTriggerKind {
-    Invoked = 1
-    TriggerCharacter = 2
-    ContentChange = 3
+    INVOKED = 1
+    TRIGGER_CHARACTER = 2
+    CONTENT_CHANGE = 3
 }
 
 intEnum SymbolKind {
-    File = 1
-    Module = 2
-    Namespace = 3
-    Package = 4
-    Class = 5
-    Method = 6
-    Property = 7
-    Field = 8
-    Constructor = 9
-    Enum = 10
-    Interface = 11
-    Function = 12
-    Variable = 13
-    Constant = 14
-    String = 15
-    Number = 16
-    Boolean = 17
-    Array = 18
-    Object = 19
-    Key = 20
-    Null = 21
-    EnumMember = 22
-    Struct = 23
-    Event = 24
-    Operator = 25
-    TypeParameter = 26
+    FILE = 1
+    MODULE = 2
+    NAMESPACE = 3
+    PACKAGE = 4
+    CLASS = 5
+    METHOD = 6
+    PROPERTY = 7
+    FIELD = 8
+    CONSTRUCTOR = 9
+    ENUM = 10
+    INTERFACE = 11
+    FUNCTION = 12
+    VARIABLE = 13
+    CONSTANT = 14
+    STRING = 15
+    NUMBER = 16
+    BOOLEAN = 17
+    ARRAY = 18
+    OBJECT = 19
+    KEY = 20
+    NULL = 21
+    ENUM_MEMBER = 22
+    STRUCT = 23
+    EVENT = 24
+    OPERATOR = 25
+    TYPE_PARAMETER = 26
 }
 
 intEnum SymbolTag {
-    Deprecated = 1
+    DEPRECATED = 1
 }
 
-string TextDocumentContentChangeEvent
-
-string TextDocumentFilter
-
 intEnum TextDocumentSaveReason {
-    Manual = 1
-    AfterDelay = 2
-    FocusOut = 3
+    MANUAL = 1
+    AFTER_DELAY = 2
+    FOCUS_OUT = 3
 }
 
 intEnum TextDocumentSyncKind {
-    None = 0
-    Full = 1
-    Incremental = 2
+    NONE = 0
+    FULL = 1
+    INCREMENTAL = 2
 }
 
 enum TokenFormat {
-    Relative = "relative"
+    RELATIVE = "relative"
 }
 
 enum TraceValue {
-    Off = "off"
-    Messages = "messages"
-    Verbose = "verbose"
+    OFF = "off"
+    MESSAGES = "messages"
+    VERBOSE = "verbose"
 }
 
 enum UniquenessLevel {
-    document
-    project
-    group
-    scheme
-    global
+    DOCUMENT = "document"
+    PROJECT = "project"
+    GROUP = "group"
+    SCHEME = "scheme"
+    GLOBAL = "global"
 }
 
 intEnum WatchKind {
-    Create = 1
-    Change = 2
-    Delete = 4
+    CREATE = 1
+    CHANGE = 2
+    DELETE = 4
 }
-
-string WorkspaceDocumentDiagnosticReport
