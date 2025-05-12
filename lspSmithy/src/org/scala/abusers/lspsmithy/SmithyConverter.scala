@@ -16,7 +16,7 @@ import scala.util.Random
 
 object SmithyConverter:
 
-  type ShapeState[A] = State[Map[ShapeId, Shape], A]
+  type ShapeState[A] = State[Set[Shape], A]
 
   private val namespace: String   = "lsp"
   private val deterministicRandom = new Random(0)
@@ -37,7 +37,7 @@ object SmithyConverter:
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
       _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed).filterNot(_.name.value == "LSPAny"))
-    yield ()).run(Map.empty).value._1.values
+    yield ()).run(Set.empty).value._1
 
     val assembler = Model.assembler()
     shapes.foreach(assembler.addShape)
@@ -97,7 +97,7 @@ object SmithyConverter:
             }
             .build()
 
-      shapeId -> enumShape
+      enumShape
     }
     State.modify(shapes => shapes ++ smithyEnums)
 
@@ -136,7 +136,7 @@ object SmithyConverter:
                 .member(MemberShape.builder().id(listId.withMember("member")).target(innerId).build())
                 .build()
 
-              (shapes + (listId -> listShape), listId)
+              (shapes + listShape, listId)
             }
           }
 
@@ -145,14 +145,14 @@ object SmithyConverter:
           keyId   <- smithyType(key, namespace)
           valueId <- smithyType(value, namespace)
           mapId = ShapeId.fromParts(namespace, s"MapOf_${keyId.getName}_to_${valueId.getName}")
-          result <- State[Map[ShapeId, Shape], ShapeId] { shapes =>
+          result <- State[Set[Shape], ShapeId] { shapes =>
             val mapShape = MapShape
               .builder()
               .id(mapId)
               .key(MemberShape.builder().id(mapId.withMember("key")).target(keyId).build())
               .value(MemberShape.builder().id(mapId.withMember("value")).target(valueId).build())
               .build()
-            (shapes + (mapId -> mapShape), mapId)
+            (shapes + mapShape, mapId)
           }
         yield result
 
@@ -166,13 +166,13 @@ object SmithyConverter:
             case Seq(one) => one
             case _        => ShapeId.from("smithy.api#String") // TODO: fallback
           listId = ShapeId.fromParts(namespace, s"Tuple_of_${unifiedType.getName}")
-          result <- State[Map[ShapeId, Shape], ShapeId] { shapes =>
+          result <- State[Set[Shape], ShapeId] { shapes =>
             val listShape = ListShape
               .builder()
               .id(listId)
               .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
               .build()
-            (shapes + (listId -> listShape), listId)
+            (shapes + listShape, listId)
           }
         yield result
 
@@ -194,7 +194,7 @@ object SmithyConverter:
             else acc.addMember(item)
           }.build())
           .flatMap { unionShape =>
-            State(shapes => (shapes + (id -> unionShape), id))
+            State(shapes => (shapes + unionShape, id))
           }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
@@ -202,7 +202,7 @@ object SmithyConverter:
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
-            State(shapes => (shapes + (id -> structureShape), id))
+            State(shapes => (shapes + structureShape, id))
           }
 
       case StructureLiteralType(StructureLiteral(properties, true)) => sys.error("this should not happen")
@@ -236,13 +236,13 @@ object SmithyConverter:
         case t @ Type.ReferenceType(_) =>
           smithyType(t, namespace).flatMap { targetShapeId =>
             State.modify { shapes =>
-              shapes.get(targetShapeId) match
+              shapes.map(s => s.getId -> s).toMap.get(targetShapeId) match
                 case Some(shape) =>
                   // Rename the shape to alias name
                   val renamed             = Shape.shapeToBuilder(shape): AbstractShapeBuilder[?, ?]
                   val anotherVarForUpcast = renamed.id(aliasId): AbstractShapeBuilder[?, ?]
                   val s: Shape            = anotherVarForUpcast.build().asInstanceOf[Shape]
-                  shapes + (aliasId -> s)
+                  shapes + s
                 case None =>
                   sys.error(s"Shape not found: $targetShapeId")
             }
@@ -257,21 +257,21 @@ object SmithyConverter:
             case Type.BaseType(BaseTypes.boolean)  => ShapeType.BOOLEAN
             case _                                 => ShapeType.STRING
           val s = simpleShapeOfType(aliasId, baseShapeType)
-          State.modify[Map[ShapeId, Shape]] { shapes =>
-            shapes + (s.getId -> s)
+          State.modify[Set[Shape]] { shapes =>
+            shapes + s
           }
 
         case complex =>
           // Generate the actual shape under alias name
           smithyType(complex, namespace).flatMap { targetShapeId =>
             State.modify { shapes =>
-              shapes.get(targetShapeId) match
+              shapes.map(s => s.getId -> s).toMap.get(targetShapeId) match
                 case Some(shape) =>
                   // Rename the shape to alias name
                   val renamed             = Shape.shapeToBuilder(shape): AbstractShapeBuilder[?, ?]
                   val anotherVarForUpcast = renamed.id(aliasId): AbstractShapeBuilder[?, ?]
                   val s: Shape            = anotherVarForUpcast.build().asInstanceOf[Shape]
-                  shapes + (aliasId -> s)
+                  shapes + s
                 case None =>
                   sys.error(s"Shape not found: $targetShapeId")
             }
@@ -290,20 +290,22 @@ object SmithyConverter:
           .filterNot(_.isInstanceOf[Type.BaseType])
           .traverse(t => smithyType(t, namespace))
 
-        result <- State.apply[Map[ShapeId, Shape], ShapeId] { shapes =>
+        result <- State.apply[Set[Shape], ShapeId] { shapes =>
           val builder = StructureShape.builder().id(shapeId)
 
           if referencedAsMixin.contains(struct.name.value) then builder.addTrait(MixinTrait.builder().build())
 
+          val shapeMap = shapes.map(s => s.getId -> s).toMap
+
           members.foreach(builder.addMember)
-          mixinIds.flatMap(shapes.get).foreach(builder.addMixin)
+          mixinIds.flatMap(shapeMap.get).foreach(builder.addMixin)
 
           struct.documentation.toOption.foreach { doc =>
             builder.addTrait(new DocumentationTrait(doc.value))
           }
 
           val shape = builder.build()
-          (shapes + (shapeId -> shape), shapeId)
+          (shapes + shape, shapeId)
         }
       yield result
     }.void
@@ -347,7 +349,7 @@ object SmithyConverter:
           .map(_.foldLeft(builder) { case (acc, item) => acc.addMember(item) }.build())
 
     inputStruct.flatMap { inputShape =>
-      State(shapes => (shapes + (inputShape.getId -> inputShape), inputShape.getId))
+      State(shapes => (shapes + inputShape, inputShape.getId))
     }
 
   private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] =
@@ -383,7 +385,7 @@ object SmithyConverter:
       for
         inputShapeId   <- structureFromParams(req.params, inputShapeId, namespace)
         outputTargetId <- smithyType(req.result, namespace)
-        _ <- State.modify[Map[ShapeId, Shape]] { shapes =>
+        _ <- State.modify[Set[Shape]] { shapes =>
           val outputShape =
             if outputTargetId != ShapeId.from("smithy.api#Unit") then
               StructureShape
@@ -409,7 +411,7 @@ object SmithyConverter:
             .input(inputShapeId)
             .output(outputShapeId)
             .build()
-          shapes ++ Map(opId -> opShape, outputShapeId -> outputShape)
+          shapes ++ Set(opShape, outputShape)
         }
       yield ()
     }.void
@@ -427,6 +429,6 @@ object SmithyConverter:
         builder.output(ShapeId.from("smithy.api#Unit"))
         val notifiShapeOp = builder.build()
 
-        State.modify(shapes => shapes + (opId -> notifiShapeOp))
+        State.modify(shapes => shapes + notifiShapeOp)
       }
     }.void
