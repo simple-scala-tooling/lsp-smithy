@@ -90,11 +90,8 @@ object SmithyConverter:
           enum_.values
             .distinctBy(_.value)
             .filterNot(_.proposed)
-            .filter {
-              _.value match
-                case _: Int      => false
-                case str: String => str.nonEmpty
-            }
+            // Smithy doesn't allow enum values: https://github.com/smithy-lang/smithy/issues/2626
+            .filter(_.value.stringValue.nonEmpty)
             .foldLeft(builder) { case (acc, entry) =>
               acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.stringValue)
             }
