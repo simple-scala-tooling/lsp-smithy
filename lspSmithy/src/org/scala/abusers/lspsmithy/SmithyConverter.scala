@@ -5,10 +5,12 @@ import cats.syntax.all.*
 import langoustine.meta.*
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
+import software.amazon.smithy.model.traits.DocumentationTrait
 import software.amazon.smithy.model.traits.EnumValueTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
+import software.amazon.smithy.model.traits.MixinTrait
 
 object SmithyConverter:
 
@@ -17,8 +19,13 @@ object SmithyConverter:
   private val namespace: String = "lsp"
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
+    val referencedAsMixin: Set[String] = meta.structures.flatMap(s =>
+      s.mixins.collect { //TODO add extendz?
+        case Type.ReferenceType(name) => name
+      }
+    ).map(_.value).toSet
     val shapes = (for
-      _ <- convertStructures(meta.structures)
+      _ <- convertStructures(meta.structures, referencedAsMixin)
       _ <- convertEnums(meta.enumerations)
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
@@ -291,29 +298,56 @@ object SmithyConverter:
 
     }.void
 
-  def convertStructures(structures: Vector[Structure]): ShapeState[Unit] =
+  def convertStructures(structures: Vector[Structure], referencedAsMixin:Set[String]): ShapeState[Unit] =
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
-      struct.properties
-        .filterNot(_.proposed)
-        .traverse { prop =>
-          val memberId = shapeId.withMember(prop.name.value)
-          smithyType(prop.tpe, namespace).map { target =>
-            val member = MemberShape
-              .builder()
-              .id(memberId)
-              .target(target)
-            val memberOpt =
-              if prop.optional.no then
-                member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-              else member
-            memberOpt.build()
+
+      for
+        members <- struct.properties
+          .filterNot(_.proposed)
+          .traverse { prop =>
+            val memberId = shapeId.withMember(prop.name.value)
+            smithyType(prop.tpe, namespace).map { target =>
+              val member = MemberShape
+                .builder()
+                .id(memberId)
+                .target(target)
+
+              val withOptional =
+                if prop.optional.no then
+                  member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode()))
+                else member
+
+              prop.documentation.toOption.foreach { doc =>
+                withOptional.addTrait(new DocumentationTrait(doc.value))
+              }
+
+              withOptional.build()
+            }
           }
+
+        // mixins: both `extends` and `mixins`
+        mixinIds <- struct.mixins //TODO add exteds?
+          .filterNot(_.isInstanceOf[Type.BaseType])
+          .traverse(t => smithyType(t, namespace))
+
+        result <- State.modify[Map[ShapeId, Shape]] { shapes =>
+          val builder = StructureShape.builder().id(shapeId)
+
+          if referencedAsMixin.contains(struct.name.value) then
+            builder.addTrait(MixinTrait.builder().build())
+
+          members.foreach(builder.addMember)
+          mixinIds.flatMap(shapes.get).foreach(builder.addMixin)
+
+          struct.documentation.toOption.foreach { doc =>
+            builder.addTrait(new DocumentationTrait(doc.value))
+          }
+
+          val shape = builder.build()
+          shapes + (shapeId -> shape)
         }
-        .map(_.foldLeft(StructureShape.builder().id(shapeId)) { case (acc, item) => acc.addMember(item) }.build())
-        .flatMap { structureShape =>
-          State.modify(shapes => shapes + (structureShape.getId -> structureShape))
-        }
+      yield result
     }.void
 
   private def sanitizeMethodName(m: RequestMethod): String =
