@@ -464,6 +464,7 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// Information about the client
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     clientInfo: ClientInfo
     /// The locale the client is currently showing the user interface
     /// in. This must not necessarily be the locale of the operating
@@ -473,6 +474,7 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// (See https://en.wikipedia.org/wiki/IETF_language_tag)
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     locale: String
     /// The rootPath of the workspace. Is null
     /// if no folder is open.
@@ -498,6 +500,7 @@ structure _InitializeParams with [WorkDoneProgressParams] {
 /// A special text edit with an additional change annotation.
 /// 
 /// @since 3.16.0.
+@since("3.16.0.")
 structure AnnotatedTextEdit {
     /// The actual identifier of the change annotation
     @required
@@ -518,6 +521,7 @@ structure ApplyWorkspaceEditParams {
 /// The result returned from the apply workspace edit request.
 /// 
 /// @since 3.17 renamed from ApplyWorkspaceEditResponse
+@since("3.17 renamed from ApplyWorkspaceEditResponse")
 structure ApplyWorkspaceEditResult {
     /// Indicates whether the edit was applied or not.
     @required
@@ -543,6 +547,7 @@ structure BaseSymbolInformation {
     /// Tags for this symbol.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     tags: ListOf_SymbolTag
     /// The name of the symbol containing this symbol. This information is for
     /// user interface purposes (e.g. to render a qualifier in the user interface
@@ -552,6 +557,7 @@ structure BaseSymbolInformation {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
@@ -562,6 +568,7 @@ structure CallHierarchyClientCapabilities {
 /// Represents an incoming call, e.g. a caller of a method or constructor.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyIncomingCall {
     /// The item that makes the call.
     @required
@@ -583,6 +590,7 @@ structure CallHierarchyIncomingCallsOpOutput {
 /// The parameter of a `callHierarchy/incomingCalls` request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyIncomingCallsParams {
     @required
     item: CallHierarchyItem
@@ -592,6 +600,7 @@ structure CallHierarchyIncomingCallsParams {
 /// of call hierarchy.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyItem {
     /// The name of this item.
     @required
@@ -621,11 +630,13 @@ structure CallHierarchyItem {
 /// Call hierarchy options used during static registration.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyOptions with [WorkDoneProgressOptions] {}
 
 /// Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyOutgoingCall {
     /// The item that is called.
     @required
@@ -648,6 +659,7 @@ structure CallHierarchyOutgoingCallsOpOutput {
 /// The parameter of a `callHierarchy/outgoingCalls` request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyOutgoingCallsParams {
     @required
     item: CallHierarchyItem
@@ -656,11 +668,13 @@ structure CallHierarchyOutgoingCallsParams {
 /// The parameter of a `textDocument/prepareCallHierarchy` request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyPrepareParams {}
 
 /// Call hierarchy options used during static or dynamic registration.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CallHierarchyRegistrationOptions {}
 
 structure CancelParams {
@@ -676,6 +690,7 @@ structure CancelRequestInput {
 /// Additional information that describes document changes.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure ChangeAnnotation {
     /// A human-readable string describing the actual change. The string
     /// is rendered prominent in the user interface.
@@ -690,6 +705,7 @@ structure ChangeAnnotation {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ChangeAnnotationsSupportOptions {
     /// Whether the client groups edits with equal labels into tree nodes,
     /// for instance all edits labelled with "Changes in Strings" would
@@ -706,18 +722,21 @@ structure ClientCapabilities {
     /// Capabilities specific to the notebook document support.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     notebookDocument: NotebookDocumentClientCapabilities
     /// Window specific client capabilities.
     window: WindowClientCapabilities
     /// General client capabilities.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     general: GeneralClientCapabilities
     /// Experimental client capabilities.
     experimental: Document
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCodeActionKindOptions {
     /// The code action kind values the client supports. When this
     /// property exists the client also guarantees that it will
@@ -728,6 +747,7 @@ structure ClientCodeActionKindOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCodeActionLiteralOptions {
     /// The code action kind is support with the following value
     /// set.
@@ -736,6 +756,7 @@ structure ClientCodeActionLiteralOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCodeActionResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
@@ -743,6 +764,7 @@ structure ClientCodeActionResolveOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCodeLensResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
@@ -750,12 +772,14 @@ structure ClientCodeLensResolveOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCompletionItemInsertTextModeOptions {
     @required
     valueSet: ListOf_InsertTextMode
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCompletionItemOptions {
     /// Client supports snippets as insert text.
     /// 
@@ -779,32 +803,38 @@ structure ClientCompletionItemOptions {
     /// a resolve call.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     tagSupport: CompletionItemTagOptions
     /// Client support insert replace edit to control different behavior if a
     /// completion item is inserted in the text or should replace text.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     insertReplaceSupport: Boolean
     /// Indicates which properties a client can resolve lazily on a completion
     /// item. Before version 3.16.0 only the predefined properties `documentation`
     /// and `details` could be resolved lazily.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     resolveSupport: ClientCompletionItemResolveOptions
     /// The client supports the `insertTextMode` property on
     /// a completion item to override the whitespace handling mode
     /// as defined by the client (see `insertTextMode`).
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     insertTextModeSupport: ClientCompletionItemInsertTextModeOptions
     /// The client has support for completion item label
     /// details (see also `CompletionItemLabelDetails`).
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     labelDetailsSupport: Boolean
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCompletionItemOptionsKind {
     /// The completion item kind values the client supports. When this
     /// property exists the client also guarantees that it will
@@ -818,6 +848,7 @@ structure ClientCompletionItemOptionsKind {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientCompletionItemResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
@@ -825,6 +856,7 @@ structure ClientCompletionItemResolveOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientDiagnosticsTagOptions {
     /// The tags supported by the client.
     @required
@@ -832,6 +864,7 @@ structure ClientDiagnosticsTagOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientFoldingRangeKindOptions {
     /// The folding range kind values the client supports. When this
     /// property exists the client also guarantees that it will
@@ -841,11 +874,13 @@ structure ClientFoldingRangeKindOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientFoldingRangeOptions {
     /// If set, the client signals that it supports setting collapsedText on
     /// folding ranges to display custom labels instead of the default text.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     collapsedText: Boolean
 }
 
@@ -853,6 +888,7 @@ structure ClientFoldingRangeOptions {
 /// 
 /// @since 3.15.0
 /// @since 3.18.0 ClientInfo type name added.
+@since("3.18.0 ClientInfo type name added.")
 structure ClientInfo {
     /// The name of the client as defined by the client.
     @required
@@ -862,6 +898,7 @@ structure ClientInfo {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientInlayHintResolveOptions {
     /// The properties that a client can resolve lazily.
     @required
@@ -875,6 +912,7 @@ structure ClientRegisterCapabilityOpInput {
 structure ClientRegisterCapabilityOpOutput {}
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSemanticTokensRequestFullDelta {
     /// The client will send the `textDocument/semanticTokens/full/delta` request if
     /// the server provides a corresponding handler.
@@ -882,6 +920,7 @@ structure ClientSemanticTokensRequestFullDelta {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSemanticTokensRequestOptions {
     /// The client will send the `textDocument/semanticTokens/range` request if
     /// the server provides a corresponding handler.
@@ -892,6 +931,7 @@ structure ClientSemanticTokensRequestOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientShowMessageActionItemOptions {
     /// Whether the client supports additional attributes which
     /// are preserved and send back to the server in the
@@ -900,6 +940,7 @@ structure ClientShowMessageActionItemOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSignatureInformationOptions {
     /// Client supports the following content formats for the documentation
     /// property. The order describes the preferred format of the client.
@@ -910,19 +951,23 @@ structure ClientSignatureInformationOptions {
     /// literal.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     activeParameterSupport: Boolean
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSignatureParameterInformationOptions {
     /// The client supports processing label offsets instead of a
     /// simple label string.
     /// 
     /// @since 3.14.0
+    @since("3.14.0")
     labelOffsetSupport: Boolean
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSymbolKindOptions {
     /// The symbol kind values the client supports. When this
     /// property exists the client also guarantees that it will
@@ -936,6 +981,7 @@ structure ClientSymbolKindOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSymbolResolveOptions {
     /// The properties that a client can resolve lazily. Usually
     /// `location.range`
@@ -944,6 +990,7 @@ structure ClientSymbolResolveOptions {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ClientSymbolTagOptions {
     /// The tags supported by the client.
     @required
@@ -977,6 +1024,7 @@ structure CodeAction {
     /// A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     isPreferred: Boolean
     /// Marks that the code action cannot currently be applied.
     /// 
@@ -993,6 +1041,7 @@ structure CodeAction {
     ///     error message with `reason` in the editor.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     disabled: CodeActionDisabled
     /// The workspace edit this code action performs.
     edit: WorkspaceEdit
@@ -1004,10 +1053,12 @@ structure CodeAction {
     /// a `textDocument/codeAction` and a `codeAction/resolve` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     data: Document
     /// Tags for this code action.
     /// 
     /// @since 3.18.0 - proposed
+    @since("3.18.0 - proposed")
     tags: ListOf_CodeActionTag
 }
 
@@ -1020,25 +1071,30 @@ structure CodeActionClientCapabilities {
     /// set the request can only return `Command` literals.
     /// 
     /// @since 3.8.0
+    @since("3.8.0")
     codeActionLiteralSupport: ClientCodeActionLiteralOptions
     /// Whether code action supports the `isPreferred` property.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     isPreferredSupport: Boolean
     /// Whether code action supports the `disabled` property.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     disabledSupport: Boolean
     /// Whether code action supports the `data` property which is
     /// preserved between a `textDocument/codeAction` and a
     /// `codeAction/resolve` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     dataSupport: Boolean
     /// Whether the client supports resolving additional code action
     /// properties via a separate `codeAction/resolve` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     resolveSupport: ClientCodeActionResolveOptions
     /// Whether the client honors the change annotations in
     /// text edits and resource operations returned via the
@@ -1047,11 +1103,13 @@ structure CodeActionClientCapabilities {
     /// for confirmation.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     honorsChangeAnnotations: Boolean
     /// Client supports the tag property on a code action. Clients
     /// supporting tags have to handle unknown tags gracefully.
     /// 
     /// @since 3.18.0 - proposed
+    @since("3.18.0 - proposed")
     tagSupport: CodeActionTagOptions
 }
 
@@ -1073,12 +1131,14 @@ structure CodeActionContext {
     /// The reason why code actions were requested.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     triggerKind: CodeActionTriggerKind
 }
 
 /// Captures why the code action is currently disabled.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure CodeActionDisabled {
     /// Human readable description of why the code action is currently disabled.
     /// 
@@ -1098,6 +1158,7 @@ structure CodeActionOptions with [WorkDoneProgressOptions] {
     /// information for a code action.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     resolveProvider: Boolean
 }
 
@@ -1126,6 +1187,7 @@ structure CodeActionResolveOpOutput {
 }
 
 /// @since 3.18.0 - proposed
+@since("3.18.0 - proposed")
 structure CodeActionTagOptions {
     /// The tags supported by the client.
     @required
@@ -1135,6 +1197,7 @@ structure CodeActionTagOptions {
 /// Structure to capture a description for an error code.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CodeDescription {
     /// An URI to open with more information about the diagnostic error.
     @required
@@ -1165,6 +1228,7 @@ structure CodeLensClientCapabilities {
     /// properties via a separate `codeLens/resolve` request.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     resolveSupport: ClientCodeLensResolveOptions
 }
 
@@ -1193,6 +1257,7 @@ structure CodeLensResolveOpOutput {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure CodeLensWorkspaceClientCapabilities {
     /// Whether the client implementation supports a refresh request sent from the
     /// server to the client.
@@ -1287,6 +1352,7 @@ structure CompletionClientCapabilities {
     /// text in either `insertText` or `textEdit`.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     insertTextMode: InsertTextMode
     /// The client supports to send additional context information for a
     /// `textDocument/completion` request.
@@ -1295,6 +1361,7 @@ structure CompletionClientCapabilities {
     /// capabilities.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     completionList: CompletionListCapabilities
 }
 
@@ -1323,6 +1390,7 @@ structure CompletionItem {
     /// Additional details for the label
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     labelDetails: CompletionItemLabelDetails
     /// The kind of this completion item. Based of the kind
     /// an icon is chosen by the editor.
@@ -1330,6 +1398,7 @@ structure CompletionItem {
     /// Tags for this completion item.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     tags: ListOf_CompletionItemTag
     /// A human-readable string with additional information
     /// about this item, like type or symbol information.
@@ -1377,6 +1446,7 @@ structure CompletionItem {
     /// the `textDocument.completion.insertTextMode` client capability.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     insertTextMode: InsertTextMode
     /// An {@link TextEdit edit} which is applied to a document when selecting
     /// this completion. When an edit is provided the value of
@@ -1398,6 +1468,7 @@ structure CompletionItem {
     /// contained and starting at the same position.
     /// 
     /// @since 3.16.0 additional type `InsertReplaceEdit`
+    @since("3.16.0 additional type `InsertReplaceEdit`")
     textEdit: EditUnion
     /// The edit text used if the completion item is part of a CompletionList and
     /// CompletionList defines an item default for the text edit range.
@@ -1409,6 +1480,7 @@ structure CompletionItem {
     /// property is used as a text.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     textEditText: String
     /// An optional array of additional {@link TextEdit text edits} that are applied when
     /// selecting this completion. Edits must not overlap (including the same insert position)
@@ -1448,6 +1520,7 @@ structure CompletionItem {
 /// capability.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure CompletionItemApplyKinds {
     /// Specifies whether commitCharacters on a completion will replace or be
     /// merged with those in `completionList.itemDefaults.commitCharacters`.
@@ -1464,6 +1537,7 @@ structure CompletionItemApplyKinds {
     /// and the completion's own `commitCharacters`.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     commitCharacters: ApplyKind
     /// Specifies whether the `data` field on a completion will replace or
     /// be merged with data from `completionList.itemDefaults.data`.
@@ -1487,6 +1561,7 @@ structure CompletionItemApplyKinds {
     ///   within that value will occur.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     data: ApplyKind
 }
 
@@ -1505,32 +1580,39 @@ structure CompletionItemApplyKinds {
 /// capability.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure CompletionItemDefaults {
     /// A default commit character set.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     commitCharacters: ListOf_String
     /// A default edit range.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     editRange: RangeUnion
     /// A default insert text format.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     insertTextFormat: InsertTextFormat
     /// A default insert text mode.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     insertTextMode: InsertTextMode
     /// A default data value.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     data: Document
 }
 
 /// Additional details for a completion item label.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure CompletionItemLabelDetails {
     /// An optional string which is rendered less prominently directly after {@link CompletionItem.label label},
     /// without any spacing. Should be used for function signatures and type annotations.
@@ -1549,6 +1631,7 @@ structure CompletionItemResolveOpOutput {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure CompletionItemTagOptions {
     /// The tags supported by the client.
     @required
@@ -1579,6 +1662,7 @@ structure CompletionList {
     /// capability.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     itemDefaults: CompletionItemDefaults
     /// Specifies how fields from a completion item should be combined with those
     /// from `completionList.itemDefaults`.
@@ -1597,6 +1681,7 @@ structure CompletionList {
     /// capability.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     applyKind: CompletionItemApplyKinds
     /// The completion items.
     @required
@@ -1607,6 +1692,7 @@ structure CompletionList {
 /// capabilities.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure CompletionListCapabilities {
     /// The client supports the following itemDefaults on
     /// a completion list.
@@ -1616,6 +1702,7 @@ structure CompletionListCapabilities {
     /// no properties are supported.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     itemDefaults: ListOf_String
     /// Specifies whether the client supports `CompletionList.applyKind` to
     /// indicate how supported values from `completionList.itemDefaults`
@@ -1628,6 +1715,7 @@ structure CompletionListCapabilities {
     /// defined in `CompletionList.applyKind`.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     applyKindSupport: Boolean
 }
 
@@ -1650,6 +1738,7 @@ structure CompletionOptions with [WorkDoneProgressOptions] {
     /// completion item the ones on the completion item win.
     /// 
     /// @since 3.2.0
+    @since("3.2.0")
     allCommitCharacters: ListOf_String
     /// The server provides support to resolve additional
     /// information for a completion item.
@@ -1658,6 +1747,7 @@ structure CompletionOptions with [WorkDoneProgressOptions] {
     /// capabilities.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     completionItem: ServerCompletionItemOptions
 }
 
@@ -1708,6 +1798,7 @@ structure CreateFileOptions {
 /// files.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure CreateFilesParams {
     /// An array of all files/folders created in this operation.
     @required
@@ -1715,6 +1806,7 @@ structure CreateFilesParams {
 }
 
 /// @since 3.14.0
+@since("3.14.0")
 structure DeclarationClientCapabilities {
     /// Whether declaration supports dynamic registration. If this is set to `true`
     /// the client supports the new `DeclarationRegistrationOptions` return value
@@ -1759,6 +1851,7 @@ structure DefinitionClientCapabilities {
     /// The client supports additional metadata in the form of definition links.
     /// 
     /// @since 3.14.0
+    @since("3.14.0")
     linkSupport: Boolean
 }
 
@@ -1817,6 +1910,7 @@ structure DeleteFileOptions {
 /// files.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure DeleteFilesParams {
     /// An array of all files/folders deleted in this operation.
     @required
@@ -1839,6 +1933,7 @@ structure Diagnostic {
     /// Requires the code field (above) to be present/not null.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     codeDescription: CodeDescription
     /// A human-readable string describing the source of this
     /// diagnostic, e.g. 'typescript' or 'super lint'. It usually
@@ -1850,6 +1945,7 @@ structure Diagnostic {
     /// Additional metadata about the diagnostic.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     tags: ListOf_DiagnosticTag
     /// An array of related diagnostic information, e.g. when symbol-names within
     /// a scope collide all definitions can be marked via this property.
@@ -1858,12 +1954,14 @@ structure Diagnostic {
     /// notification and `textDocument/codeAction` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     data: Document
 }
 
 /// Client capabilities specific to diagnostic pull requests.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DiagnosticClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
@@ -1876,6 +1974,7 @@ structure DiagnosticClientCapabilities {
 /// Diagnostic options.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DiagnosticOptions with [WorkDoneProgressOptions] {
     /// An optional identifier under which the diagnostics are
     /// managed by the client.
@@ -1894,6 +1993,7 @@ structure DiagnosticOptions with [WorkDoneProgressOptions] {
 /// Diagnostic registration options.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DiagnosticRegistrationOptions {}
 
 /// Represents a related message and source code location for a diagnostic. This should be
@@ -1916,22 +2016,26 @@ structure DiagnosticsCapabilities {
     /// Clients supporting tags have to handle unknown tags gracefully.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     tagSupport: ClientDiagnosticsTagOptions
     /// Client supports a codeDescription property
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     codeDescriptionSupport: Boolean
     /// Whether code action supports the `data` property which is
     /// preserved between a `textDocument/publishDiagnostics` and
     /// `textDocument/codeAction` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     dataSupport: Boolean
 }
 
 /// Cancellation data returned from a diagnostic request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DiagnosticServerCancellationData {
     @required
     retriggerRequest: Boolean
@@ -1940,6 +2044,7 @@ structure DiagnosticServerCancellationData {
 /// Workspace client capabilities specific to diagnostic pull requests.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DiagnosticWorkspaceClientCapabilities {
     /// Whether the client implementation supports a refresh request sent from
     /// the server to the client.
@@ -1970,6 +2075,7 @@ structure DidChangeConfigurationRegistrationOptions {
 /// The params sent in a change notebook document notification.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DidChangeNotebookDocumentParams {
     /// The notebook document that did change. The version number points
     /// to the version after all provided changes have been applied. If
@@ -2025,6 +2131,7 @@ structure DidChangeWatchedFilesClientCapabilities {
     /// or not.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     relativePatternSupport: Boolean
 }
 
@@ -2052,6 +2159,7 @@ structure DidChangeWorkspaceFoldersParams {
 /// The params sent in a close notebook document notification.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DidCloseNotebookDocumentParams {
     /// The notebook document that got closed.
     @required
@@ -2072,6 +2180,7 @@ structure DidCloseTextDocumentParams {
 /// The params sent in an open notebook document notification.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DidOpenNotebookDocumentParams {
     /// The notebook document that got opened.
     @required
@@ -2092,6 +2201,7 @@ structure DidOpenTextDocumentParams {
 /// The params sent in a save notebook document notification.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DidSaveNotebookDocumentParams {
     /// The notebook document that got saved.
     @required
@@ -2129,6 +2239,7 @@ structure DocumentColorRegistrationOptions {}
 /// Parameters of the document diagnostic request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DocumentDiagnosticParams {
     /// The text document.
     @required
@@ -2142,6 +2253,7 @@ structure DocumentDiagnosticParams {
 /// A partial result for a document diagnostic report.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure DocumentDiagnosticReportPartialResult {
     @required
     relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
@@ -2210,6 +2322,7 @@ structure DocumentLink {
     /// user settings, and localization.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     tooltip: String
     /// A data entry field that is preserved on a document link between a
     /// DocumentLinkRequest and a DocumentLinkResolveRequest.
@@ -2223,6 +2336,7 @@ structure DocumentLinkClientCapabilities {
     /// Whether the client supports the `tooltip` property on `DocumentLink`.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     tooltipSupport: Boolean
 }
 
@@ -2331,6 +2445,7 @@ structure DocumentSymbol {
     /// Tags for this document symbol.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     tags: ListOf_SymbolTag
     /// Indicates if this symbol is deprecated.
     /// 
@@ -2363,11 +2478,13 @@ structure DocumentSymbolClientCapabilities {
     /// Clients supporting tags have to handle unknown tags gracefully.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     tagSupport: ClientSymbolTagOptions
     /// The client supports an additional label presented in the UI when
     /// registering a document symbol provider.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     labelSupport: Boolean
 }
 
@@ -2377,6 +2494,7 @@ structure DocumentSymbolOptions with [WorkDoneProgressOptions] {
     /// are shown for the same document.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     label: String
 }
 
@@ -2393,6 +2511,7 @@ structure DocumentSymbolRegistrationOptions {}
 /// Edit range variant that includes ranges for insert and replace operations.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure EditRangeWithInsertReplace {
     @required
     insert: Range
@@ -2441,6 +2560,7 @@ structure ExitInput {}
 /// Represents information on a file/folder create.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileCreate {
     /// A file:// URI for the location of the file/folder being created.
     @required
@@ -2450,6 +2570,7 @@ structure FileCreate {
 /// Represents information on a file/folder delete.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileDelete {
     /// A file:// URI for the location of the file/folder being deleted.
     @required
@@ -2472,6 +2593,7 @@ structure FileEvent {
 /// like renaming a file in the UI.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileOperationClientCapabilities {
     /// Whether the client supports dynamic registration for file requests/notifications.
     dynamicRegistration: Boolean
@@ -2493,6 +2615,7 @@ structure FileOperationClientCapabilities {
 /// the server is interested in receiving.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileOperationFilter {
     /// A Uri scheme like `file` or `untitled`.
     scheme: String
@@ -2504,6 +2627,7 @@ structure FileOperationFilter {
 /// Options for notifications/requests for user operations on files.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileOperationOptions {
     /// The server is interested in receiving didCreateFiles notifications.
     didCreate: FileOperationRegistrationOptions
@@ -2523,6 +2647,7 @@ structure FileOperationOptions {
 /// the server is interested in receiving.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileOperationPattern {
     /// The glob pattern to match. Glob patterns can have the following syntax:
     /// - `*` to match one or more characters in a path segment
@@ -2544,6 +2669,7 @@ structure FileOperationPattern {
 /// Matching options for the file operation pattern.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileOperationPatternOptions {
     /// The pattern should be matched ignoring casing.
     ignoreCase: Boolean
@@ -2552,6 +2678,7 @@ structure FileOperationPatternOptions {
 /// The options to register for file operations.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileOperationRegistrationOptions {
     /// The actual filters.
     @required
@@ -2561,6 +2688,7 @@ structure FileOperationRegistrationOptions {
 /// Represents information on a file/folder rename.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure FileRename {
     /// A file:// URI for the original location of the file/folder being renamed.
     @required
@@ -2575,6 +2703,7 @@ structure FileSystemWatcher {
     /// 
     /// @since 3.17.0 support for relative patterns.
     @required
+    @since("3.17.0 support for relative patterns.")
     globPattern: GlobPattern
     /// The kind of events of interest. If omitted it defaults
     /// to WatchKind.Create | WatchKind.Change | WatchKind.Delete
@@ -2606,6 +2735,7 @@ structure FoldingRange {
     /// will be chosen by the client.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     collapsedText: String
 }
 
@@ -2626,10 +2756,12 @@ structure FoldingRangeClientCapabilities {
     /// Specific options for the folding range kind.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     foldingRangeKind: ClientFoldingRangeKindOptions
     /// Specific options for the folding range.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     foldingRange: ClientFoldingRangeOptions
 }
 
@@ -2655,20 +2787,24 @@ structure FormattingOptions {
     /// Trim trailing whitespace on a line.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     trimTrailingWhitespace: Boolean
     /// Insert a newline character at the end of the file if one does not exist.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     insertFinalNewline: Boolean
     /// Trim all newlines after the final newline at the end of the file.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     trimFinalNewlines: Boolean
 }
 
 /// A diagnostic report with a full set of problems.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure FullDocumentDiagnosticReport {
     /// A full document diagnostic report.
     @required
@@ -2685,6 +2821,7 @@ structure FullDocumentDiagnosticReport {
 /// General client capabilities.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure GeneralClientCapabilities {
     /// Client capability that signals how the client
     /// handles stale requests (e.g. a request
@@ -2692,14 +2829,17 @@ structure GeneralClientCapabilities {
     /// anymore since the information is outdated).
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     staleRequestSupport: StaleRequestSupportOptions
     /// Client capabilities specific to regular expressions.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     regularExpressions: RegularExpressionsClientCapabilities
     /// Client capabilities specific to the client's markdown parser.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     markdown: MarkdownClientCapabilities
     /// The position encodings supported by the client. Client and server
     /// have to agree on the same position encoding to ensure that offsets
@@ -2719,6 +2859,7 @@ structure GeneralClientCapabilities {
     /// side.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     positionEncodings: ListOf_PositionEncodingKind
 }
 
@@ -2750,6 +2891,7 @@ structure HoverParams {}
 structure HoverRegistrationOptions {}
 
 /// @since 3.6.0
+@since("3.6.0")
 structure ImplementationClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `ImplementationRegistrationOptions` return value
@@ -2758,6 +2900,7 @@ structure ImplementationClientCapabilities {
     /// The client supports additional metadata in the form of definition links.
     /// 
     /// @since 3.14.0
+    @since("3.14.0")
     linkSupport: Boolean
 }
 
@@ -2802,12 +2945,14 @@ structure InitializeResult {
     /// Information about the server.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     serverInfo: ServerInfo
 }
 
 /// Inlay hint information.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHint {
     /// The position of this hint.
     /// 
@@ -2852,6 +2997,7 @@ structure InlayHint {
 /// Inlay hint client capabilities.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHintClientCapabilities {
     /// Whether inlay hints support dynamic registration.
     dynamicRegistration: Boolean
@@ -2864,6 +3010,7 @@ structure InlayHintClientCapabilities {
 /// of inlay hints.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHintLabelPart {
     /// The value of this label part.
     @required
@@ -2894,6 +3041,7 @@ structure InlayHintLabelPart {
 /// Inlay hint options used during static registration.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHintOptions with [WorkDoneProgressOptions] {
     /// The server provides support to resolve additional
     /// information for an inlay hint item.
@@ -2903,6 +3051,7 @@ structure InlayHintOptions with [WorkDoneProgressOptions] {
 /// A parameter literal used in inlay hint requests.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHintParams {
     /// The text document.
     @required
@@ -2915,6 +3064,7 @@ structure InlayHintParams {
 /// Inlay hint options used during static or dynamic registration.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHintRegistrationOptions {}
 
 structure InlayHintResolveOpInput {
@@ -2928,6 +3078,7 @@ structure InlayHintResolveOpOutput {
 /// Client workspace capabilities specific to inlay hints.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlayHintWorkspaceClientCapabilities {
     /// Whether the client implementation supports a refresh request sent from
     /// the server to the client.
@@ -2946,12 +3097,14 @@ structure InlineStruct_bb20b45fd4d951383d93cb799b3970be {}
 /// Client capabilities specific to inline values.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueClientCapabilities {
     /// Whether implementation supports dynamic registration for inline value providers.
     dynamicRegistration: Boolean
 }
 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueContext {
     /// The stack frame (as a DAP Id) where the execution has stopped.
     @required
@@ -2967,6 +3120,7 @@ structure InlineValueContext {
 /// An optional expression can be used to override the extracted expression.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueEvaluatableExpression {
     /// The document range for which the inline value applies.
     /// The range is used to extract the evaluatable expression from the underlying document.
@@ -2979,11 +3133,13 @@ structure InlineValueEvaluatableExpression {
 /// Inline value options used during static registration.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueOptions with [WorkDoneProgressOptions] {}
 
 /// A parameter literal used in inline value requests.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueParams {
     /// The text document.
     @required
@@ -3000,11 +3156,13 @@ structure InlineValueParams {
 /// Inline value options used during static or dynamic registration.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueRegistrationOptions {}
 
 /// Provide inline value as text.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueText {
     /// The document range for which the inline value applies.
     @required
@@ -3019,6 +3177,7 @@ structure InlineValueText {
 /// An optional variable name can be used to override the extracted name.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueVariableLookup {
     /// The document range for which the inline value applies.
     /// The range is used to extract the variable name from the underlying document.
@@ -3034,6 +3193,7 @@ structure InlineValueVariableLookup {
 /// Client workspace capabilities specific to inline values.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure InlineValueWorkspaceClientCapabilities {
     /// Whether the client implementation supports a refresh request sent from the
     /// server to the client.
@@ -3048,6 +3208,7 @@ structure InlineValueWorkspaceClientCapabilities {
 /// A special text edit to provide an insert and a replace operation.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure InsertReplaceEdit {
     /// The string to be inserted.
     @required
@@ -3063,6 +3224,7 @@ structure InsertReplaceEdit {
 /// Client capabilities for the linked editing range request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure LinkedEditingRangeClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
@@ -3079,6 +3241,7 @@ structure LinkedEditingRangeRegistrationOptions {}
 /// The result of a linked editing range request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure LinkedEditingRanges {
     /// A list of ranges that can be edited together. The ranges must have
     /// identical length and contain identical text content. The ranges cannot overlap.
@@ -3124,6 +3287,7 @@ structure LocationLink {
 /// Location with only uri and does not include range.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure LocationUriOnly {
     @required
     uri: String
@@ -3152,6 +3316,7 @@ structure LogTraceParams {
 /// Client capabilities specific to the used markdown parser.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure MarkdownClientCapabilities {
     /// The name of the parser.
     @required
@@ -3162,11 +3327,13 @@ structure MarkdownClientCapabilities {
     /// Markdown.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     allowedTags: ListOf_String
 }
 
 /// @since 3.18.0
 /// @deprecated use MarkupContent instead.
+@since("3.18.0")
 structure MarkedStringWithLanguage {
     @required
     language: String
@@ -3214,6 +3381,7 @@ structure MessageActionItem {
 /// Moniker definition to match LSIF 0.5 moniker definition.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure Moniker {
     /// The scheme of the moniker. For example tsc or .Net
     @required
@@ -3232,6 +3400,7 @@ structure Moniker {
 /// Client capabilities specific to the moniker request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure MonikerClientCapabilities {
     /// Whether moniker supports dynamic registration. If this is set to `true`
     /// the client supports the new `MonikerRegistrationOptions` return value
@@ -3252,6 +3421,7 @@ structure MonikerRegistrationOptions {}
 /// notebook cell or the cell's text document.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookCell {
     /// The cell's kind
     @required
@@ -3273,6 +3443,7 @@ structure NotebookCell {
 /// array from state S to S'.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookCellArrayChange {
     /// The start oftest of the cell that changed.
     @required
@@ -3285,6 +3456,7 @@ structure NotebookCellArrayChange {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookCellLanguage {
     @required
     language: String
@@ -3294,6 +3466,7 @@ structure NotebookCellLanguage {
 /// document by different properties.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookCellTextDocumentFilter {
     /// A filter that matches against the notebook
     /// containing the notebook cell. If a string
@@ -3311,6 +3484,7 @@ structure NotebookCellTextDocumentFilter {
 /// A notebook document.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocument {
     /// The notebook document's uri.
     @required
@@ -3335,6 +3509,7 @@ structure NotebookDocument {
 /// Cell changes to a notebook document.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentCellChanges {
     /// Changes to the cell structure to add or
     /// remove cells.
@@ -3349,6 +3524,7 @@ structure NotebookDocumentCellChanges {
 /// Structural changes to cells in a notebook document.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentCellChangeStructure {
     /// The change to the cell array.
     @required
@@ -3362,6 +3538,7 @@ structure NotebookDocumentCellChangeStructure {
 /// Content changes to a cell in a notebook document.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentCellContentChanges {
     @required
     document: VersionedTextDocumentIdentifier
@@ -3372,6 +3549,7 @@ structure NotebookDocumentCellContentChanges {
 /// A change event for a notebook document.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocumentChangeEvent {
     /// The changed meta data if any.
     /// 
@@ -3384,11 +3562,13 @@ structure NotebookDocumentChangeEvent {
 /// Capabilities specific to the notebook document support.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocumentClientCapabilities {
     /// Capabilities specific to notebook document synchronization
     /// 
     /// @since 3.17.0
     @required
+    @since("3.17.0")
     synchronization: NotebookDocumentSyncClientCapabilities
 }
 
@@ -3411,6 +3591,7 @@ structure NotebookDocumentDidSaveInput {
 /// A notebook document filter where `notebookType` is required field.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentFilterNotebookType {
     /// The type of the enclosing notebook.
     @required
@@ -3424,6 +3605,7 @@ structure NotebookDocumentFilterNotebookType {
 /// A notebook document filter where `pattern` is required field.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentFilterPattern {
     /// The type of the enclosing notebook.
     notebookType: String
@@ -3437,6 +3619,7 @@ structure NotebookDocumentFilterPattern {
 /// A notebook document filter where `scheme` is required field.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentFilterScheme {
     /// The type of the enclosing notebook.
     notebookType: String
@@ -3448,6 +3631,7 @@ structure NotebookDocumentFilterScheme {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentFilterWithCells {
     /// The notebook to be synced If a string
     /// value is provided it matches against the
@@ -3459,6 +3643,7 @@ structure NotebookDocumentFilterWithCells {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure NotebookDocumentFilterWithNotebook {
     /// The notebook to be synced If a string
     /// value is provided it matches against the
@@ -3472,6 +3657,7 @@ structure NotebookDocumentFilterWithNotebook {
 /// A literal to identify a notebook document in the client.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocumentIdentifier {
     /// The notebook document's uri.
     @required
@@ -3481,6 +3667,7 @@ structure NotebookDocumentIdentifier {
 /// Notebook specific client capabilities.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocumentSyncClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is
     /// set to `true` the client supports the new
@@ -3504,6 +3691,7 @@ structure NotebookDocumentSyncClientCapabilities {
 /// cell will be synced.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocumentSyncOptions {
     /// The notebooks to be synced
     @required
@@ -3516,6 +3704,7 @@ structure NotebookDocumentSyncOptions {
 /// Registration options specific to a notebook.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure NotebookDocumentSyncRegistrationOptions {}
 
 /// A text document identifier to optionally denote a specific version of a text document.
@@ -3585,6 +3774,7 @@ structure PartialResultParams {
 /// that denotes `\r|\n` or `\n|` where `|` represents the character offset.
 /// 
 /// @since 3.17.0 - support for negotiated position encoding.
+@since("3.17.0 - support for negotiated position encoding.")
 structure Position {
     /// Line position in a document (zero-based).
     @required
@@ -3598,6 +3788,7 @@ structure Position {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure PrepareRenameDefaultBehavior {
     @required
     defaultBehavior: Boolean
@@ -3606,6 +3797,7 @@ structure PrepareRenameDefaultBehavior {
 structure PrepareRenameParams {}
 
 /// @since 3.18.0
+@since("3.18.0")
 structure PrepareRenamePlaceholder {
     @required
     range: Range
@@ -3616,6 +3808,7 @@ structure PrepareRenamePlaceholder {
 /// A previous result id in a workspace pull request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure PreviousResultId {
     /// The URI for which the client knowns a
     /// result id.
@@ -3645,6 +3838,7 @@ structure PublishDiagnosticsClientCapabilities {
     /// `textDocument/publishDiagnostics` notification's parameter.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     versionSupport: Boolean
 }
 
@@ -3656,6 +3850,7 @@ structure PublishDiagnosticsParams {
     /// Optional the version number of the document the diagnostics are published for.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     version: Integer
     /// An array of diagnostic information items.
     @required
@@ -3729,6 +3924,7 @@ structure RegistrationParams {
 /// Client capabilities specific to regular expressions.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure RegularExpressionsClientCapabilities {
     /// The engine's name.
     @required
@@ -3740,6 +3936,7 @@ structure RegularExpressionsClientCapabilities {
 /// A full diagnostic report with a set of related documents.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure RelatedFullDocumentDiagnosticReport {
     /// Diagnostics of related documents. This information is useful
     /// in programming languages where code in a file A can generate
@@ -3748,12 +3945,14 @@ structure RelatedFullDocumentDiagnosticReport {
     /// a.cpp and result in errors in a header file b.hpp.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
 }
 
 /// An unchanged diagnostic report with a set of related documents.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure RelatedUnchangedDocumentDiagnosticReport {
     /// Diagnostics of related documents. This information is useful
     /// in programming languages where code in a file A can generate
@@ -3762,6 +3961,7 @@ structure RelatedUnchangedDocumentDiagnosticReport {
     /// a.cpp and result in errors in a header file b.hpp.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     relatedDocuments: MapOf_String_to_DocumentDiagnosticReportUnion
 }
 
@@ -3770,6 +3970,7 @@ structure RelatedUnchangedDocumentDiagnosticReport {
 /// folder root, but it can be another absolute URI as well.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure RelativePattern {
     /// A workspace folder or a base URI to which this pattern will be matched
     /// against relatively.
@@ -3787,6 +3988,7 @@ structure RenameClientCapabilities {
     /// before execution.
     /// 
     /// @since 3.12.0
+    @since("3.12.0")
     prepareSupport: Boolean
     /// Client supports the default behavior result.
     /// 
@@ -3794,6 +3996,7 @@ structure RenameClientCapabilities {
     /// client.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     prepareSupportDefaultBehavior: PrepareSupportDefaultBehavior
     /// Whether the client honors the change annotations in
     /// text edits and resource operations returned via the
@@ -3802,6 +4005,7 @@ structure RenameClientCapabilities {
     /// for confirmation.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     honorsChangeAnnotations: Boolean
 }
 
@@ -3832,6 +4036,7 @@ structure RenameFileOptions {
 /// files.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure RenameFilesParams {
     /// An array of all files/folders renamed in this operation. When a folder is renamed, only
     /// the folder will be included, and not its children.
@@ -3844,6 +4049,7 @@ structure RenameOptions with [WorkDoneProgressOptions] {
     /// Renames should be checked and tested before being executed.
     /// 
     /// @since version 3.12.0
+    @since("version 3.12.0")
     prepareProvider: Boolean
 }
 
@@ -3873,6 +4079,7 @@ structure ResourceOperation {
     /// An optional annotation identifier describing the operation.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     annotationId: ChangeAnnotationIdentifier
 }
 
@@ -3914,6 +4121,7 @@ structure SelectionRangeParams {
 structure SelectionRangeRegistrationOptions {}
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokens {
     /// An optional result id. If provided and clients support delta updating
     /// the client will include the result id in the next semantic token request.
@@ -3926,6 +4134,7 @@ structure SemanticTokens {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
@@ -3960,6 +4169,7 @@ structure SemanticTokensClientCapabilities {
     /// needs to retrigger the request.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     serverCancelSupport: Boolean
     /// Whether the client uses semantic tokens to augment existing
     /// syntax tokens. If set to `true` client side created syntax
@@ -3971,10 +4181,12 @@ structure SemanticTokensClientCapabilities {
     /// specified.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     augmentsSyntaxTokens: Boolean
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensDelta {
     resultId: String
     /// The semantic token edits to transform a previous result into a new result.
@@ -3983,6 +4195,7 @@ structure SemanticTokensDelta {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensDeltaParams {
     /// The text document.
     @required
@@ -3994,12 +4207,14 @@ structure SemanticTokensDeltaParams {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensDeltaPartialResult {
     @required
     edits: ListOf_SemanticTokensEdit
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensEdit {
     /// The start offset of the edit.
     @required
@@ -4014,12 +4229,14 @@ structure SemanticTokensEdit {
 /// Semantic tokens options to support deltas for full documents
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure SemanticTokensFullDelta {
     /// The server supports deltas for full documents.
     delta: Boolean
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensLegend {
     /// The token types a server uses.
     @required
@@ -4030,6 +4247,7 @@ structure SemanticTokensLegend {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensOptions with [WorkDoneProgressOptions] {
     /// The legend used by the server
     @required
@@ -4042,6 +4260,7 @@ structure SemanticTokensOptions with [WorkDoneProgressOptions] {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensParams {
     /// The text document.
     @required
@@ -4049,12 +4268,14 @@ structure SemanticTokensParams {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensPartialResult {
     @required
     data: ListOf_Integer
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensRangeParams {
     /// The text document.
     @required
@@ -4065,9 +4286,11 @@ structure SemanticTokensRangeParams {
 }
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensRegistrationOptions {}
 
 /// @since 3.16.0
+@since("3.16.0")
 structure SemanticTokensWorkspaceClientCapabilities {
     /// Whether the client implementation supports a refresh request sent from
     /// the server to the client.
@@ -4091,6 +4314,7 @@ structure ServerCapabilities {
     /// If omitted it defaults to 'utf-16'.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     positionEncoding: PositionEncodingKind
     /// Defines how text documents are synced. Is either a detailed structure
     /// defining each notification or for backwards compatibility the
@@ -4099,6 +4323,7 @@ structure ServerCapabilities {
     /// Defines how notebook documents are synced.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     notebookDocumentSync: NotebookDocumentSyncOptionsUnion
     /// The server provides completion support.
     completionProvider: CompletionOptions
@@ -4151,34 +4376,42 @@ structure ServerCapabilities {
     /// The server provides call hierarchy support.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     callHierarchyProvider: AnonymousUnion
     /// The server provides linked editing range support.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     linkedEditingRangeProvider: AnonymousUnion
     /// The server provides semantic tokens support.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     semanticTokensProvider: SemanticTokensOptionsUnion
     /// The server provides moniker support.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     monikerProvider: AnonymousUnion
     /// The server provides type hierarchy support.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     typeHierarchyProvider: AnonymousUnion
     /// The server provides inline values.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     inlineValueProvider: AnonymousUnion
     /// The server provides inlay hints.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     inlayHintProvider: AnonymousUnion
     /// The server has support for pull model diagnostics.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     diagnosticProvider: DiagnosticOptionsUnion
     /// Workspace specific server capabilities.
     workspace: WorkspaceOptions
@@ -4187,12 +4420,14 @@ structure ServerCapabilities {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure ServerCompletionItemOptions {
     /// The server has support for completion item label
     /// details (see also `CompletionItemLabelDetails`) when
     /// receiving a completion item in a resolve call.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     labelDetailsSupport: Boolean
 }
 
@@ -4200,6 +4435,7 @@ structure ServerCompletionItemOptions {
 /// 
 /// @since 3.15.0
 /// @since 3.18.0 ServerInfo type name added.
+@since("3.18.0 ServerInfo type name added.")
 structure ServerInfo {
     /// The name of the server as defined by the server.
     @required
@@ -4220,6 +4456,7 @@ structure SetTraceParams {
 /// Client capabilities for the showDocument request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure ShowDocumentClientCapabilities {
     /// The client has support for the showDocument
     /// request.
@@ -4230,6 +4467,7 @@ structure ShowDocumentClientCapabilities {
 /// Params to show a resource in the UI.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure ShowDocumentParams {
     /// The uri to show.
     @required
@@ -4253,6 +4491,7 @@ structure ShowDocumentParams {
 /// The result of a showDocument request.
 /// 
 /// @since 3.16.0
+@since("3.16.0")
 structure ShowDocumentResult {
     /// A boolean indicating if the show was successful.
     @required
@@ -4339,12 +4578,14 @@ structure SignatureHelpClientCapabilities {
     /// `SignatureHelpOptions`.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     contextSupport: Boolean
 }
 
 /// Additional information about the context in which a signature help request was triggered.
 /// 
 /// @since 3.15.0
+@since("3.15.0")
 structure SignatureHelpContext {
     /// Action that caused signature help to be triggered.
     @required
@@ -4376,6 +4617,7 @@ structure SignatureHelpOptions with [WorkDoneProgressOptions] {
     /// are also counted as re-trigger characters.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     retriggerCharacters: ListOf_String
 }
 
@@ -4385,6 +4627,7 @@ structure SignatureHelpParams {
     /// to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     context: SignatureHelpContext
 }
 
@@ -4415,10 +4658,12 @@ structure SignatureInformation {
     /// `SignatureHelp.activeParameter`.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     activeParameter: UintegerOrNULL
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure StaleRequestSupportOptions {
     /// The client will actively cancel the request.
     @required
@@ -4477,6 +4722,7 @@ structure TextDocumentClientCapabilities {
     /// Defines which filters the client supports.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     filters: TextDocumentFilterClientCapabilities
     /// Capabilities specific to the `textDocument/completion` request.
     completion: CompletionClientCapabilities
@@ -4487,16 +4733,19 @@ structure TextDocumentClientCapabilities {
     /// Capabilities specific to the `textDocument/declaration` request.
     /// 
     /// @since 3.14.0
+    @since("3.14.0")
     declaration: DeclarationClientCapabilities
     /// Capabilities specific to the `textDocument/definition` request.
     definition: DefinitionClientCapabilities
     /// Capabilities specific to the `textDocument/typeDefinition` request.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     typeDefinition: TypeDefinitionClientCapabilities
     /// Capabilities specific to the `textDocument/implementation` request.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     implementation: ImplementationClientCapabilities
     /// Capabilities specific to the `textDocument/references` request.
     references: ReferenceClientCapabilities
@@ -4514,6 +4763,7 @@ structure TextDocumentClientCapabilities {
     /// `textDocument/colorPresentation` request.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     colorProvider: DocumentColorClientCapabilities
     /// Capabilities specific to the `textDocument/formatting` request.
     formatting: DocumentFormattingClientCapabilities
@@ -4526,44 +4776,54 @@ structure TextDocumentClientCapabilities {
     /// Capabilities specific to the `textDocument/foldingRange` request.
     /// 
     /// @since 3.10.0
+    @since("3.10.0")
     foldingRange: FoldingRangeClientCapabilities
     /// Capabilities specific to the `textDocument/selectionRange` request.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     selectionRange: SelectionRangeClientCapabilities
     /// Capabilities specific to the `textDocument/publishDiagnostics` notification.
     publishDiagnostics: PublishDiagnosticsClientCapabilities
     /// Capabilities specific to the various call hierarchy requests.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     callHierarchy: CallHierarchyClientCapabilities
     /// Capabilities specific to the various semantic token request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     semanticTokens: SemanticTokensClientCapabilities
     /// Capabilities specific to the `textDocument/linkedEditingRange` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     linkedEditingRange: LinkedEditingRangeClientCapabilities
     /// Client capabilities specific to the `textDocument/moniker` request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     moniker: MonikerClientCapabilities
     /// Capabilities specific to the various type hierarchy requests.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     typeHierarchy: TypeHierarchyClientCapabilities
     /// Capabilities specific to the `textDocument/inlineValue` request.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     inlineValue: InlineValueClientCapabilities
     /// Capabilities specific to the `textDocument/inlayHint` request.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     inlayHint: InlayHintClientCapabilities
     /// Capabilities specific to the diagnostic pull model.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     diagnostic: DiagnosticClientCapabilities
 }
 
@@ -4600,6 +4860,7 @@ structure TextDocumentCompletionOpOutput {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure TextDocumentContentChangePartial {
     /// The range of the document that changed.
     @required
@@ -4614,6 +4875,7 @@ structure TextDocumentContentChangePartial {
 }
 
 /// @since 3.18.0
+@since("3.18.0")
 structure TextDocumentContentChangeWholeDocument {
     /// The new text of the whole document.
     @required
@@ -4708,6 +4970,7 @@ structure TextDocumentEdit {
     /// @since 3.18.0 - support for SnippetTextEdit. This is guarded using a
     /// client capability.
     @required
+    @since("3.18.0 - support for SnippetTextEdit. This is guarded using a\nclient capability.")
     edits: ListOf_TextEditUnion
 }
 
@@ -4715,12 +4978,14 @@ structure TextDocumentFilterClientCapabilities {
     /// The client supports Relative Patterns.
     /// 
     /// @since 3.18.0
+    @since("3.18.0")
     relativePatternSupport: Boolean
 }
 
 /// A document filter where `language` is required field.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure TextDocumentFilterLanguage {
     /// A language id, like `typescript`.
     @required
@@ -4732,12 +4997,14 @@ structure TextDocumentFilterLanguage {
     /// @since 3.18.0 - support for relative patterns. Whether clients support
     /// relative patterns depends on the client capability
     /// `textDocuments.filters.relativePatternSupport`.
+    @since("3.18.0 - support for relative patterns. Whether clients support\nrelative patterns depends on the client capability\n`textDocuments.filters.relativePatternSupport`.")
     pattern: GlobPattern
 }
 
 /// A document filter where `pattern` is required field.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure TextDocumentFilterPattern {
     /// A language id, like `typescript`.
     language: String
@@ -4749,12 +5016,14 @@ structure TextDocumentFilterPattern {
     /// relative patterns depends on the client capability
     /// `textDocuments.filters.relativePatternSupport`.
     @required
+    @since("3.18.0 - support for relative patterns. Whether clients support\nrelative patterns depends on the client capability\n`textDocuments.filters.relativePatternSupport`.")
     pattern: GlobPattern
 }
 
 /// A document filter where `scheme` is required field.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure TextDocumentFilterScheme {
     /// A language id, like `typescript`.
     language: String
@@ -4766,6 +5035,7 @@ structure TextDocumentFilterScheme {
     /// @since 3.18.0 - support for relative patterns. Whether clients support
     /// relative patterns depends on the client capability
     /// `textDocuments.filters.relativePatternSupport`.
+    @since("3.18.0 - support for relative patterns. Whether clients support\nrelative patterns depends on the client capability\n`textDocuments.filters.relativePatternSupport`.")
     pattern: GlobPattern
 }
 
@@ -5062,6 +5332,7 @@ structure TypeDefinitionParams {}
 structure TypeDefinitionRegistrationOptions {}
 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchyClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
@@ -5070,6 +5341,7 @@ structure TypeHierarchyClientCapabilities {
 }
 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchyItem {
     /// The name of this item.
     @required
@@ -5103,16 +5375,19 @@ structure TypeHierarchyItem {
 /// Type hierarchy options used during static registration.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchyOptions with [WorkDoneProgressOptions] {}
 
 /// The parameter of a `textDocument/prepareTypeHierarchy` request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchyPrepareParams {}
 
 /// Type hierarchy options used during static or dynamic registration.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchyRegistrationOptions {}
 
 structure TypeHierarchySubtypesOpInput {
@@ -5126,6 +5401,7 @@ structure TypeHierarchySubtypesOpOutput {
 /// The parameter of a `typeHierarchy/subtypes` request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchySubtypesParams {
     @required
     item: TypeHierarchyItem
@@ -5142,6 +5418,7 @@ structure TypeHierarchySupertypesOpOutput {
 /// The parameter of a `typeHierarchy/supertypes` request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure TypeHierarchySupertypesParams {
     @required
     item: TypeHierarchyItem
@@ -5151,6 +5428,7 @@ structure TypeHierarchySupertypesParams {
 /// report is still accurate.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure UnchangedDocumentDiagnosticReport {
     /// A document diagnostic report indicating
     /// no changes to the last result. A server can
@@ -5183,6 +5461,7 @@ structure UnregistrationParams {
 /// A versioned notebook document identifier.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure VersionedNotebookDocumentIdentifier {
     /// The version number of this notebook document.
     @required
@@ -5219,14 +5498,17 @@ structure WindowClientCapabilities {
     /// capabilities.
     /// 
     /// @since 3.15.0
+    @since("3.15.0")
     workDoneProgress: Boolean
     /// Capabilities specific to the showMessage request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     showMessage: ShowMessageRequestClientCapabilities
     /// Capabilities specific to the showDocument request.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     showDocument: ShowDocumentClientCapabilities
 }
 
@@ -5373,20 +5655,24 @@ structure WorkspaceClientCapabilities {
     /// The client has support for workspace folders.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     workspaceFolders: Boolean
     /// The client supports `workspace/configuration` requests.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     configuration: Boolean
     /// Capabilities specific to the semantic token requests scoped to the
     /// workspace.
     /// 
     /// @since 3.16.0.
+    @since("3.16.0.")
     semanticTokens: SemanticTokensWorkspaceClientCapabilities
     /// Capabilities specific to the code lens requests scoped to the
     /// workspace.
     /// 
     /// @since 3.16.0.
+    @since("3.16.0.")
     codeLens: CodeLensWorkspaceClientCapabilities
     /// The client has support for file notifications/requests for user operations on files.
     /// 
@@ -5396,16 +5682,19 @@ structure WorkspaceClientCapabilities {
     /// workspace.
     /// 
     /// @since 3.17.0.
+    @since("3.17.0.")
     inlineValue: InlineValueWorkspaceClientCapabilities
     /// Capabilities specific to the inlay hint requests scoped to the
     /// workspace.
     /// 
     /// @since 3.17.0.
+    @since("3.17.0.")
     inlayHint: InlayHintWorkspaceClientCapabilities
     /// Capabilities specific to the diagnostic requests scoped to the
     /// workspace.
     /// 
     /// @since 3.17.0.
+    @since("3.17.0.")
     diagnostics: DiagnosticWorkspaceClientCapabilities
 }
 
@@ -5432,6 +5721,7 @@ structure WorkspaceDiagnosticOpOutput {
 /// Parameters of the workspace diagnostic request.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure WorkspaceDiagnosticParams {
     /// The additional identifier provided during registration.
     identifier: String
@@ -5448,6 +5738,7 @@ structure WorkspaceDiagnosticRefreshOpOutput {}
 /// A workspace diagnostic report.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure WorkspaceDiagnosticReport {
     @required
     items: ListOf_WorkspaceDocumentDiagnosticReport
@@ -5456,6 +5747,7 @@ structure WorkspaceDiagnosticReport {
 /// A partial result for a workspace diagnostic report.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure WorkspaceDiagnosticReportPartialResult {
     @required
     items: ListOf_WorkspaceDocumentDiagnosticReport
@@ -5517,6 +5809,7 @@ structure WorkspaceEdit {
     /// Whether clients honor this property depends on the client capability `workspace.changeAnnotationSupport`.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     changeAnnotations: MapOf_ChangeAnnotationIdentifier_to_ChangeAnnotation
 }
 
@@ -5527,11 +5820,13 @@ structure WorkspaceEditClientCapabilities {
     /// support 'create', 'rename' and 'delete' files and folders.
     /// 
     /// @since 3.13.0
+    @since("3.13.0")
     resourceOperations: ListOf_ResourceOperationKind
     /// The failure handling strategy of a client if applying the workspace edit
     /// fails.
     /// 
     /// @since 3.13.0
+    @since("3.13.0")
     failureHandling: FailureHandlingKind
     /// Whether the client normalizes line endings to the client specific
     /// setting.
@@ -5540,11 +5835,13 @@ structure WorkspaceEditClientCapabilities {
     /// character.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     normalizesLineEndings: Boolean
     /// Whether the client in general supports change annotations on text edits,
     /// create file, rename file and delete file changes.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     changeAnnotationSupport: ChangeAnnotationsSupportOptions
 }
 
@@ -5585,6 +5882,7 @@ structure WorkspaceFoldersInitializeParams {
     /// configured.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     workspaceFolders: ListOfWorkspaceFolderOrNULL
 }
 
@@ -5604,6 +5902,7 @@ structure WorkspaceFoldersServerCapabilities {
 /// A full document diagnostic report for a workspace diagnostic result.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure WorkspaceFullDocumentDiagnosticReport {
     /// The URI for which diagnostic information is reported.
     @required
@@ -5625,14 +5924,17 @@ structure WorkspaceInlineValueRefreshOpOutput {}
 /// Defines workspace specific capabilities of the server.
 /// 
 /// @since 3.18.0
+@since("3.18.0")
 structure WorkspaceOptions {
     /// The server supports workspace folder.
     /// 
     /// @since 3.6.0
+    @since("3.6.0")
     workspaceFolders: WorkspaceFoldersServerCapabilities
     /// The server is interested in notifications/requests for operations on files.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     fileOperations: FileOperationOptions
 }
 
@@ -5645,6 +5947,7 @@ structure WorkspaceSemanticTokensRefreshOpOutput {}
 /// See also SymbolInformation.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure WorkspaceSymbol {
     /// The location of the symbol. Whether a server is allowed to
     /// return a location without a range depends on the client
@@ -5668,12 +5971,14 @@ structure WorkspaceSymbolClientCapabilities {
     /// Clients supporting tags have to handle unknown tags gracefully.
     /// 
     /// @since 3.16.0
+    @since("3.16.0")
     tagSupport: ClientSymbolTagOptions
     /// The client support partial workspace symbols. The client will send the
     /// request `workspaceSymbol/resolve` to the server to resolve additional
     /// properties.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     resolveSupport: ClientSymbolResolveOptions
 }
 
@@ -5691,6 +5996,7 @@ structure WorkspaceSymbolOptions with [WorkDoneProgressOptions] {
     /// information for a workspace symbol.
     /// 
     /// @since 3.17.0
+    @since("3.17.0")
     resolveProvider: Boolean
 }
 
@@ -5722,6 +6028,7 @@ structure WorkspaceSymbolResolveOpOutput {
 /// An unchanged document diagnostic report for a workspace diagnostic result.
 /// 
 /// @since 3.17.0
+@since("3.17.0")
 structure WorkspaceUnchangedDocumentDiagnosticReport {
     /// The URI for which diagnostic information is reported.
     @required
@@ -6501,34 +6808,105 @@ map MapOf_String_to_ListOf_TextEdit {
     value: ListOf_TextEdit
 }
 
+/// Defines how values from a set of defaults and an individual item will be
+/// merged.
+/// 
+/// @since 3.18.0
+@since("3.18.0")
 intEnum ApplyKind {
+    /// The value from the individual item (if provided and not `null`) will be
+    /// used instead of the default.
     REPLACE = 1
+    /// The value from the item will be merged with the default.
+    /// 
+    /// The specific rules for mergeing values are defined against each field
+    /// that supports merging.
     MERGE = 2
 }
 
 string ChangeAnnotationIdentifier
 
 enum CodeActionKind {
+    /// Base kind for quickfix actions: 'quickfix'
     QUICK_FIX = "quickfix"
+    /// Base kind for refactoring actions: 'refactor'
     REFACTOR = "refactor"
+    /// Base kind for refactoring extraction actions: 'refactor.extract'
+    /// 
+    /// Example extract actions:
+    /// 
+    /// - Extract method
+    /// - Extract function
+    /// - Extract variable
+    /// - Extract interface from class
+    /// - ...
     REFACTOR_EXTRACT = "refactor.extract"
+    /// Base kind for refactoring inline actions: 'refactor.inline'
+    /// 
+    /// Example inline actions:
+    /// 
+    /// - Inline function
+    /// - Inline variable
+    /// - Inline constant
+    /// - ...
     REFACTOR_INLINE = "refactor.inline"
+    /// Base kind for refactoring rewrite actions: 'refactor.rewrite'
+    /// 
+    /// Example rewrite actions:
+    /// 
+    /// - Convert JavaScript function to class
+    /// - Add or remove parameter
+    /// - Encapsulate field
+    /// - Make method static
+    /// - Move method to base class
+    /// - ...
     REFACTOR_REWRITE = "refactor.rewrite"
+    /// Base kind for source actions: `source`
+    /// 
+    /// Source code actions apply to the entire file.
     SOURCE = "source"
+    /// Base kind for an organize imports source action: `source.organizeImports`
     SOURCE_ORGANIZE_IMPORTS = "source.organizeImports"
+    /// Base kind for auto-fix source actions: `source.fixAll`.
+    /// 
+    /// Fix all actions automatically fix errors that have a clear fix that do not require user input.
+    /// They should not suppress errors or perform unsafe fixes such as generating new types or classes.
+    /// 
+    /// @since 3.15.0
+    @since("3.15.0")
     SOURCE_FIX_ALL = "source.fixAll"
+    /// Base kind for all code actions applying to the entire notebook's scope. CodeActionKinds using
+    /// this should always begin with `notebook.`
+    /// 
+    /// @since 3.18.0
+    @since("3.18.0")
     NOTEBOOK = "notebook"
 }
 
+/// Code action tags are extra annotations that tweak the behavior of a code action.
+/// 
+/// @since 3.18.0 - proposed
+@since("3.18.0 - proposed")
 intEnum CodeActionTag {
+    /// Marks the code action as LLM-generated.
     LLM_GENERATED = 1
 }
 
+/// The reason why code actions were requested.
+/// 
+/// @since 3.17.0
+@since("3.17.0")
 intEnum CodeActionTriggerKind {
+    /// Code actions were explicitly requested by the user or by an extension.
     INVOKED = 1
+    /// Code actions were requested automatically.
+    /// 
+    /// This typically happens when current selection in a file changes, but can
+    /// also be triggered when file content changes.
     AUTOMATIC = 2
 }
 
+/// The kind of a completion entry.
 intEnum CompletionItemKind {
     TEXT = 1
     METHOD = 2
@@ -6557,85 +6935,176 @@ intEnum CompletionItemKind {
     TYPE_PARAMETER = 25
 }
 
+/// Completion item tags are extra annotations that tweak the rendering of a completion
+/// item.
+/// 
+/// @since 3.15.0
+@since("3.15.0")
 intEnum CompletionItemTag {
+    /// Render a completion as obsolete, usually using a strike-out.
     DEPRECATED = 1
 }
 
+/// How a completion was triggered
 intEnum CompletionTriggerKind {
+    /// Completion was triggered by typing an identifier (24x7 code
+    /// complete), manual invocation (e.g Ctrl+Space) or via API.
     INVOKED = 1
+    /// Completion was triggered by a trigger character specified by
+    /// the `triggerCharacters` properties of the `CompletionRegistrationOptions`.
     TRIGGER_CHARACTER = 2
+    /// Completion was re-triggered as current completion list is incomplete
     TRIGGER_FOR_INCOMPLETE_COMPLETIONS = 3
 }
 
+/// The diagnostic's severity.
 intEnum DiagnosticSeverity {
+    /// Reports an error.
     ERROR = 1
+    /// Reports a warning.
     WARNING = 2
+    /// Reports an information.
     INFORMATION = 3
+    /// Reports a hint.
     HINT = 4
 }
 
+/// The diagnostic tags.
+/// 
+/// @since 3.15.0
+@since("3.15.0")
 intEnum DiagnosticTag {
+    /// Unused or unnecessary code.
+    /// 
+    /// Clients are allowed to render diagnostics with this tag faded out instead of having
+    /// an error squiggle.
     UNNECESSARY = 1
+    /// Deprecated or obsolete code.
+    /// 
+    /// Clients are allowed to rendered diagnostics with this tag strike through.
     DEPRECATED = 2
 }
 
 enum DocumentDiagnosticReportKind {
+    /// A diagnostic report with a full
+    /// set of problems.
     FULL = "full"
+    /// A report indicating that the last
+    /// returned report is still accurate.
     UNCHANGED = "unchanged"
 }
 
+/// A document highlight kind.
 intEnum DocumentHighlightKind {
+    /// A textual occurrence.
     TEXT = 1
+    /// Read-access of a symbol, like reading a variable.
     READ = 2
+    /// Write-access of a symbol, like writing to a variable.
     WRITE = 3
 }
 
+/// Predefined error codes.
 intEnum ErrorCodes {
     PARSE_ERROR = -32700
     INVALID_REQUEST = -32600
     METHOD_NOT_FOUND = -32601
     INVALID_PARAMS = -32602
     INTERNAL_ERROR = -32603
+    /// Error code indicating that a server received a notification or
+    /// request before the server has received the `initialize` request.
     SERVER_NOT_INITIALIZED = -32002
     UNKNOWN_ERROR_CODE = -32001
 }
 
 enum FailureHandlingKind {
+    /// Applying the workspace change is simply aborted if one of the changes provided
+    /// fails. All operations executed before the failing operation stay executed.
     ABORT = "abort"
+    /// All operations are executed transactional. That means they either all
+    /// succeed or no changes at all are applied to the workspace.
     TRANSACTIONAL = "transactional"
+    /// If the workspace edit contains only textual file changes they are executed transactional.
+    /// If resource changes (create, rename or delete file) are part of the change the failure
+    /// handling strategy is abort.
     TEXT_ONLY_TRANSACTIONAL = "textOnlyTransactional"
+    /// The client tries to undo the operations already executed. But there is no
+    /// guarantee that this is succeeding.
     UNDO = "undo"
 }
 
+/// The file event type
 intEnum FileChangeType {
+    /// The file got created.
     CREATED = 1
+    /// The file got changed.
     CHANGED = 2
+    /// The file got deleted.
     DELETED = 3
 }
 
 enum FileOperationPatternKind {
+    /// The pattern matches a file only.
     FILE = "file"
+    /// The pattern matches a folder only.
     FOLDER = "folder"
 }
 
 enum FoldingRangeKind {
+    /// Folding range for a comment
     COMMENT = "comment"
+    /// Folding range for an import or include
     IMPORTS = "imports"
+    /// Folding range for a region (e.g. `#region`)
     REGION = "region"
 }
 
+/// Inlay hint kinds.
+/// 
+/// @since 3.17.0
+@since("3.17.0")
 intEnum InlayHintKind {
+    /// An inlay hint that for a type annotation.
     TYPE = 1
+    /// An inlay hint that is for a parameter.
     PARAMETER = 2
 }
 
+/// Defines whether the insert text in a completion item should be interpreted as
+/// plain text or a snippet.
 intEnum InsertTextFormat {
+    /// The primary text to be inserted is treated as a plain string.
     PLAIN_TEXT = 1
+    /// The primary text to be inserted is treated as a snippet.
+    /// 
+    /// A snippet can define tab stops and placeholders with `$1`, `$2`
+    /// and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+    /// the end of the snippet. Placeholders with equal identifiers are linked,
+    /// that is typing in one will update others too.
+    /// 
+    /// See also: https://microsoft.github.io/language-server-protocol/specifications/specification-current/#snippet_syntax
     SNIPPET = 2
 }
 
+/// How whitespace and indentation is handled during completion
+/// item insertion.
+/// 
+/// @since 3.16.0
+@since("3.16.0")
 intEnum InsertTextMode {
+    /// The insertion or replace strings is taken as it is. If the
+    /// value is multi line the lines below the cursor will be
+    /// inserted using the indentation defined in the string value.
+    /// The client will not apply any kind of adjustments to the
+    /// string.
     AS_IS = 1
+    /// The editor adjusts leading whitespace of new lines so that
+    /// they match the indentation up to the cursor of the line for
+    /// which the item is accepted.
+    /// 
+    /// Consider a line like this: <2tabs><cursor><3tabs>foo. Accepting a
+    /// multi line completion item is indented using 2 tabs and all
+    /// following lines inserted will be indented using 2 tabs as well.
     ADJUST_INDENTATION = 2
 }
 
@@ -6701,52 +7170,107 @@ enum LanguageKind {
 }
 
 intEnum LSPErrorCodes {
+    /// A request failed but it was syntactically correct, e.g the
+    /// method name was known and the parameters were valid. The error
+    /// message should contain human readable information about why
+    /// the request failed.
+    /// 
+    /// @since 3.17.0
+    @since("3.17.0")
     REQUEST_FAILED = -32803
+    /// The server cancelled the request. This error code should
+    /// only be used for requests that explicitly support being
+    /// server cancellable.
+    /// 
+    /// @since 3.17.0
+    @since("3.17.0")
     SERVER_CANCELLED = -32802
+    /// The server detected that the content of a document got
+    /// modified outside normal conditions. A server should
+    /// NOT send this error code if it detects a content change
+    /// in it unprocessed messages. The result even computed
+    /// on an older state might still be useful for the client.
+    /// 
+    /// If a client decides that a result is not of any use anymore
+    /// the client should cancel the request.
     CONTENT_MODIFIED = -32801
+    /// The client has canceled a request and a server has detected
+    /// the cancel.
     REQUEST_CANCELLED = -32800
 }
 
 enum MarkupKind {
+    /// Plain text is supported as a content format
     PLAIN_TEXT = "plaintext"
+    /// Markdown is supported as a content format
     MARKDOWN = "markdown"
 }
 
+/// The message type
 intEnum MessageType {
+    /// An error message.
     ERROR = 1
+    /// A warning message.
     WARNING = 2
+    /// An information message.
     INFO = 3
+    /// A log message.
     LOG = 4
 }
 
 enum MonikerKind {
+    /// The moniker represent a symbol that is imported into a project
     IMPORT = "import"
+    /// The moniker represents a symbol that is exported from a project
     EXPORT = "export"
+    /// The moniker represents a symbol that is local to a project (e.g. a local
+    /// variable of a function, a class not visible outside the project, ...)
     LOCAL = "local"
 }
 
+/// A notebook cell kind.
+/// 
+/// @since 3.17.0
+@since("3.17.0")
 intEnum NotebookCellKind {
+    /// A markup-cell is formatted source that is used for display.
     MARKUP = 1
+    /// A code-cell is source code.
     CODE = 2
 }
 
 string Pattern
 
 enum PositionEncodingKind {
+    /// Character offsets count UTF-8 code units (e.g. bytes).
     UTF8 = "utf-8"
+    /// Character offsets count UTF-16 code units.
+    /// 
+    /// This is the default and must always be supported
+    /// by servers
     UTF16 = "utf-16"
+    /// Character offsets count UTF-32 code units.
+    /// 
+    /// Implementation note: these are the same as Unicode codepoints,
+    /// so this `PositionEncodingKind` may also be used for an
+    /// encoding-agnostic representation of character offsets.
     UTF32 = "utf-32"
 }
 
 intEnum PrepareSupportDefaultBehavior {
+    /// The client's default behavior is to select the identifier
+    /// according the to language's syntax rule.
     IDENTIFIER = 1
 }
 
 string RegularExpressionEngineKind
 
 enum ResourceOperationKind {
+    /// Supports creating new files and folders.
     CREATE = "create"
+    /// Supports renaming existing files and folders.
     RENAME = "rename"
+    /// Supports deleting existing files and folders.
     DELETE = "delete"
 }
 
@@ -6765,6 +7289,8 @@ enum SemanticTokenModifiers {
 
 enum SemanticTokenTypes {
     NAMESPACE = "namespace"
+    /// Represents a generic type. Acts as a fallback for types which can't be mapped to
+    /// a specific type like class or enum.
     TYPE = "type"
     CLASS = "class"
     ENUM = "enum"
@@ -6786,16 +7312,28 @@ enum SemanticTokenTypes {
     NUMBER = "number"
     REGEXP = "regexp"
     OPERATOR = "operator"
+    /// @since 3.17.0
+    @since("3.17.0")
     DECORATOR = "decorator"
+    /// @since 3.18.0
+    @since("3.18.0")
     LABEL = "label"
 }
 
+/// How a signature help was triggered.
+/// 
+/// @since 3.15.0
+@since("3.15.0")
 intEnum SignatureHelpTriggerKind {
+    /// Signature help was invoked manually by the user or by a command.
     INVOKED = 1
+    /// Signature help was triggered by a trigger character.
     TRIGGER_CHARACTER = 2
+    /// Signature help was triggered by the cursor moving or by the document content changing.
     CONTENT_CHANGE = 3
 }
 
+/// A symbol kind.
 intEnum SymbolKind {
     FILE = 1
     MODULE = 2
@@ -6825,19 +7363,37 @@ intEnum SymbolKind {
     TYPE_PARAMETER = 26
 }
 
+/// Symbol tags are extra annotations that tweak the rendering of a symbol.
+/// 
+/// @since 3.16
+@since("3.16")
 intEnum SymbolTag {
+    /// Render a symbol as obsolete, usually using a strike-out.
     DEPRECATED = 1
 }
 
+/// Represents reasons why a text document is saved.
 intEnum TextDocumentSaveReason {
+    /// Manually triggered, e.g. by the user pressing save, by starting debugging,
+    /// or by an API call.
     MANUAL = 1
+    /// Automatic after a delay.
     AFTER_DELAY = 2
+    /// When the editor lost focus.
     FOCUS_OUT = 3
 }
 
+/// Defines how the host (editor) should sync
+/// document changes to the language server.
 intEnum TextDocumentSyncKind {
+    /// Documents should not be synced at all.
     NONE = 0
+    /// Documents are synced by always sending the full content
+    /// of the document.
     FULL = 1
+    /// Documents are synced by sending the full content on open.
+    /// After that only incremental updates to the document are
+    /// send.
     INCREMENTAL = 2
 }
 
@@ -6846,21 +7402,32 @@ enum TokenFormat {
 }
 
 enum TraceValue {
+    /// Turn tracing off.
     OFF = "off"
+    /// Trace messages only.
     MESSAGES = "messages"
+    /// Verbose message tracing.
     VERBOSE = "verbose"
 }
 
 enum UniquenessLevel {
+    /// The moniker is only unique inside a document
     DOCUMENT = "document"
+    /// The moniker is unique inside a project for which a dump got created
     PROJECT = "project"
+    /// The moniker is unique inside the group to which a project belongs
     GROUP = "group"
+    /// The moniker is unique inside the moniker scheme.
     SCHEME = "scheme"
+    /// The moniker is globally unique
     GLOBAL = "global"
 }
 
 intEnum WatchKind {
+    /// Interested in create events.
     CREATE = 1
+    /// Interested in change events
     CHANGE = 2
+    /// Interested in delete events
     DELETE = 4
 }

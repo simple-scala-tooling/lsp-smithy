@@ -8,15 +8,18 @@ import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
 import software.amazon.smithy.model.traits.MixinTrait
 import software.amazon.smithy.model.traits.RequiredTrait
+import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
 import software.amazon.smithy.model.Model
 
 import java.util.UUID
+import scala.jdk.CollectionConverters.*
+import scala.util.chaining.*
 import scala.util.Random
 
 object SmithyConverter:
 
-  type ShapeState[A] = State[Map[ShapeId, Shape], A]
+  type ShapeState[A] = State[Set[Shape], A]
 
   private val namespace: String   = "lsp"
   private val deterministicRandom = new Random(0)
@@ -37,7 +40,7 @@ object SmithyConverter:
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
       _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed).filterNot(_.name.value == "LSPAny"))
-    yield ()).run(Map.empty).value._1.values
+    yield ()).run(Set.empty).value._1
 
     val assembler = Model.assembler()
     shapes.foreach(assembler.addShape)
@@ -77,12 +80,19 @@ object SmithyConverter:
       val shapeId = ShapeId.fromParts(namespace, enum_.name.value)
       val enumShape = enum_.values.map(t => t.value).head match
         case _: Int =>
-          val builder = IntEnumShape.builder().id(shapeId)
+          val builder = IntEnumShape
+            .builder()
+            .id(shapeId)
+            .tap(maybeAddDocs(enum_.documentation.toOption.map(_.value), enum_.since.toOption))
           enum_.values
             .distinctBy(_.value)
             .filterNot(_.proposed)
             .foldLeft(builder) { case (acc, entry) =>
-              acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.intValue)
+              acc.addMember(
+                toUpperSnakeCase(entry.name.value),
+                entry.value.intValue,
+                _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
+              )
             }
             .build()
         case _: String =>
@@ -93,11 +103,15 @@ object SmithyConverter:
             // Smithy doesn't allow enum values: https://github.com/smithy-lang/smithy/issues/2626
             .filter(_.value.stringValue.nonEmpty)
             .foldLeft(builder) { case (acc, entry) =>
-              acc.addMember(toUpperSnakeCase(entry.name.value), entry.value.stringValue)
+              acc.addMember(
+                toUpperSnakeCase(entry.name.value),
+                entry.value.stringValue,
+                _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
+              )
             }
             .build()
 
-      shapeId -> enumShape
+      enumShape
     }
     State.modify(shapes => shapes ++ smithyEnums)
 
@@ -136,7 +150,7 @@ object SmithyConverter:
                 .member(MemberShape.builder().id(listId.withMember("member")).target(innerId).build())
                 .build()
 
-              (shapes + (listId -> listShape), listId)
+              (shapes + listShape, listId)
             }
           }
 
@@ -145,14 +159,14 @@ object SmithyConverter:
           keyId   <- smithyType(key, namespace)
           valueId <- smithyType(value, namespace)
           mapId = ShapeId.fromParts(namespace, s"MapOf_${keyId.getName}_to_${valueId.getName}")
-          result <- State[Map[ShapeId, Shape], ShapeId] { shapes =>
+          result <- State[Set[Shape], ShapeId] { shapes =>
             val mapShape = MapShape
               .builder()
               .id(mapId)
               .key(MemberShape.builder().id(mapId.withMember("key")).target(keyId).build())
               .value(MemberShape.builder().id(mapId.withMember("value")).target(valueId).build())
               .build()
-            (shapes + (mapId -> mapShape), mapId)
+            (shapes + mapShape, mapId)
           }
         yield result
 
@@ -166,13 +180,13 @@ object SmithyConverter:
             case Seq(one) => one
             case _        => ShapeId.from("smithy.api#String") // TODO: fallback
           listId = ShapeId.fromParts(namespace, s"Tuple_of_${unifiedType.getName}")
-          result <- State[Map[ShapeId, Shape], ShapeId] { shapes =>
+          result <- State[Set[Shape], ShapeId] { shapes =>
             val listShape = ListShape
               .builder()
               .id(listId)
               .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
               .build()
-            (shapes + (listId -> listShape), listId)
+            (shapes + listShape, listId)
           }
         yield result
 
@@ -194,7 +208,7 @@ object SmithyConverter:
             else acc.addMember(item)
           }.build())
           .flatMap { unionShape =>
-            State(shapes => (shapes + (id -> unionShape), id))
+            State(shapes => (shapes + unionShape, id))
           }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
@@ -202,7 +216,7 @@ object SmithyConverter:
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
-            State(shapes => (shapes + (id -> structureShape), id))
+            State(shapes => (shapes + structureShape, id))
           }
 
       case StructureLiteralType(StructureLiteral(properties, true)) => sys.error("this should not happen")
@@ -236,13 +250,13 @@ object SmithyConverter:
         case t @ Type.ReferenceType(_) =>
           smithyType(t, namespace).flatMap { targetShapeId =>
             State.modify { shapes =>
-              shapes.get(targetShapeId) match
+              shapes.map(s => s.getId -> s).toMap.get(targetShapeId) match
                 case Some(shape) =>
                   // Rename the shape to alias name
                   val renamed             = Shape.shapeToBuilder(shape): AbstractShapeBuilder[?, ?]
                   val anotherVarForUpcast = renamed.id(aliasId): AbstractShapeBuilder[?, ?]
                   val s: Shape            = anotherVarForUpcast.build().asInstanceOf[Shape]
-                  shapes + (aliasId -> s)
+                  shapes + s
                 case None =>
                   sys.error(s"Shape not found: $targetShapeId")
             }
@@ -257,21 +271,21 @@ object SmithyConverter:
             case Type.BaseType(BaseTypes.boolean)  => ShapeType.BOOLEAN
             case _                                 => ShapeType.STRING
           val s = simpleShapeOfType(aliasId, baseShapeType)
-          State.modify[Map[ShapeId, Shape]] { shapes =>
-            shapes + (s.getId -> s)
+          State.modify[Set[Shape]] { shapes =>
+            shapes + s
           }
 
         case complex =>
           // Generate the actual shape under alias name
           smithyType(complex, namespace).flatMap { targetShapeId =>
             State.modify { shapes =>
-              shapes.get(targetShapeId) match
+              shapes.map(s => s.getId -> s).toMap.get(targetShapeId) match
                 case Some(shape) =>
                   // Rename the shape to alias name
                   val renamed             = Shape.shapeToBuilder(shape): AbstractShapeBuilder[?, ?]
                   val anotherVarForUpcast = renamed.id(aliasId): AbstractShapeBuilder[?, ?]
                   val s: Shape            = anotherVarForUpcast.build().asInstanceOf[Shape]
-                  shapes + (aliasId -> s)
+                  shapes + s
                 case None =>
                   sys.error(s"Shape not found: $targetShapeId")
             }
@@ -280,6 +294,15 @@ object SmithyConverter:
     }.void
 
   def convertStructures(structures: Vector[Structure], referencedAsMixin: Set[String]): ShapeState[Unit] =
+    def addMixinTrait(name: String)(b: StructureShape.Builder) =
+      if referencedAsMixin.contains(name) then b.addTrait(MixinTrait.builder().build())
+      else b
+
+    def addMixins(shapes: Set[Shape], mixinIds: Set[ShapeId])(b: StructureShape.Builder) =
+      val shapeMap = shapes.map(s => s.getId -> s).toMap
+      mixinIds.flatMap(shapeMap.get).foreach(b.addMixin)
+      b
+
     structures.traverse { struct =>
       val shapeId = ShapeId.fromParts(namespace, struct.name.value)
 
@@ -289,24 +312,42 @@ object SmithyConverter:
         mixinIds <- struct.mixins // TODO add exteds?
           .filterNot(_.isInstanceOf[Type.BaseType])
           .traverse(t => smithyType(t, namespace))
+          .map(_.toSet)
 
-        result <- State.apply[Map[ShapeId, Shape], ShapeId] { shapes =>
-          val builder = StructureShape.builder().id(shapeId)
+        result <- State.apply[Set[Shape], ShapeId] { shapes =>
+          val shape =
+            StructureShape
+              .builder()
+              .id(shapeId)
+              .tap(maybeAddDocs(struct.documentation.toOption.map(_.value), struct.since.toOption))
+              .tap(addMixinTrait(struct.name.value))
+              .tap(addMixins(shapes, mixinIds))
+              .tap(b => members.foreach(b.addMember))
+              .build()
 
-          if referencedAsMixin.contains(struct.name.value) then builder.addTrait(MixinTrait.builder().build())
-
-          members.foreach(builder.addMember)
-          mixinIds.flatMap(shapes.get).foreach(builder.addMixin)
-
-          struct.documentation.toOption.foreach { doc =>
-            builder.addTrait(new DocumentationTrait(doc.value))
-          }
-
-          val shape = builder.build()
-          (shapes + (shapeId -> shape), shapeId)
+          (shapes + shape, shapeId)
         }
       yield result
     }.void
+
+  private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](
+      text: Option[String],
+      since: Option[String],
+  )(
+      b: B
+  ): Unit =
+    b.addTraits(
+      List
+        .concat(
+          // technically we could try to strip the text of `since` if present
+          // but in some cases there's more than one @since, and only one `since` property (though there should be multiple sinceTags).
+          // so we just leave it be for simplicity, it's just docstrings
+          // example: https://github.com/microsoft/language-server-protocol/blob/5500ef8fb35925106ee222173a95c57595882b0a/_specifications/lsp/3.18/metaModel/metaModel.json#L7234-L7235
+          text.map(new DocumentationTrait(_)),
+          since.map(new SinceTrait(_)),
+        )
+        .asJava
+    )
 
   private def sanitizeMethodName(m: RequestMethod): String =
     m.value.split("/").toList.map(_.capitalize).mkString.replaceAll("\\$", "")
@@ -347,30 +388,26 @@ object SmithyConverter:
           .map(_.foldLeft(builder) { case (acc, item) => acc.addMember(item) }.build())
 
     inputStruct.flatMap { inputShape =>
-      State(shapes => (shapes + (inputShape.getId -> inputShape), inputShape.getId))
+      State(shapes => (shapes + inputShape, inputShape.getId))
     }
 
   private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] =
+    def makeRequired(prop: Property): MemberShape.Builder => Unit =
+      if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+      else identity
+
     properties
       .filterNot(_.proposed)
       .traverse { prop =>
         val memberId = id.withMember(prop.name.value)
         smithyType(prop.tpe, namespace).map { target =>
-          val member = MemberShape
+          MemberShape
             .builder()
             .id(memberId)
             .target(target)
-
-          val withOptional =
-            if prop.optional.no then
-              member.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode()))
-            else member
-
-          prop.documentation.toOption.foreach { doc =>
-            withOptional.addTrait(new DocumentationTrait(doc.value))
-          }
-
-          withOptional.build()
+            .tap(makeRequired(prop))
+            .tap(maybeAddDocs(prop.documentation.toOption.map(_.value), prop.since.toOption))
+            .build()
         }
       }
 
@@ -383,7 +420,7 @@ object SmithyConverter:
       for
         inputShapeId   <- structureFromParams(req.params, inputShapeId, namespace)
         outputTargetId <- smithyType(req.result, namespace)
-        _ <- State.modify[Map[ShapeId, Shape]] { shapes =>
+        _ <- State.modify[Set[Shape]] { shapes =>
           val outputShape =
             if outputTargetId != ShapeId.from("smithy.api#Unit") then
               StructureShape
@@ -409,7 +446,7 @@ object SmithyConverter:
             .input(inputShapeId)
             .output(outputShapeId)
             .build()
-          shapes ++ Map(opId -> opShape, outputShapeId -> outputShape)
+          shapes ++ Set(opShape, outputShape)
         }
       yield ()
     }.void
@@ -427,6 +464,6 @@ object SmithyConverter:
         builder.output(ShapeId.from("smithy.api#Unit"))
         val notifiShapeOp = builder.build()
 
-        State.modify(shapes => shapes + (opId -> notifiShapeOp))
+        State.modify(shapes => shapes + notifiShapeOp)
       }
     }.void
