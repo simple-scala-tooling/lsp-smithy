@@ -193,18 +193,27 @@ object SmithyConverter:
       case TupleType(items) =>
         for
           items_ <- items.traverse(t => smithyType(t, namespace))
-          unifiedType = items_.distinct match
-            case Seq(one) => one
-            case _        => ShapeId.from("smithy.api#String") // TODO: fallback
-          listId = ShapeId.fromParts(namespace, s"TupleOf${unifiedType.getName}")
+          tupleId = ShapeId.fromParts(namespace, s"TupleOf${items_.map(_.getName).mkString}")
           result <- State[Set[Shape], ShapeId] { shapes =>
-            val listShape = ListShape
+            val tupleBulider = StructureShape
               .builder()
-              .id(listId)
+              .id(tupleId)
               .addTrait(TupleTrait.builder().build())
-              .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
-              .build()
-            (shapes + listShape, listId)
+
+            items_.zipWithIndex.foreach { case (m, i) =>
+              tupleBulider.addMember(
+                MemberShape
+                  .builder()
+                  .id(tupleId.withMember(s"_$i"))
+                  .target(m)
+                  .addTrait(
+                    new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode)
+                  )
+                  .build()
+              )
+            }
+
+            (shapes + tupleBulider.build(), tupleId)
           }
         yield result
 

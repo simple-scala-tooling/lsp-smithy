@@ -5405,6 +5405,14 @@ structure TextEdit {
     newText: String
 }
 
+@tuple()
+structure TupleOfIntegerInteger {
+    @required
+    _0: Integer
+    @required
+    _1: Integer
+}
+
 /// Since 3.6.0
 structure TypeDefinitionClientCapabilities {
     /// Whether implementation supports dynamic registration. If this is set to `true`
@@ -6736,7 +6744,7 @@ union StringOrNULL {
 @untagged()
 union StringUnion {
     case0: String
-    case1: TupleOfInteger
+    case1: TupleOfIntegerInteger
 }
 
 @untagged()
@@ -7103,11 +7111,6 @@ list ListOfWorkspaceSymbol {
 
 list LSPArray {
     member: Document
-}
-
-@tuple()
-list TupleOfInteger {
-    member: Integer
 }
 
 map LSPObject {
