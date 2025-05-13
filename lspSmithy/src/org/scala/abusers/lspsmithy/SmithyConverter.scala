@@ -70,7 +70,7 @@ object SmithyConverter:
         val parts                = List(common.mkString, outlier).sorted
         s"${parts(0)}Or${parts(1)}"
       else if suffix.nonEmpty then suffix.mkString + "Union"
-      else s"Union_${MurmurHash3.indexedSeqHash(types, 0)}"
+      else s"Union_${Math.abs(MurmurHash3.indexedSeqHash(types, 0))}"
 
   private def extractTypeName(t: Type): String = t match
     case Type.ReferenceType(name)                               => name.value
@@ -78,7 +78,7 @@ object SmithyConverter:
     case Type.ArrayType(inner)                                  => s"ListOf${extractTypeName(inner)}"
     case Type.MapType(k, v)                                     => s"MapOf${extractTypeName(k)}To${extractTypeName(v)}"
     case Type.StringLiteralType(_) | Type.BooleanLiteralType(_) => "Literal"
-    case Type.StructureLiteralType(StructureLiteral(props, _))  => s"Literal${MurmurHash3.indexedSeqHash(props, 0)}"
+    case Type.StructureLiteralType(StructureLiteral(props, _))  => s"Literal${Math.abs(MurmurHash3.indexedSeqHash(props, 0))}"
     case _                                                      => ""
 
   private def splitPascal(s: String): List[String] =
@@ -193,18 +193,27 @@ object SmithyConverter:
       case TupleType(items) =>
         for
           items_ <- items.traverse(t => smithyType(t, namespace))
-          unifiedType = items_.distinct match
-            case Seq(one) => one
-            case _        => ShapeId.from("smithy.api#String") // TODO: fallback
-          listId = ShapeId.fromParts(namespace, s"TupleOf${unifiedType.getName}")
+          tupleId = ShapeId.fromParts(namespace, s"TupleOf${items_.map(_.getName).mkString}")
           result <- State[Set[Shape], ShapeId] { shapes =>
-            val listShape = ListShape
+            val tupleBuilder = StructureShape
               .builder()
-              .id(listId)
+              .id(tupleId)
               .addTrait(TupleTrait.builder().build())
-              .member(MemberShape.builder().id(listId.withMember("member")).target(unifiedType).build())
-              .build()
-            (shapes + listShape, listId)
+
+            items_.zipWithIndex.foreach { case (m, i) =>
+              tupleBuilder.addMember(
+                MemberShape
+                  .builder()
+                  .id(tupleId.withMember(s"_$i"))
+                  .target(m)
+                  .addTrait(
+                    new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode)
+                  )
+                  .build()
+              )
+            }
+
+            (shapes + tupleBuilder.build(), tupleId)
           }
         yield result
 
@@ -237,7 +246,7 @@ object SmithyConverter:
           }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
-        val id = ShapeId.fromParts(namespace, s"InlineStruct${MurmurHash3.indexedSeqHash(properties, 0)}")
+        val id = ShapeId.fromParts(namespace, s"InlineStruct${Math.abs(MurmurHash3.indexedSeqHash(properties, 0))}")
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
