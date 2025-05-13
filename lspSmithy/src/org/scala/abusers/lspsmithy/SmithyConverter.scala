@@ -195,13 +195,13 @@ object SmithyConverter:
           items_ <- items.traverse(t => smithyType(t, namespace))
           tupleId = ShapeId.fromParts(namespace, s"TupleOf${items_.map(_.getName).mkString}")
           result <- State[Set[Shape], ShapeId] { shapes =>
-            val tupleBulider = StructureShape
+            val tupleBuilder = StructureShape
               .builder()
               .id(tupleId)
               .addTrait(TupleTrait.builder().build())
 
             items_.zipWithIndex.foreach { case (m, i) =>
-              tupleBulider.addMember(
+              tupleBuilder.addMember(
                 MemberShape
                   .builder()
                   .id(tupleId.withMember(s"_$i"))
@@ -213,7 +213,7 @@ object SmithyConverter:
               )
             }
 
-            (shapes + tupleBulider.build(), tupleId)
+            (shapes + tupleBuilder.build(), tupleId)
           }
         yield result
 
