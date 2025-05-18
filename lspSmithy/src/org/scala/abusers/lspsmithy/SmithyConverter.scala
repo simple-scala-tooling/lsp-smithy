@@ -78,8 +78,9 @@ object SmithyConverter:
     case Type.ArrayType(inner)                                  => s"ListOf${extractTypeName(inner)}"
     case Type.MapType(k, v)                                     => s"MapOf${extractTypeName(k)}To${extractTypeName(v)}"
     case Type.StringLiteralType(_) | Type.BooleanLiteralType(_) => "Literal"
-    case Type.StructureLiteralType(StructureLiteral(props, _))  => s"Literal${Math.abs(MurmurHash3.indexedSeqHash(props, 0))}"
-    case _                                                      => ""
+    case Type.StructureLiteralType(StructureLiteral(props, _)) =>
+      s"Literal${Math.abs(MurmurHash3.indexedSeqHash(props, 0))}"
+    case _ => ""
 
   private def splitPascal(s: String): List[String] =
     s.split("(?=[A-Z])").filter(_.nonEmpty).toList
@@ -191,6 +192,20 @@ object SmithyConverter:
         ShapeId.from("smithy.api#Boolean").pure
 
       case TupleType(items) =>
+        def idxToText(idx: Int) =
+          idx match
+            case 0     => "first"
+            case 1     => "second"
+            case 2     => "third"
+            case 3     => "fourth"
+            case 4     => "fifth"
+            case 5     => "sixth"
+            case 6     => "seventh"
+            case 7     => "eighth"
+            case 8     => "ninth"
+            case 9     => "tenth"
+            case other => sys.error(s"Unsupported arity: $other")
+
         for
           items_ <- items.traverse(t => smithyType(t, namespace))
           tupleId = ShapeId.fromParts(namespace, s"TupleOf${items_.map(_.getName).mkString}")
@@ -204,7 +219,7 @@ object SmithyConverter:
               tupleBuilder.addMember(
                 MemberShape
                   .builder()
-                  .id(tupleId.withMember(s"_$i"))
+                  .id(tupleId.withMember(idxToText(i)))
                   .target(m)
                   .addTrait(
                     new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode)

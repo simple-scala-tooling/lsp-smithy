@@ -2744,7 +2744,7 @@ structure FileOperationOptions {
 @since("3.16.0")
 structure FileOperationPattern {
     /// The glob pattern to match. Glob patterns can have the following syntax:
-    /// - `*` to match one or more characters in a path segment
+    /// - `*` to match zero or more characters in a path segment
     /// - `?` to match on one character in a path segment
     /// - `**` to match any number of path segments, including none
     /// - `{}` to group sub patterns into an OR expression. (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
@@ -5408,9 +5408,9 @@ structure TextEdit {
 @tuple()
 structure TupleOfIntegerInteger {
     @required
-    _0: Integer
+    first: Integer
     @required
-    _1: Integer
+    second: Integer
 }
 
 /// Since 3.6.0

@@ -5,8 +5,10 @@ import mill._
 import mill.define.Sources
 import mill.scalalib._
 import scalalib._
-import $meta._
+import smithy4s.codegen.mill._
 import smithytraitcodegen.SmithyTraitCodegenPlugin
+
+import $meta._
 
 trait CommonScalaModule extends ScalaModule with ScalafixModule {
   override def repositoriesTask: Task[Seq[Repository]] = T.task {
@@ -20,7 +22,7 @@ trait CommonScalaModule extends ScalaModule with ScalafixModule {
 }
 
 object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyTraitCodegenSettings {
-  def smithySourcesDir = T.source(PathRef(millSourcePath / "smithy"))
+  def smithySourcesDir = T.source(PathRef(millSourcePath / "resources"))
 
   def updateModelFiles = T.task {
     val version = "3.18"
@@ -49,7 +51,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
 
   override def resources = T {
     val downloaded = updateModelFiles()
-    Seq(PathRef(downloaded))
+    super.resources() ++ Seq(PathRef(downloaded))
   }
 
   def mainClass = Some("org.scala.abusers.lspsmithy.main")
@@ -72,4 +74,18 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
     )
     def testFramework = "weaver.framework.CatsEffect"
   }
+}
+
+object example extends CommonScalaModule with Smithy4sModule {
+
+  override def moduleDeps: Seq[JavaModule] = Seq(lspSmithy)
+
+  def smithy4sInputDirs: Target[Seq[PathRef]] = T.sources {
+    Seq(PathRef(millSourcePath / os.up / "target"))
+  }
+  override def ivyDeps = Agg(
+    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}",
+    ivy"com.disneystreaming.smithy4s::smithy4s-http4s-swagger:${smithy4sVersion()}",
+    ivy"org.http4s::http4s-ember-server:0.23.30",
+  )
 }
