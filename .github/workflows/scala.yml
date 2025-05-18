@@ -34,7 +34,7 @@ jobs:
         run: ./mill lspSmithy.run
 
       - name: Run smithy4s codegen
-        run: ./mill example.compile
+        run: ./mill exampleClient.compile
 
       - name: Ensure working tree is clean
         run: |
