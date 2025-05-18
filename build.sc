@@ -34,7 +34,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
     val schemaFile = "metaModel.schema.json"
     val modelFile  = "metaModel.json"
 
-    val downloadDir = T.dest / "downloaded"
+    val downloadDir = resources().head.path
     val schemaPath  = downloadDir / schemaFile
     val modelPath   = downloadDir / modelFile
 
@@ -49,11 +49,6 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
 
   override def forkEnv: T[Map[String, String]] = T {
     Map("TARGET_PATH" -> (os.pwd / "target").toString)
-  }
-
-  override def resources = T {
-    val downloaded = updateModelFiles()
-    super.resources() ++ Seq(PathRef(downloaded))
   }
 
   def mainClass = Some("org.scala.abusers.lspsmithy.main")
