@@ -674,6 +674,7 @@ structure CallHierarchyIncomingCall {
 }
 
 structure CallHierarchyIncomingCallsOpInput {
+    @required
     params: CallHierarchyIncomingCallsParams
 }
 
@@ -743,6 +744,7 @@ structure CallHierarchyOutgoingCall {
 }
 
 structure CallHierarchyOutgoingCallsOpInput {
+    @required
     params: CallHierarchyOutgoingCallsParams
 }
 
@@ -778,6 +780,7 @@ structure CancelParams {
 }
 
 structure CancelRequestInput {
+    @required
     params: CancelParams
 }
 
@@ -1000,6 +1003,7 @@ structure ClientInlayHintResolveOptions {
 }
 
 structure ClientRegisterCapabilityOpInput {
+    @required
     params: RegistrationParams
 }
 
@@ -1092,6 +1096,7 @@ structure ClientSymbolTagOptions {
 }
 
 structure ClientUnregisterCapabilityOpInput {
+    @required
     params: UnregistrationParams
 }
 
@@ -1273,6 +1278,7 @@ structure CodeActionParams {
 structure CodeActionRegistrationOptions {}
 
 structure CodeActionResolveOpInput {
+    @required
     params: CodeAction
 }
 
@@ -1343,6 +1349,7 @@ structure CodeLensParams {
 structure CodeLensRegistrationOptions {}
 
 structure CodeLensResolveOpInput {
+    @required
     params: CodeLens
 }
 
@@ -1717,6 +1724,7 @@ structure CompletionItemLabelDetails {
 }
 
 structure CompletionItemResolveOpInput {
+    @required
     params: CompletionItem
 }
 
@@ -2451,6 +2459,7 @@ structure DocumentLinkParams {
 structure DocumentLinkRegistrationOptions {}
 
 structure DocumentLinkResolveOpInput {
+    @required
     params: DocumentLink
 }
 
@@ -3005,6 +3014,7 @@ structure ImplementationParams {}
 structure ImplementationRegistrationOptions {}
 
 structure InitializedInput {
+    @required
     params: InitializedParams
 }
 
@@ -3022,6 +3032,7 @@ structure InitializeError {
 }
 
 structure InitializeOpInput {
+    @required
     params: InitializeParams
 }
 
@@ -3162,6 +3173,7 @@ structure InlayHintParams {
 structure InlayHintRegistrationOptions {}
 
 structure InlayHintResolveOpInput {
+    @required
     params: InlayHint
 }
 
@@ -3396,6 +3408,7 @@ structure LogMessageParams {
 }
 
 structure LogTraceInput {
+    @required
     params: LogTraceParams
 }
 
@@ -3665,18 +3678,22 @@ structure NotebookDocumentClientCapabilities {
 }
 
 structure NotebookDocumentDidChangeInput {
+    @required
     params: DidChangeNotebookDocumentParams
 }
 
 structure NotebookDocumentDidCloseInput {
+    @required
     params: DidCloseNotebookDocumentParams
 }
 
 structure NotebookDocumentDidOpenInput {
+    @required
     params: DidOpenNotebookDocumentParams
 }
 
 structure NotebookDocumentDidSaveInput {
+    @required
     params: DidSaveNotebookDocumentParams
 }
 
@@ -3912,6 +3929,7 @@ structure PreviousResultId {
 }
 
 structure ProgressInput {
+    @required
     params: ProgressParams
 }
 
@@ -4537,6 +4555,7 @@ structure ServerInfo {
 }
 
 structure SetTraceInput {
+    @required
     params: SetTraceParams
 }
 
@@ -4797,6 +4816,7 @@ structure SymbolInformation {
 }
 
 structure TelemetryEventInput {
+    @required
     params: Document
 }
 
@@ -4920,6 +4940,7 @@ structure TextDocumentClientCapabilities {
 }
 
 structure TextDocumentCodeActionOpInput {
+    @required
     params: CodeActionParams
 }
 
@@ -4928,6 +4949,7 @@ structure TextDocumentCodeActionOpOutput {
 }
 
 structure TextDocumentCodeLensOpInput {
+    @required
     params: CodeLensParams
 }
 
@@ -4936,6 +4958,7 @@ structure TextDocumentCodeLensOpOutput {
 }
 
 structure TextDocumentColorPresentationOpInput {
+    @required
     params: ColorPresentationParams
 }
 
@@ -4944,6 +4967,7 @@ structure TextDocumentColorPresentationOpOutput {
 }
 
 structure TextDocumentCompletionOpInput {
+    @required
     params: CompletionParams
 }
 
@@ -4975,6 +4999,7 @@ structure TextDocumentContentChangeWholeDocument {
 }
 
 structure TextDocumentDeclarationOpInput {
+    @required
     params: DeclarationParams
 }
 
@@ -4983,6 +5008,7 @@ structure TextDocumentDeclarationOpOutput {
 }
 
 structure TextDocumentDefinitionOpInput {
+    @required
     params: DefinitionParams
 }
 
@@ -4991,6 +5017,7 @@ structure TextDocumentDefinitionOpOutput {
 }
 
 structure TextDocumentDiagnosticOpInput {
+    @required
     params: DocumentDiagnosticParams
 }
 
@@ -4999,22 +5026,27 @@ structure TextDocumentDiagnosticOpOutput {
 }
 
 structure TextDocumentDidChangeInput {
+    @required
     params: DidChangeTextDocumentParams
 }
 
 structure TextDocumentDidCloseInput {
+    @required
     params: DidCloseTextDocumentParams
 }
 
 structure TextDocumentDidOpenInput {
+    @required
     params: DidOpenTextDocumentParams
 }
 
 structure TextDocumentDidSaveInput {
+    @required
     params: DidSaveTextDocumentParams
 }
 
 structure TextDocumentDocumentColorOpInput {
+    @required
     params: DocumentColorParams
 }
 
@@ -5023,6 +5055,7 @@ structure TextDocumentDocumentColorOpOutput {
 }
 
 structure TextDocumentDocumentHighlightOpInput {
+    @required
     params: DocumentHighlightParams
 }
 
@@ -5031,6 +5064,7 @@ structure TextDocumentDocumentHighlightOpOutput {
 }
 
 structure TextDocumentDocumentLinkOpInput {
+    @required
     params: DocumentLinkParams
 }
 
@@ -5039,6 +5073,7 @@ structure TextDocumentDocumentLinkOpOutput {
 }
 
 structure TextDocumentDocumentSymbolOpInput {
+    @required
     params: DocumentSymbolParams
 }
 
@@ -5132,6 +5167,7 @@ structure TextDocumentFilterScheme {
 }
 
 structure TextDocumentFoldingRangeOpInput {
+    @required
     params: FoldingRangeParams
 }
 
@@ -5140,6 +5176,7 @@ structure TextDocumentFoldingRangeOpOutput {
 }
 
 structure TextDocumentFormattingOpInput {
+    @required
     params: DocumentFormattingParams
 }
 
@@ -5148,6 +5185,7 @@ structure TextDocumentFormattingOpOutput {
 }
 
 structure TextDocumentHoverOpInput {
+    @required
     params: HoverParams
 }
 
@@ -5163,6 +5201,7 @@ structure TextDocumentIdentifier {
 }
 
 structure TextDocumentImplementationOpInput {
+    @required
     params: ImplementationParams
 }
 
@@ -5171,6 +5210,7 @@ structure TextDocumentImplementationOpOutput {
 }
 
 structure TextDocumentInlayHintOpInput {
+    @required
     params: InlayHintParams
 }
 
@@ -5179,6 +5219,7 @@ structure TextDocumentInlayHintOpOutput {
 }
 
 structure TextDocumentInlineValueOpInput {
+    @required
     params: InlineValueParams
 }
 
@@ -5205,6 +5246,7 @@ structure TextDocumentItem {
 }
 
 structure TextDocumentLinkedEditingRangeOpInput {
+    @required
     params: LinkedEditingRangeParams
 }
 
@@ -5213,6 +5255,7 @@ structure TextDocumentLinkedEditingRangeOpOutput {
 }
 
 structure TextDocumentMonikerOpInput {
+    @required
     params: MonikerParams
 }
 
@@ -5221,6 +5264,7 @@ structure TextDocumentMonikerOpOutput {
 }
 
 structure TextDocumentOnTypeFormattingOpInput {
+    @required
     params: DocumentOnTypeFormattingParams
 }
 
@@ -5240,6 +5284,7 @@ structure TextDocumentPositionParams {
 }
 
 structure TextDocumentPrepareCallHierarchyOpInput {
+    @required
     params: CallHierarchyPrepareParams
 }
 
@@ -5248,6 +5293,7 @@ structure TextDocumentPrepareCallHierarchyOpOutput {
 }
 
 structure TextDocumentPrepareRenameOpInput {
+    @required
     params: PrepareRenameParams
 }
 
@@ -5256,6 +5302,7 @@ structure TextDocumentPrepareRenameOpOutput {
 }
 
 structure TextDocumentPrepareTypeHierarchyOpInput {
+    @required
     params: TypeHierarchyPrepareParams
 }
 
@@ -5264,10 +5311,12 @@ structure TextDocumentPrepareTypeHierarchyOpOutput {
 }
 
 structure TextDocumentPublishDiagnosticsInput {
+    @required
     params: PublishDiagnosticsParams
 }
 
 structure TextDocumentRangeFormattingOpInput {
+    @required
     params: DocumentRangeFormattingParams
 }
 
@@ -5276,6 +5325,7 @@ structure TextDocumentRangeFormattingOpOutput {
 }
 
 structure TextDocumentReferencesOpInput {
+    @required
     params: ReferenceParams
 }
 
@@ -5292,6 +5342,7 @@ structure TextDocumentRegistrationOptions {
 }
 
 structure TextDocumentRenameOpInput {
+    @required
     params: RenameParams
 }
 
@@ -5303,6 +5354,7 @@ structure TextDocumentRenameOpOutput {
 structure TextDocumentSaveRegistrationOptions {}
 
 structure TextDocumentSelectionRangeOpInput {
+    @required
     params: SelectionRangeParams
 }
 
@@ -5311,6 +5363,7 @@ structure TextDocumentSelectionRangeOpOutput {
 }
 
 structure TextDocumentSemanticTokensFullDeltaOpInput {
+    @required
     params: SemanticTokensDeltaParams
 }
 
@@ -5319,6 +5372,7 @@ structure TextDocumentSemanticTokensFullDeltaOpOutput {
 }
 
 structure TextDocumentSemanticTokensFullOpInput {
+    @required
     params: SemanticTokensParams
 }
 
@@ -5327,6 +5381,7 @@ structure TextDocumentSemanticTokensFullOpOutput {
 }
 
 structure TextDocumentSemanticTokensRangeOpInput {
+    @required
     params: SemanticTokensRangeParams
 }
 
@@ -5335,6 +5390,7 @@ structure TextDocumentSemanticTokensRangeOpOutput {
 }
 
 structure TextDocumentSignatureHelpOpInput {
+    @required
     params: SignatureHelpParams
 }
 
@@ -5374,6 +5430,7 @@ structure TextDocumentSyncOptions {
 }
 
 structure TextDocumentTypeDefinitionOpInput {
+    @required
     params: TypeDefinitionParams
 }
 
@@ -5382,10 +5439,12 @@ structure TextDocumentTypeDefinitionOpOutput {
 }
 
 structure TextDocumentWillSaveInput {
+    @required
     params: WillSaveTextDocumentParams
 }
 
 structure TextDocumentWillSaveWaitUntilOpInput {
+    @required
     params: WillSaveTextDocumentParams
 }
 
@@ -5491,6 +5550,7 @@ structure TypeHierarchyPrepareParams {}
 structure TypeHierarchyRegistrationOptions {}
 
 structure TypeHierarchySubtypesOpInput {
+    @required
     params: TypeHierarchySubtypesParams
 }
 
@@ -5508,6 +5568,7 @@ structure TypeHierarchySubtypesParams {
 }
 
 structure TypeHierarchySupertypesOpInput {
+    @required
     params: TypeHierarchySupertypesParams
 }
 
@@ -5613,10 +5674,12 @@ structure WindowClientCapabilities {
 }
 
 structure WindowLogMessageInput {
+    @required
     params: LogMessageParams
 }
 
 structure WindowShowDocumentOpInput {
+    @required
     params: ShowDocumentParams
 }
 
@@ -5625,10 +5688,12 @@ structure WindowShowDocumentOpOutput {
 }
 
 structure WindowShowMessageInput {
+    @required
     params: ShowMessageParams
 }
 
 structure WindowShowMessageRequestOpInput {
+    @required
     params: ShowMessageRequestParams
 }
 
@@ -5637,10 +5702,12 @@ structure WindowShowMessageRequestOpOutput {
 }
 
 structure WindowWorkDoneProgressCancelInput {
+    @required
     params: WorkDoneProgressCancelParams
 }
 
 structure WindowWorkDoneProgressCreateOpInput {
+    @required
     params: WorkDoneProgressCreateParams
 }
 
@@ -5729,6 +5796,7 @@ structure WorkDoneProgressReport {
 }
 
 structure WorkspaceApplyEditOpInput {
+    @required
     params: ApplyWorkspaceEditParams
 }
 
@@ -5803,6 +5871,7 @@ structure WorkspaceCodeLensRefreshOpInput {}
 structure WorkspaceCodeLensRefreshOpOutput {}
 
 structure WorkspaceConfigurationOpInput {
+    @required
     params: ConfigurationParams
 }
 
@@ -5811,6 +5880,7 @@ structure WorkspaceConfigurationOpOutput {
 }
 
 structure WorkspaceDiagnosticOpInput {
+    @required
     params: WorkspaceDiagnosticParams
 }
 
@@ -5854,26 +5924,32 @@ structure WorkspaceDiagnosticReportPartialResult {
 }
 
 structure WorkspaceDidChangeConfigurationInput {
+    @required
     params: DidChangeConfigurationParams
 }
 
 structure WorkspaceDidChangeWatchedFilesInput {
+    @required
     params: DidChangeWatchedFilesParams
 }
 
 structure WorkspaceDidChangeWorkspaceFoldersInput {
+    @required
     params: DidChangeWorkspaceFoldersParams
 }
 
 structure WorkspaceDidCreateFilesInput {
+    @required
     params: CreateFilesParams
 }
 
 structure WorkspaceDidDeleteFilesInput {
+    @required
     params: DeleteFilesParams
 }
 
 structure WorkspaceDidRenameFilesInput {
+    @required
     params: RenameFilesParams
 }
 
@@ -5946,6 +6022,7 @@ structure WorkspaceEditClientCapabilities {
 }
 
 structure WorkspaceExecuteCommandOpInput {
+    @required
     params: ExecuteCommandParams
 }
 
@@ -6083,6 +6160,7 @@ structure WorkspaceSymbolClientCapabilities {
 }
 
 structure WorkspaceSymbolOpInput {
+    @required
     params: WorkspaceSymbolParams
 }
 
@@ -6118,6 +6196,7 @@ structure WorkspaceSymbolParams {
 structure WorkspaceSymbolRegistrationOptions {}
 
 structure WorkspaceSymbolResolveOpInput {
+    @required
     params: WorkspaceSymbol
 }
 
@@ -6140,6 +6219,7 @@ structure WorkspaceUnchangedDocumentDiagnosticReport {
 }
 
 structure WorkspaceWillCreateFilesOpInput {
+    @required
     params: CreateFilesParams
 }
 
@@ -6148,6 +6228,7 @@ structure WorkspaceWillCreateFilesOpOutput {
 }
 
 structure WorkspaceWillDeleteFilesOpInput {
+    @required
     params: DeleteFilesParams
 }
 
@@ -6156,6 +6237,7 @@ structure WorkspaceWillDeleteFilesOpOutput {
 }
 
 structure WorkspaceWillRenameFilesOpInput {
+    @required
     params: RenameFilesParams
 }
 

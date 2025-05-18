@@ -5,7 +5,7 @@ import weaver.SimpleIOSuite
 
 import SmithyConverter.unionNameFor
 
-object UnionNameGeneratorSpec extends SimpleIOSuite:
+object UnionNameGeneratorSpec extends SimpleIOSuite {
   pureTest("unionNameFor returns AOrB for 2 types") {
     val input = Vector(
       Type.ReferenceType(TypeName("Foo")),
@@ -83,3 +83,4 @@ object UnionNameGeneratorSpec extends SimpleIOSuite:
     val result = unionNameFor(input)
     expect(result == "DocumentDiagnosticReportUnion")
   }
+}

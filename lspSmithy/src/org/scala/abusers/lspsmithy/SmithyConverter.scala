@@ -138,7 +138,7 @@ object SmithyConverter:
       .replaceAll("([A-Z])([A-Z][a-z])", "$1_$2")
       .toUpperCase
 
-  private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] =
+  private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] = {
     import Type.*
 
     t match
@@ -273,6 +273,7 @@ object SmithyConverter:
       case AndType(_) =>
         // No Smithy equivalent — fallback to string
         ShapeId.from("smithy.api#String").pure
+  }
 
   private def simpleShapeOfType(shapeId: ShapeId, shapeType: ShapeType): Shape =
     shapeType match
@@ -405,7 +406,7 @@ object SmithyConverter:
       params: ParamsType,
       shapeId: ShapeId,
       namespace: String,
-  ): ShapeState[ShapeId] =
+  ): ShapeState[ShapeId] = {
     val builder = StructureShape.builder().id(shapeId)
 
     val inputStruct: ShapeState[StructureShape] = params match
@@ -419,6 +420,7 @@ object SmithyConverter:
                 .builder()
                 .id(shapeId.withMember("params"))
                 .target(target)
+                .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
                 .build()
             )
             .build()
@@ -431,6 +433,7 @@ object SmithyConverter:
                 .builder()
                 .id(shapeId.withMember(s"param$i"))
                 .target(target)
+                .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
                 .build()
             }
           }
@@ -439,8 +442,9 @@ object SmithyConverter:
     inputStruct.flatMap { inputShape =>
       State(shapes => (shapes + inputShape, inputShape.getId))
     }
+  }
 
-  private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] =
+  private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] = {
     def makeRequired(prop: Property): MemberShape.Builder => Unit =
       if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
       else identity
@@ -459,6 +463,7 @@ object SmithyConverter:
             .build()
         }
       }
+  }
 
   def convertRequests(requests: Vector[Request]): ShapeState[Unit] =
     requests.traverse { req =>

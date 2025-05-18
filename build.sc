@@ -10,6 +10,8 @@ import smithytraitcodegen.SmithyTraitCodegenPlugin
 
 import $meta._
 
+val jsonrpcVersion = "0.0.8+39-109d210f-SNAPSHOT"
+
 trait CommonScalaModule extends ScalaModule with ScalafixModule {
   override def repositoriesTask: Task[Seq[Repository]] = T.task {
     Seq(
@@ -18,7 +20,7 @@ trait CommonScalaModule extends ScalaModule with ScalafixModule {
     ) ++ super.repositoriesTask()
   }
 
-  def scalaVersion = "3.7.0"
+  def scalaVersion = "3.3.6"
 }
 
 object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyTraitCodegenSettings {
@@ -46,7 +48,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
   }
 
   override def forkEnv: T[Map[String, String]] = T {
-    Map("TARGET_PATH" -> (os.Path(sys.env("MILL_WORKSPACE_ROOT")) / "target").toString)
+    Map("TARGET_PATH" -> (os.pwd / "target").toString)
   }
 
   override def resources = T {
@@ -60,7 +62,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
     ivy"tech.neander::langoustine-meta::0.0.23",
     ivy"com.lihaoyi::os-lib:0.11.4",
     ivy"software.amazon.smithy:smithy-model:1.57.1",
-    ivy"tech.neander:jsonrpclib-smithy:0.0.8+28-1e49f02a-SNAPSHOT",
+    ivy"tech.neander:jsonrpclib-smithy:$jsonrpcVersion",
     ivy"com.disneystreaming.alloy:alloy-core:0.3.20",
   )
 
@@ -76,16 +78,38 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
   }
 }
 
-object example extends CommonScalaModule with Smithy4sModule {
+object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
 
   override def moduleDeps: Seq[JavaModule] = Seq(lspSmithy)
 
   def smithy4sInputDirs: Target[Seq[PathRef]] = T.sources {
-    Seq(PathRef(millSourcePath / os.up / "target"))
+    super.smithy4sInputDirs() ++ Seq(PathRef(millSourcePath / os.up / "target"))
   }
   override def ivyDeps = Agg(
-    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}",
-    ivy"com.disneystreaming.smithy4s::smithy4s-http4s-swagger:${smithy4sVersion()}",
-    ivy"org.http4s::http4s-ember-server:0.23.30",
+    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}"
   )
+}
+
+object exampleClient extends CommonScalaModule {
+
+  override def moduleDeps: Seq[JavaModule] = Seq(exampleClientSmithy)
+
+  override def ivyDeps = Agg(
+    ivy"tech.neander::jsonrpclib-smithy4s:$jsonrpcVersion",
+    ivy"tech.neander::jsonrpclib-fs2:$jsonrpcVersion",
+    ivy"co.fs2::fs2-io:3.12.0",
+  )
+
+  override def forkEnv: T[Map[String, String]] = T {
+    Map("SERVER_JAR" -> dummyServer.jar().path.toString)
+  }
+
+}
+
+object dummyServer extends CommonScalaModule {
+  override def ivyDeps = Agg(
+    ivy"tech.neander::langoustine-lsp::0.0.24",
+    ivy"tech.neander::langoustine-app::0.0.24",
+  )
+
 }
