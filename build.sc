@@ -75,6 +75,8 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
 
 object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
 
+  override def smithy4sAllowedNamespaces: T[Option[Set[String]]] = T(Some(Set("lsp")))
+
   override def moduleDeps: Seq[JavaModule] = Seq(lspSmithy)
 
   def smithy4sInputDirs: Target[Seq[PathRef]] = T.sources {
@@ -85,9 +87,9 @@ object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
   )
 }
 
-object exampleClient extends CommonScalaModule {
+object exampleClient extends CommonScalaModule with Smithy4sModule {
 
-  override def moduleDeps: Seq[JavaModule] = Seq(exampleClientSmithy)
+  override def moduleDeps: Seq[JavaModule] = Seq(exampleClientSmithy, lspSmithy)
 
   override def ivyDeps = Agg(
     ivy"tech.neander::jsonrpclib-smithy4s:$jsonrpcVersion",
@@ -96,7 +98,7 @@ object exampleClient extends CommonScalaModule {
   )
 
   override def forkEnv: T[Map[String, String]] = T {
-    Map("SERVER_JAR" -> dummyServer.jar().path.toString)
+    Map("SERVER_JAR" -> dummyServer.assembly().path.toString)
   }
 
 }

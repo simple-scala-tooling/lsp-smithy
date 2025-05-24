@@ -6,7 +6,7 @@ import langoustine.lsp.*
 import langoustine.lsp.all.*
 import langoustine.lsp.app.*
 
-object MyServer extends LangoustineApp.Simple {
+object LangoustineServerMain extends LangoustineApp.Simple {
   override def server =
     IO.ref(Set.empty[String]).map(myLSP)
 }
