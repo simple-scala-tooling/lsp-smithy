@@ -30,8 +30,11 @@ jobs:
       - name: Run tests
         run: ./mill _.test
 
-      - name: Run smithy gen
+      - name: Generate smithy representation
         run: ./mill lspSmithy.run
+
+      - name: Run smithy4s codegen
+        run: ./mill exampleClient.compile
 
       - name: Ensure working tree is clean
         run: |

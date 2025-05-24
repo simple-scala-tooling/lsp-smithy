@@ -78,8 +78,9 @@ object SmithyConverter:
     case Type.ArrayType(inner)                                  => s"ListOf${extractTypeName(inner)}"
     case Type.MapType(k, v)                                     => s"MapOf${extractTypeName(k)}To${extractTypeName(v)}"
     case Type.StringLiteralType(_) | Type.BooleanLiteralType(_) => "Literal"
-    case Type.StructureLiteralType(StructureLiteral(props, _))  => s"Literal${Math.abs(MurmurHash3.indexedSeqHash(props, 0))}"
-    case _                                                      => ""
+    case Type.StructureLiteralType(StructureLiteral(props, _)) =>
+      s"Literal${Math.abs(MurmurHash3.indexedSeqHash(props, 0))}"
+    case _ => ""
 
   private def splitPascal(s: String): List[String] =
     s.split("(?=[A-Z])").filter(_.nonEmpty).toList
@@ -137,7 +138,7 @@ object SmithyConverter:
       .replaceAll("([A-Z])([A-Z][a-z])", "$1_$2")
       .toUpperCase
 
-  private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] =
+  private def smithyType(t: Type, namespace: String): ShapeState[ShapeId] = {
     import Type.*
 
     t match
@@ -191,6 +192,20 @@ object SmithyConverter:
         ShapeId.from("smithy.api#Boolean").pure
 
       case TupleType(items) =>
+        def idxToText(idx: Int) =
+          idx match
+            case 0     => "first"
+            case 1     => "second"
+            case 2     => "third"
+            case 3     => "fourth"
+            case 4     => "fifth"
+            case 5     => "sixth"
+            case 6     => "seventh"
+            case 7     => "eighth"
+            case 8     => "ninth"
+            case 9     => "tenth"
+            case other => sys.error(s"Unsupported arity: $other")
+
         for
           items_ <- items.traverse(t => smithyType(t, namespace))
           tupleId = ShapeId.fromParts(namespace, s"TupleOf${items_.map(_.getName).mkString}")
@@ -204,7 +219,7 @@ object SmithyConverter:
               tupleBuilder.addMember(
                 MemberShape
                   .builder()
-                  .id(tupleId.withMember(s"_$i"))
+                  .id(tupleId.withMember(idxToText(i)))
                   .target(m)
                   .addTrait(
                     new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode)
@@ -258,6 +273,7 @@ object SmithyConverter:
       case AndType(_) =>
         // No Smithy equivalent — fallback to string
         ShapeId.from("smithy.api#String").pure
+  }
 
   private def simpleShapeOfType(shapeId: ShapeId, shapeType: ShapeType): Shape =
     shapeType match
@@ -390,7 +406,7 @@ object SmithyConverter:
       params: ParamsType,
       shapeId: ShapeId,
       namespace: String,
-  ): ShapeState[ShapeId] =
+  ): ShapeState[ShapeId] = {
     val builder = StructureShape.builder().id(shapeId)
 
     val inputStruct: ShapeState[StructureShape] = params match
@@ -404,6 +420,7 @@ object SmithyConverter:
                 .builder()
                 .id(shapeId.withMember("params"))
                 .target(target)
+                .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
                 .build()
             )
             .build()
@@ -416,6 +433,7 @@ object SmithyConverter:
                 .builder()
                 .id(shapeId.withMember(s"param$i"))
                 .target(target)
+                .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
                 .build()
             }
           }
@@ -424,8 +442,9 @@ object SmithyConverter:
     inputStruct.flatMap { inputShape =>
       State(shapes => (shapes + inputShape, inputShape.getId))
     }
+  }
 
-  private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] =
+  private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] = {
     def makeRequired(prop: Property): MemberShape.Builder => Unit =
       if prop.optional.no then _.addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
       else identity
@@ -444,6 +463,7 @@ object SmithyConverter:
             .build()
         }
       }
+  }
 
   def convertRequests(requests: Vector[Request]): ShapeState[Unit] =
     requests.traverse { req =>

@@ -24,15 +24,13 @@ object Output {
 
 object SmithyTraitCodegenImpl {
   def generate(args: Args): Output = {
-    val outputDir = args.targetDir / "smithy-trait-generator-output"
+    val outputDir = args.targetDir
     val genDir    = outputDir / "java"
     val metaDir   = outputDir / "meta"
     os.remove.all(outputDir)
     List(outputDir, genDir, genDir / "META-INF", metaDir).foreach(os.makeDir.all(_))
 
     val manifest = FileManifest.create(genDir.toNIO)
-
-    println(args.smithySourcesDir)
 
     val assembler = args.dependencies
       .foldLeft(Model.assembler().addImport(args.smithySourcesDir.toNIO))((acc, dep) => acc.addImport(dep.toNIO))

@@ -9,7 +9,7 @@ import scala.io.Source
 import scala.jdk.CollectionConverters.*
 
 @main
-def main() =
+def main() = {
   val stream      = this.getClass.getResourceAsStream("/metaModel.json")
   val jsonStr     = Source.fromInputStream(stream).mkString
   val metaModel   = read[MetaModel](jsonStr)
@@ -22,3 +22,4 @@ def main() =
   for (path, content) <- outputMap do
     val outputPath = targetDir / path.toString
     os.write.over(outputPath, content, createFolders = true)
+}
