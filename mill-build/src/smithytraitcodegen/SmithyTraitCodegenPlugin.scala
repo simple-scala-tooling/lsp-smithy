@@ -26,10 +26,6 @@ object SmithyTraitCodegenPlugin extends mill.define.ExternalModule {
       super.generatedSources() ++ Seq(PathRef(output.javaDir))
     }
 
-    // override def sources = T {
-    //   super.sources() ++ generatedSources()
-    // }
-
     override def resources: T[Seq[PathRef]] = T {
       val output = generateSmithy()
       super.resources() ++ Seq(smithySourcesDir(), PathRef(output.metaDir))
