@@ -7,6 +7,7 @@ import jsonrpclib.JsonNotificationTrait
 import jsonrpclib.JsonRequestTrait
 import langoustine.meta.*
 import lsp.TupleTrait
+import org.scala.abusers.topologicalSort
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
@@ -29,14 +30,29 @@ object SmithyConverter:
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val referencedAsMixin: Set[String] = meta.structures
       .flatMap(s =>
-        s.mixins.collect { // TODO add extendz?
-          case Type.ReferenceType(name) => name
+        s.mixins.collect { case Type.ReferenceType(name) =>
+          name
+        }
+      )
+      .map(_.value)
+      .toSet
+    val referencedAsExtends: Set[String] = meta.structures
+      .flatMap(s =>
+        s.extendz.collect { case Type.ReferenceType(name) =>
+          name
         }
       )
       .map(_.value)
       .toSet
     val shapes = (for
-      _ <- convertStructures(meta.structures.filterNot(_.proposed), referencedAsMixin)
+      _ <- convertStructures(
+        topologicalSort(meta.structures.filterNot(_.proposed)) match {
+          case Left(value) => sys.error(value)
+          case Right(v)    => v
+        },
+        referencedAsMixin,
+        referencedAsExtends,
+      )
       _ <- convertEnums(meta.enumerations.filterNot(_.proposed))
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
@@ -343,42 +359,85 @@ object SmithyConverter:
 
     }.void
 
-  def convertStructures(structures: Vector[Structure], referencedAsMixin: Set[String]): ShapeState[Unit] =
+  def convertStructures(
+      structures: Vector[Structure],
+      referencedAsMixin: Set[String],
+      referencedAsExtends: Set[String],
+  ): ShapeState[Unit] =
+    structures.traverse { struct =>
+      if (struct.name.value == "InitializeParams") {
+        println(struct.`extends`)
+      }
+      if (referencedAsExtends.contains(struct.name.value)) {
+        val baseShape = createStructureShape(
+          struct = struct.copy(name = StructureName(struct.name.value + "Base")),
+          referencedAsMixin = referencedAsMixin,
+          referencedAsExtends = true,
+        )
+
+        val justRegularStruct =
+          createStructureShape(struct = struct, referencedAsMixin = referencedAsMixin, referencedAsExtends = false)
+        baseShape *> justRegularStruct
+      } else {
+        val justRegularStruct =
+          createStructureShape(struct = struct, referencedAsMixin = referencedAsMixin, referencedAsExtends = false)
+        justRegularStruct
+      }
+    }.void
+
+  private def createStructureShape(
+      struct: Structure,
+      referencedAsMixin: Set[String],
+      referencedAsExtends: Boolean,
+  ) = {
+    println(s"create ${struct.name} $referencedAsExtends")
+
     def addMixinTrait(name: String)(b: StructureShape.Builder) =
-      if referencedAsMixin.contains(name) then b.addTrait(MixinTrait.builder().build())
+      if referencedAsMixin.contains(name) || referencedAsExtends then b.addTrait(MixinTrait.builder().build())
       else b
 
     def addMixins(shapes: Set[Shape], mixinIds: Set[ShapeId])(b: StructureShape.Builder) =
       val shapeMap = shapes.map(s => s.getId -> s).toMap
-      mixinIds.flatMap(shapeMap.get).foreach(b.addMixin)
+      mixinIds.flatMap(s => shapeMap.get(s).orElse(sys.error(s"couldn't find $s"))).foreach(b.addMixin)
       b
+    val shapeId = ShapeId.fromParts(namespace, struct.name.value)
 
-    structures.traverse { struct =>
-      val shapeId = ShapeId.fromParts(namespace, struct.name.value)
+    for
+      members <- structureMembers(shapeId, struct.properties)
+      extendIds <- struct.extendz
+        // .filterNot(_.isInstanceOf[Type.BaseType])
+        .traverse(t =>
+          smithyType(
+            t.traverse {
+              case Type.ReferenceType(name) =>
+                TypeTraversal.Replace(Type.ReferenceType(TypeName(name.value + "Base")))
+              case other => TypeTraversal.Skip
+            },
+            namespace,
+          )
+        )
+        .map(_.toSet)
+      _ = println(s"extends ids: $extendIds")
+      mixinIds <- struct.mixins
+        .filterNot(_.isInstanceOf[Type.BaseType])
+        .traverse(t => smithyType(t, namespace))
+        .map(_.toSet)
 
-      for
-        members <- structureMembers(shapeId, struct.properties)
-        // mixins: both `extends` and `mixins`
-        mixinIds <- struct.mixins // TODO add exteds?
-          .filterNot(_.isInstanceOf[Type.BaseType])
-          .traverse(t => smithyType(t, namespace))
-          .map(_.toSet)
+      result <- State.apply[Set[Shape], ShapeId] { shapes =>
+        val shape =
+          StructureShape
+            .builder()
+            .id(shapeId)
+            .tap(maybeAddDocs(struct.documentation.toOption.map(_.value), struct.since.toOption))
+            .tap(addMixinTrait(struct.name.value))
+            .tap(addMixins(shapes, mixinIds ++ extendIds))
+            .tap(b => members.foreach(b.addMember))
+            .build()
 
-        result <- State.apply[Set[Shape], ShapeId] { shapes =>
-          val shape =
-            StructureShape
-              .builder()
-              .id(shapeId)
-              .tap(maybeAddDocs(struct.documentation.toOption.map(_.value), struct.since.toOption))
-              .tap(addMixinTrait(struct.name.value))
-              .tap(addMixins(shapes, mixinIds))
-              .tap(b => members.foreach(b.addMember))
-              .build()
-
-          (shapes + shape, shapeId)
-        }
-      yield result
-    }.void
+        (shapes + shape, shapeId)
+      }
+    yield result
+  }
 
   private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](
       text: Option[String],

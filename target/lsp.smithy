@@ -591,11 +591,57 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     trace: TraceValue
 }
 
+/// The initialize parameters
+@mixin
+structure _InitializeParamsBase with [WorkDoneProgressParams] {
+    /// The process Id of the parent process that started
+    /// the server.
+    /// 
+    /// Is `null` if the process has not been started by another process.
+    /// If the parent process is not alive then the server should exit.
+    @required
+    processId: IntegerOrNULL
+    /// Information about the client
+    /// 
+    /// @since 3.15.0
+    @since("3.15.0")
+    clientInfo: ClientInfo
+    /// The locale the client is currently showing the user interface
+    /// in. This must not necessarily be the locale of the operating
+    /// system.
+    /// 
+    /// Uses IETF language tags as the value's syntax
+    /// (See https://en.wikipedia.org/wiki/IETF_language_tag)
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    locale: String
+    /// The rootPath of the workspace. Is null
+    /// if no folder is open.
+    /// 
+    /// @deprecated in favour of rootUri.
+    rootPath: StringOrNULL
+    /// The rootUri of the workspace. Is null if no
+    /// folder is open. If both `rootPath` and `rootUri` are set
+    /// `rootUri` wins.
+    /// 
+    /// @deprecated in favour of workspaceFolders.
+    @required
+    rootUri: DocumentUriOrNULL
+    /// The capabilities provided by the client (editor or tool)
+    @required
+    capabilities: ClientCapabilities
+    /// User provided initialization options.
+    initializationOptions: Document
+    /// The initial trace setting. If omitted trace is disabled ('off').
+    trace: TraceValue
+}
+
 /// A special text edit with an additional change annotation.
 /// 
 /// @since 3.16.0.
 @since("3.16.0.")
-structure AnnotatedTextEdit {
+structure AnnotatedTextEdit with [TextEditBase] {
     /// The actual identifier of the change annotation
     @required
     annotationId: ChangeAnnotationIdentifier
@@ -650,6 +696,27 @@ structure BaseSymbolInformation {
     containerName: String
 }
 
+/// A base for all symbol information.
+@mixin
+structure BaseSymbolInformationBase {
+    /// The name of this symbol.
+    @required
+    name: String
+    /// The kind of this symbol.
+    @required
+    kind: SymbolKind
+    /// Tags for this symbol.
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    tags: ListOfSymbolTag
+    /// The name of the symbol containing this symbol. This information is for
+    /// user interface purposes (e.g. to render a qualifier in the user interface
+    /// if necessary). It can't be used to re-infer a hierarchy for the document
+    /// symbols.
+    containerName: String
+}
+
 /// @since 3.16.0
 @since("3.16.0")
 structure CallHierarchyClientCapabilities {
@@ -686,7 +753,10 @@ structure CallHierarchyIncomingCallsOpOutput {
 /// 
 /// @since 3.16.0
 @since("3.16.0")
-structure CallHierarchyIncomingCallsParams {
+structure CallHierarchyIncomingCallsParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     @required
     item: CallHierarchyItem
 }
@@ -728,6 +798,13 @@ structure CallHierarchyItem {
 @since("3.16.0")
 structure CallHierarchyOptions with [WorkDoneProgressOptions] {}
 
+/// Call hierarchy options used during static registration.
+/// 
+/// @since 3.16.0
+@mixin
+@since("3.16.0")
+structure CallHierarchyOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
 /// 
 /// @since 3.16.0
@@ -756,7 +833,10 @@ structure CallHierarchyOutgoingCallsOpOutput {
 /// 
 /// @since 3.16.0
 @since("3.16.0")
-structure CallHierarchyOutgoingCallsParams {
+structure CallHierarchyOutgoingCallsParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     @required
     item: CallHierarchyItem
 }
@@ -765,13 +845,20 @@ structure CallHierarchyOutgoingCallsParams {
 /// 
 /// @since 3.16.0
 @since("3.16.0")
-structure CallHierarchyPrepareParams {}
+structure CallHierarchyPrepareParams with [
+    WorkDoneProgressParams
+    TextDocumentPositionParamsBase
+] {}
 
 /// Call hierarchy options used during static or dynamic registration.
 /// 
 /// @since 3.16.0
 @since("3.16.0")
-structure CallHierarchyRegistrationOptions {}
+structure CallHierarchyRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    CallHierarchyOptionsBase
+] {}
 
 structure CancelParams {
     /// The request id to cancel.
@@ -1261,8 +1348,27 @@ structure CodeActionOptions with [WorkDoneProgressOptions] {
     resolveProvider: Boolean
 }
 
+/// Provider options for a {@link CodeActionRequest}.
+@mixin
+structure CodeActionOptionsBase with [WorkDoneProgressOptions] {
+    /// CodeActionKinds that this server may return.
+    /// 
+    /// The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+    /// may list out every specific kind they provide.
+    codeActionKinds: ListOfCodeActionKind
+    /// The server provides support to resolve additional
+    /// information for a code action.
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    resolveProvider: Boolean
+}
+
 /// The parameters of a {@link CodeActionRequest}.
-structure CodeActionParams {
+structure CodeActionParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The document in which the command was invoked.
     @required
     textDocument: TextDocumentIdentifier
@@ -1275,7 +1381,10 @@ structure CodeActionParams {
 }
 
 /// Registration options for a {@link CodeActionRequest}.
-structure CodeActionRegistrationOptions {}
+structure CodeActionRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    CodeActionOptionsBase
+] {}
 
 structure CodeActionResolveOpInput {
     @required
@@ -1338,15 +1447,28 @@ structure CodeLensOptions with [WorkDoneProgressOptions] {
     resolveProvider: Boolean
 }
 
+/// Code Lens provider options of a {@link CodeLensRequest}.
+@mixin
+structure CodeLensOptionsBase with [WorkDoneProgressOptions] {
+    /// Code lens has a resolve provider as well.
+    resolveProvider: Boolean
+}
+
 /// The parameters of a {@link CodeLensRequest}.
-structure CodeLensParams {
+structure CodeLensParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The document to request code lens for.
     @required
     textDocument: TextDocumentIdentifier
 }
 
 /// Registration options for a {@link CodeLensRequest}.
-structure CodeLensRegistrationOptions {}
+structure CodeLensRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    CodeLensOptionsBase
+] {}
 
 structure CodeLensResolveOpInput {
     @required
@@ -1412,7 +1534,10 @@ structure ColorPresentation {
 }
 
 /// Parameters for a {@link ColorPresentationRequest}.
-structure ColorPresentationParams {
+structure ColorPresentationParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -1853,15 +1978,55 @@ structure CompletionOptions with [WorkDoneProgressOptions] {
     completionItem: ServerCompletionItemOptions
 }
 
+/// Completion options.
+@mixin
+structure CompletionOptionsBase with [WorkDoneProgressOptions] {
+    /// Most tools trigger completion request automatically without explicitly requesting
+    /// it using a keyboard shortcut (e.g. Ctrl+Space). Typically they do so when the user
+    /// starts to type an identifier. For example if the user types `c` in a JavaScript file
+    /// code complete will automatically pop up present `console` besides others as a
+    /// completion item. Characters that make up identifiers don't need to be listed here.
+    /// 
+    /// If code complete should automatically be trigger on characters not being valid inside
+    /// an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
+    triggerCharacters: ListOfString
+    /// The list of all possible characters that commit a completion. This field can be used
+    /// if clients don't support individual commit characters per completion item. See
+    /// `ClientCapabilities.textDocument.completion.completionItem.commitCharactersSupport`
+    /// 
+    /// If a server provides both `allCommitCharacters` and commit characters on an individual
+    /// completion item the ones on the completion item win.
+    /// 
+    /// @since 3.2.0
+    @since("3.2.0")
+    allCommitCharacters: ListOfString
+    /// The server provides support to resolve additional
+    /// information for a completion item.
+    resolveProvider: Boolean
+    /// The server supports the following `CompletionItem` specific
+    /// capabilities.
+    /// 
+    /// @since 3.17.0
+    @since("3.17.0")
+    completionItem: ServerCompletionItemOptions
+}
+
 /// Completion parameters
-structure CompletionParams {
+structure CompletionParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {
     /// The completion context. This is only available it the client specifies
     /// to send this using the client capability `textDocument.completion.contextSupport === true`
     context: CompletionContext
 }
 
 /// Registration options for a {@link CompletionRequest}.
-structure CompletionRegistrationOptions {}
+structure CompletionRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    CompletionOptionsBase
+] {}
 
 structure ConfigurationItem {
     /// The scope to get the configuration section for.
@@ -1877,15 +2042,17 @@ structure ConfigurationParams {
 }
 
 /// Create file operation.
-structure CreateFile {
-    /// A create
-    @required
-    kind: String
+structure CreateFile with [ResourceOperationBase] {
     /// The resource to create.
     @required
     uri: String
     /// Additional options
     options: CreateFileOptions
+}
+
+apply CreateFile$kind {
+    @documentation("A create")
+    @required
 }
 
 /// Options to create a file.
@@ -1942,9 +2109,20 @@ structure DeclarationLink {
 
 structure DeclarationOptions with [WorkDoneProgressOptions] {}
 
-structure DeclarationParams {}
+@mixin
+structure DeclarationOptionsBase with [WorkDoneProgressOptions] {}
 
-structure DeclarationRegistrationOptions {}
+structure DeclarationParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {}
+
+structure DeclarationRegistrationOptions with [
+    StaticRegistrationOptions
+    DeclarationOptionsBase
+    TextDocumentRegistrationOptionsBase
+] {}
 
 /// Client Capabilities for a {@link DefinitionRequest}.
 structure DefinitionClientCapabilities {
@@ -1982,22 +2160,35 @@ structure DefinitionLink {
 /// Server Capabilities for a {@link DefinitionRequest}.
 structure DefinitionOptions with [WorkDoneProgressOptions] {}
 
+/// Server Capabilities for a {@link DefinitionRequest}.
+@mixin
+structure DefinitionOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Parameters for a {@link DefinitionRequest}.
-structure DefinitionParams {}
+structure DefinitionParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {}
 
 /// Registration options for a {@link DefinitionRequest}.
-structure DefinitionRegistrationOptions {}
+structure DefinitionRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DefinitionOptionsBase
+] {}
 
 /// Delete file operation
-structure DeleteFile {
-    /// A delete
-    @required
-    kind: String
+structure DeleteFile with [ResourceOperationBase] {
     /// The file to delete.
     @required
     uri: String
     /// Delete options.
     options: DeleteFileOptions
+}
+
+apply DeleteFile$kind {
+    @documentation("A delete")
+    @required
 }
 
 /// Delete file options
@@ -2064,7 +2255,7 @@ structure Diagnostic {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure DiagnosticClientCapabilities {
+structure DiagnosticClientCapabilities with [DiagnosticsCapabilitiesBase] {
     /// Whether implementation supports dynamic registration. If this is set to `true`
     /// the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
     /// return value for the corresponding server capability as well.
@@ -2092,11 +2283,35 @@ structure DiagnosticOptions with [WorkDoneProgressOptions] {
     workspaceDiagnostics: Boolean
 }
 
+/// Diagnostic options.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure DiagnosticOptionsBase with [WorkDoneProgressOptions] {
+    /// An optional identifier under which the diagnostics are
+    /// managed by the client.
+    identifier: String
+    /// Whether the language has inter file dependencies meaning that
+    /// editing code in one file can result in a different diagnostic
+    /// set in another file. Inter file dependencies are common for
+    /// most programming languages and typically uncommon for linters.
+    @required
+    interFileDependencies: Boolean
+    /// The server provides support for workspace diagnostics as well.
+    @required
+    workspaceDiagnostics: Boolean
+}
+
 /// Diagnostic registration options.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure DiagnosticRegistrationOptions {}
+structure DiagnosticRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    DiagnosticOptionsBase
+] {}
 
 /// Represents a related message and source code location for a diagnostic. This should be
 /// used to point to code locations that cause or related to a diagnostics, e.g when duplicating
@@ -2112,6 +2327,31 @@ structure DiagnosticRelatedInformation {
 
 /// General diagnostics capabilities for pull and push model.
 structure DiagnosticsCapabilities {
+    /// Whether the clients accepts diagnostics with related information.
+    relatedInformation: Boolean
+    /// Client supports the tag property to provide meta data about a diagnostic.
+    /// Clients supporting tags have to handle unknown tags gracefully.
+    /// 
+    /// @since 3.15.0
+    @since("3.15.0")
+    tagSupport: ClientDiagnosticsTagOptions
+    /// Client supports a codeDescription property
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    codeDescriptionSupport: Boolean
+    /// Whether code action supports the `data` property which is
+    /// preserved between a `textDocument/publishDiagnostics` and
+    /// `textDocument/codeAction` request.
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    dataSupport: Boolean
+}
+
+/// General diagnostics capabilities for pull and push model.
+@mixin
+structure DiagnosticsCapabilitiesBase {
     /// Whether the clients accepts diagnostics with related information.
     relatedInformation: Boolean
     /// Client supports the tag property to provide meta data about a diagnostic.
@@ -2329,20 +2569,33 @@ structure DocumentColorClientCapabilities {
 
 structure DocumentColorOptions with [WorkDoneProgressOptions] {}
 
+@mixin
+structure DocumentColorOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Parameters for a {@link DocumentColorRequest}.
-structure DocumentColorParams {
+structure DocumentColorParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
 }
 
-structure DocumentColorRegistrationOptions {}
+structure DocumentColorRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    DocumentColorOptionsBase
+] {}
 
 /// Parameters of the document diagnostic request.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure DocumentDiagnosticParams {
+structure DocumentDiagnosticParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -2370,8 +2623,12 @@ structure DocumentFormattingClientCapabilities {
 /// Provider options for a {@link DocumentFormattingRequest}.
 structure DocumentFormattingOptions with [WorkDoneProgressOptions] {}
 
+/// Provider options for a {@link DocumentFormattingRequest}.
+@mixin
+structure DocumentFormattingOptionsBase with [WorkDoneProgressOptions] {}
+
 /// The parameters of a {@link DocumentFormattingRequest}.
-structure DocumentFormattingParams {
+structure DocumentFormattingParams with [WorkDoneProgressParams] {
     /// The document to format.
     @required
     textDocument: TextDocumentIdentifier
@@ -2381,7 +2638,10 @@ structure DocumentFormattingParams {
 }
 
 /// Registration options for a {@link DocumentFormattingRequest}.
-structure DocumentFormattingRegistrationOptions {}
+structure DocumentFormattingRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DocumentFormattingOptionsBase
+] {}
 
 /// A document highlight is a range inside a text document which deserves
 /// special attention. Usually a document highlight is visualized by changing
@@ -2403,11 +2663,22 @@ structure DocumentHighlightClientCapabilities {
 /// Provider options for a {@link DocumentHighlightRequest}.
 structure DocumentHighlightOptions with [WorkDoneProgressOptions] {}
 
+/// Provider options for a {@link DocumentHighlightRequest}.
+@mixin
+structure DocumentHighlightOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Parameters for a {@link DocumentHighlightRequest}.
-structure DocumentHighlightParams {}
+structure DocumentHighlightParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {}
 
 /// Registration options for a {@link DocumentHighlightRequest}.
-structure DocumentHighlightRegistrationOptions {}
+structure DocumentHighlightRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DocumentHighlightOptionsBase
+] {}
 
 /// A document link is a range in a text document that links to an internal or external resource, like another
 /// text document or a web site.
@@ -2448,15 +2719,28 @@ structure DocumentLinkOptions with [WorkDoneProgressOptions] {
     resolveProvider: Boolean
 }
 
+/// Provider options for a {@link DocumentLinkRequest}.
+@mixin
+structure DocumentLinkOptionsBase with [WorkDoneProgressOptions] {
+    /// Document links have a resolve provider as well.
+    resolveProvider: Boolean
+}
+
 /// The parameters of a {@link DocumentLinkRequest}.
-structure DocumentLinkParams {
+structure DocumentLinkParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The document to provide document links for.
     @required
     textDocument: TextDocumentIdentifier
 }
 
 /// Registration options for a {@link DocumentLinkRequest}.
-structure DocumentLinkRegistrationOptions {}
+structure DocumentLinkRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DocumentLinkOptionsBase
+] {}
 
 structure DocumentLinkResolveOpInput {
     @required
@@ -2475,6 +2759,16 @@ structure DocumentOnTypeFormattingClientCapabilities {
 
 /// Provider options for a {@link DocumentOnTypeFormattingRequest}.
 structure DocumentOnTypeFormattingOptions {
+    /// A character on which formatting should be triggered, like `{`.
+    @required
+    firstTriggerCharacter: String
+    /// More trigger characters.
+    moreTriggerCharacter: ListOfString
+}
+
+/// Provider options for a {@link DocumentOnTypeFormattingRequest}.
+@mixin
+structure DocumentOnTypeFormattingOptionsBase {
     /// A character on which formatting should be triggered, like `{`.
     @required
     firstTriggerCharacter: String
@@ -2504,7 +2798,10 @@ structure DocumentOnTypeFormattingParams {
 }
 
 /// Registration options for a {@link DocumentOnTypeFormattingRequest}.
-structure DocumentOnTypeFormattingRegistrationOptions {}
+structure DocumentOnTypeFormattingRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DocumentOnTypeFormattingOptionsBase
+] {}
 
 /// Client capabilities of a {@link DocumentRangeFormattingRequest}.
 structure DocumentRangeFormattingClientCapabilities {
@@ -2515,8 +2812,12 @@ structure DocumentRangeFormattingClientCapabilities {
 /// Provider options for a {@link DocumentRangeFormattingRequest}.
 structure DocumentRangeFormattingOptions with [WorkDoneProgressOptions] {}
 
+/// Provider options for a {@link DocumentRangeFormattingRequest}.
+@mixin
+structure DocumentRangeFormattingOptionsBase with [WorkDoneProgressOptions] {}
+
 /// The parameters of a {@link DocumentRangeFormattingRequest}.
-structure DocumentRangeFormattingParams {
+structure DocumentRangeFormattingParams with [WorkDoneProgressParams] {
     /// The document to format.
     @required
     textDocument: TextDocumentIdentifier
@@ -2529,7 +2830,10 @@ structure DocumentRangeFormattingParams {
 }
 
 /// Registration options for a {@link DocumentRangeFormattingRequest}.
-structure DocumentRangeFormattingRegistrationOptions {}
+structure DocumentRangeFormattingRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DocumentRangeFormattingOptionsBase
+] {}
 
 /// Represents programming constructs like variables, classes, interfaces etc.
 /// that appear in a document. Document symbols can be hierarchical and they
@@ -2601,15 +2905,32 @@ structure DocumentSymbolOptions with [WorkDoneProgressOptions] {
     label: String
 }
 
+/// Provider options for a {@link DocumentSymbolRequest}.
+@mixin
+structure DocumentSymbolOptionsBase with [WorkDoneProgressOptions] {
+    /// A human-readable string that is shown when multiple outlines trees
+    /// are shown for the same document.
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    label: String
+}
+
 /// Parameters for a {@link DocumentSymbolRequest}.
-structure DocumentSymbolParams {
+structure DocumentSymbolParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
 }
 
 /// Registration options for a {@link DocumentSymbolRequest}.
-structure DocumentSymbolRegistrationOptions {}
+structure DocumentSymbolRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    DocumentSymbolOptionsBase
+] {}
 
 /// Edit range variant that includes ranges for insert and replace operations.
 /// 
@@ -2635,8 +2956,16 @@ structure ExecuteCommandOptions with [WorkDoneProgressOptions] {
     commands: ListOfString
 }
 
+/// The server capabilities of a {@link ExecuteCommandRequest}.
+@mixin
+structure ExecuteCommandOptionsBase with [WorkDoneProgressOptions] {
+    /// The commands to be executed on the server
+    @required
+    commands: ListOfString
+}
+
 /// The parameters of a {@link ExecuteCommandRequest}.
-structure ExecuteCommandParams {
+structure ExecuteCommandParams with [WorkDoneProgressParams] {
     /// The identifier of the actual command handler.
     @required
     command: String
@@ -2645,7 +2974,7 @@ structure ExecuteCommandParams {
 }
 
 /// Registration options for a {@link ExecuteCommandRequest}.
-structure ExecuteCommandRegistrationOptions {}
+structure ExecuteCommandRegistrationOptions with [ExecuteCommandOptionsBase] {}
 
 structure ExecutionSummary {
     /// A strict monotonically increasing value
@@ -2870,14 +3199,24 @@ structure FoldingRangeClientCapabilities {
 
 structure FoldingRangeOptions with [WorkDoneProgressOptions] {}
 
+@mixin
+structure FoldingRangeOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Parameters for a {@link FoldingRangeRequest}.
-structure FoldingRangeParams {
+structure FoldingRangeParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
 }
 
-structure FoldingRangeRegistrationOptions {}
+structure FoldingRangeRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    FoldingRangeOptionsBase
+] {}
 
 /// Value-object describing what options formatting should use.
 structure FormattingOptions {
@@ -2909,6 +3248,24 @@ structure FormattingOptions {
 /// @since 3.17.0
 @since("3.17.0")
 structure FullDocumentDiagnosticReport {
+    /// A full document diagnostic report.
+    @required
+    kind: String
+    /// An optional result id. If provided it will
+    /// be sent on the next diagnostic request for the
+    /// same document.
+    resultId: String
+    /// The actual items.
+    @required
+    items: ListOfDiagnostic
+}
+
+/// A diagnostic report with a full set of problems.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure FullDocumentDiagnosticReportBase {
     /// A full document diagnostic report.
     @required
     kind: String
@@ -2987,11 +3344,21 @@ structure HoverClientCapabilities {
 /// Hover options.
 structure HoverOptions with [WorkDoneProgressOptions] {}
 
+/// Hover options.
+@mixin
+structure HoverOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Parameters for a {@link HoverRequest}.
-structure HoverParams {}
+structure HoverParams with [
+    WorkDoneProgressParams
+    TextDocumentPositionParamsBase
+] {}
 
 /// Registration options for a {@link HoverRequest}.
-structure HoverRegistrationOptions {}
+structure HoverRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    HoverOptionsBase
+] {}
 
 /// @since 3.6.0
 @since("3.6.0")
@@ -3009,9 +3376,20 @@ structure ImplementationClientCapabilities {
 
 structure ImplementationOptions with [WorkDoneProgressOptions] {}
 
-structure ImplementationParams {}
+@mixin
+structure ImplementationOptionsBase with [WorkDoneProgressOptions] {}
 
-structure ImplementationRegistrationOptions {}
+structure ImplementationParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {}
+
+structure ImplementationRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    ImplementationOptionsBase
+] {}
 
 structure InitializedInput {
     @required
@@ -3040,7 +3418,10 @@ structure InitializeOpOutput {
     result: InitializeResult
 }
 
-structure InitializeParams {}
+structure InitializeParams with [
+    _InitializeParamsBase
+    WorkspaceFoldersInitializeParamsBase
+] {}
 
 /// The result returned from an initialize request.
 structure InitializeResult {
@@ -3153,11 +3534,22 @@ structure InlayHintOptions with [WorkDoneProgressOptions] {
     resolveProvider: Boolean
 }
 
+/// Inlay hint options used during static registration.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure InlayHintOptionsBase with [WorkDoneProgressOptions] {
+    /// The server provides support to resolve additional
+    /// information for an inlay hint item.
+    resolveProvider: Boolean
+}
+
 /// A parameter literal used in inlay hint requests.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure InlayHintParams {
+structure InlayHintParams with [WorkDoneProgressParams] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -3170,7 +3562,11 @@ structure InlayHintParams {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure InlayHintRegistrationOptions {}
+structure InlayHintRegistrationOptions with [
+    StaticRegistrationOptions
+    InlayHintOptionsBase
+    TextDocumentRegistrationOptionsBase
+] {}
 
 structure InlayHintResolveOpInput {
     @required
@@ -3240,11 +3636,18 @@ structure InlineValueEvaluatableExpression {
 @since("3.17.0")
 structure InlineValueOptions with [WorkDoneProgressOptions] {}
 
+/// Inline value options used during static registration.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure InlineValueOptionsBase with [WorkDoneProgressOptions] {}
+
 /// A parameter literal used in inline value requests.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure InlineValueParams {
+structure InlineValueParams with [WorkDoneProgressParams] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -3261,7 +3664,11 @@ structure InlineValueParams {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure InlineValueRegistrationOptions {}
+structure InlineValueRegistrationOptions with [
+    StaticRegistrationOptions
+    InlineValueOptionsBase
+    TextDocumentRegistrationOptionsBase
+] {}
 
 /// Provide inline value as text.
 /// 
@@ -3338,9 +3745,19 @@ structure LinkedEditingRangeClientCapabilities {
 
 structure LinkedEditingRangeOptions with [WorkDoneProgressOptions] {}
 
-structure LinkedEditingRangeParams {}
+@mixin
+structure LinkedEditingRangeOptionsBase with [WorkDoneProgressOptions] {}
 
-structure LinkedEditingRangeRegistrationOptions {}
+structure LinkedEditingRangeParams with [
+    WorkDoneProgressParams
+    TextDocumentPositionParamsBase
+] {}
+
+structure LinkedEditingRangeRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    LinkedEditingRangeOptionsBase
+] {}
 
 /// The result of a linked editing range request.
 /// 
@@ -3515,9 +3932,19 @@ structure MonikerClientCapabilities {
 
 structure MonikerOptions with [WorkDoneProgressOptions] {}
 
-structure MonikerParams {}
+@mixin
+structure MonikerOptionsBase with [WorkDoneProgressOptions] {}
 
-structure MonikerRegistrationOptions {}
+structure MonikerParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {}
+
+structure MonikerRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    MonikerOptionsBase
+] {}
 
 /// A notebook cell.
 /// 
@@ -3810,14 +4237,41 @@ structure NotebookDocumentSyncOptions {
     save: Boolean
 }
 
+/// Options specific to a notebook plus its cells
+/// to be synced to the server.
+/// 
+/// If a selector provides a notebook document
+/// filter but no cell selector all cells of a
+/// matching notebook document will be synced.
+/// 
+/// If a selector provides no notebook document
+/// filter but only a cell selector all notebook
+/// document that contain at least one matching
+/// cell will be synced.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure NotebookDocumentSyncOptionsBase {
+    /// The notebooks to be synced
+    @required
+    notebookSelector: ListOfNotebookDocumentFilterWithUnion
+    /// Whether save notification should be forwarded to
+    /// the server. Will only be honored if mode === `notebook`.
+    save: Boolean
+}
+
 /// Registration options specific to a notebook.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure NotebookDocumentSyncRegistrationOptions {}
+structure NotebookDocumentSyncRegistrationOptions with [
+    StaticRegistrationOptions
+    NotebookDocumentSyncOptionsBase
+] {}
 
 /// A text document identifier to optionally denote a specific version of a text document.
-structure OptionalVersionedTextDocumentIdentifier {
+structure OptionalVersionedTextDocumentIdentifier with [TextDocumentIdentifierBase] {
     /// The version number of this document. If a versioned text document identifier
     /// is sent from the server to the client and the file is not open in the editor
     /// (the server has not received an open notification before) the server can send
@@ -3903,7 +4357,10 @@ structure PrepareRenameDefaultBehavior {
     defaultBehavior: Boolean
 }
 
-structure PrepareRenameParams {}
+structure PrepareRenameParams with [
+    WorkDoneProgressParams
+    TextDocumentPositionParamsBase
+] {}
 
 /// @since 3.18.0
 @since("3.18.0")
@@ -3943,7 +4400,7 @@ structure ProgressParams {
 }
 
 /// The publish diagnostic client capabilities.
-structure PublishDiagnosticsClientCapabilities {
+structure PublishDiagnosticsClientCapabilities with [DiagnosticsCapabilitiesBase] {
     /// Whether the client interprets the version property of the
     /// `textDocument/publishDiagnostics` notification's parameter.
     /// 
@@ -4004,14 +4461,25 @@ structure ReferenceContext {
 /// Reference options.
 structure ReferenceOptions with [WorkDoneProgressOptions] {}
 
+/// Reference options.
+@mixin
+structure ReferenceOptionsBase with [WorkDoneProgressOptions] {}
+
 /// Parameters for a {@link ReferencesRequest}.
-structure ReferenceParams {
+structure ReferenceParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {
     @required
     context: ReferenceContext
 }
 
 /// Registration options for a {@link ReferencesRequest}.
-structure ReferenceRegistrationOptions {}
+structure ReferenceRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    ReferenceOptionsBase
+] {}
 
 /// General parameters to register for a notification or to register a provider.
 structure Registration {
@@ -4047,7 +4515,7 @@ structure RegularExpressionsClientCapabilities {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure RelatedFullDocumentDiagnosticReport {
+structure RelatedFullDocumentDiagnosticReport with [FullDocumentDiagnosticReportBase] {
     /// Diagnostics of related documents. This information is useful
     /// in programming languages where code in a file A can generate
     /// diagnostics in a file B which A depends on. An example of
@@ -4063,7 +4531,7 @@ structure RelatedFullDocumentDiagnosticReport {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure RelatedUnchangedDocumentDiagnosticReport {
+structure RelatedUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiagnosticReportBase] {
     /// Diagnostics of related documents. This information is useful
     /// in programming languages where code in a file A can generate
     /// diagnostics in a file B which A depends on. An example of
@@ -4120,10 +4588,7 @@ structure RenameClientCapabilities {
 }
 
 /// Rename file operation
-structure RenameFile {
-    /// A rename
-    @required
-    kind: String
+structure RenameFile with [ResourceOperationBase] {
     /// The old (existing) location.
     @required
     oldUri: String
@@ -4132,6 +4597,11 @@ structure RenameFile {
     newUri: String
     /// Rename options.
     options: RenameFileOptions
+}
+
+apply RenameFile$kind {
+    @documentation("A rename")
+    @required
 }
 
 /// Rename file options
@@ -4163,8 +4633,18 @@ structure RenameOptions with [WorkDoneProgressOptions] {
     prepareProvider: Boolean
 }
 
+/// Provider options for a {@link RenameRequest}.
+@mixin
+structure RenameOptionsBase with [WorkDoneProgressOptions] {
+    /// Renames should be checked and tested before being executed.
+    /// 
+    /// @since version 3.12.0
+    @since("version 3.12.0")
+    prepareProvider: Boolean
+}
+
 /// The parameters of a {@link RenameRequest}.
-structure RenameParams {
+structure RenameParams with [WorkDoneProgressParams] {
     /// The document to rename.
     @required
     textDocument: TextDocumentIdentifier
@@ -4179,7 +4659,10 @@ structure RenameParams {
 }
 
 /// Registration options for a {@link RenameRequest}.
-structure RenameRegistrationOptions {}
+structure RenameRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    RenameOptionsBase
+] {}
 
 /// A generic resource operation.
 structure ResourceOperation {
@@ -4193,8 +4676,28 @@ structure ResourceOperation {
     annotationId: ChangeAnnotationIdentifier
 }
 
+/// A generic resource operation.
+@mixin
+structure ResourceOperationBase {
+    /// The resource operation kind.
+    @required
+    kind: String
+    /// An optional annotation identifier describing the operation.
+    /// 
+    /// @since 3.16.0
+    @since("3.16.0")
+    annotationId: ChangeAnnotationIdentifier
+}
+
 /// Save options.
 structure SaveOptions {
+    /// The client is supposed to include the content on save.
+    includeText: Boolean
+}
+
+/// Save options.
+@mixin
+structure SaveOptionsBase {
     /// The client is supposed to include the content on save.
     includeText: Boolean
 }
@@ -4218,8 +4721,14 @@ structure SelectionRangeClientCapabilities {
 
 structure SelectionRangeOptions with [WorkDoneProgressOptions] {}
 
+@mixin
+structure SelectionRangeOptionsBase with [WorkDoneProgressOptions] {}
+
 /// A parameter literal used in selection range requests.
-structure SelectionRangeParams {
+structure SelectionRangeParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -4228,7 +4737,11 @@ structure SelectionRangeParams {
     positions: ListOfPosition
 }
 
-structure SelectionRangeRegistrationOptions {}
+structure SelectionRangeRegistrationOptions with [
+    StaticRegistrationOptions
+    SelectionRangeOptionsBase
+    TextDocumentRegistrationOptionsBase
+] {}
 
 /// @since 3.16.0
 @since("3.16.0")
@@ -4306,7 +4819,10 @@ structure SemanticTokensDelta {
 
 /// @since 3.16.0
 @since("3.16.0")
-structure SemanticTokensDeltaParams {
+structure SemanticTokensDeltaParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -4370,8 +4886,25 @@ structure SemanticTokensOptions with [WorkDoneProgressOptions] {
 }
 
 /// @since 3.16.0
+@mixin
 @since("3.16.0")
-structure SemanticTokensParams {
+structure SemanticTokensOptionsBase with [WorkDoneProgressOptions] {
+    /// The legend used by the server
+    @required
+    legend: SemanticTokensLegend
+    /// Server supports providing semantic tokens for a specific range
+    /// of a document.
+    range: BooleanOrLiteral0
+    /// Server supports providing semantic tokens for a full document.
+    full: BooleanOrSemanticTokensFullDelta
+}
+
+/// @since 3.16.0
+@since("3.16.0")
+structure SemanticTokensParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -4386,7 +4919,10 @@ structure SemanticTokensPartialResult {
 
 /// @since 3.16.0
 @since("3.16.0")
-structure SemanticTokensRangeParams {
+structure SemanticTokensRangeParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The text document.
     @required
     textDocument: TextDocumentIdentifier
@@ -4397,7 +4933,11 @@ structure SemanticTokensRangeParams {
 
 /// @since 3.16.0
 @since("3.16.0")
-structure SemanticTokensRegistrationOptions {}
+structure SemanticTokensRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    SemanticTokensOptionsBase
+] {}
 
 /// @since 3.16.0
 @since("3.16.0")
@@ -4732,8 +5272,26 @@ structure SignatureHelpOptions with [WorkDoneProgressOptions] {
     retriggerCharacters: ListOfString
 }
 
+/// Server Capabilities for a {@link SignatureHelpRequest}.
+@mixin
+structure SignatureHelpOptionsBase with [WorkDoneProgressOptions] {
+    /// List of characters that trigger signature help automatically.
+    triggerCharacters: ListOfString
+    /// List of characters that re-trigger signature help.
+    /// 
+    /// These trigger characters are only active when signature help is already showing. All trigger characters
+    /// are also counted as re-trigger characters.
+    /// 
+    /// @since 3.15.0
+    @since("3.15.0")
+    retriggerCharacters: ListOfString
+}
+
 /// Parameters for a {@link SignatureHelpRequest}.
-structure SignatureHelpParams {
+structure SignatureHelpParams with [
+    WorkDoneProgressParams
+    TextDocumentPositionParamsBase
+] {
     /// The signature help context. This is only available if the client specifies
     /// to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
     /// 
@@ -4743,7 +5301,10 @@ structure SignatureHelpParams {
 }
 
 /// Registration options for a {@link SignatureHelpRequest}.
-structure SignatureHelpRegistrationOptions {}
+structure SignatureHelpRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    SignatureHelpOptionsBase
+] {}
 
 /// Represents the signature of something callable. A signature
 /// can have a label, like a function-name, a doc-comment, and
@@ -4797,7 +5358,7 @@ structure StaticRegistrationOptions {
 
 /// Represents information about programming constructs like variables, classes,
 /// interfaces etc.
-structure SymbolInformation {
+structure SymbolInformation with [BaseSymbolInformationBase] {
     /// Indicates if this symbol is deprecated.
     /// 
     /// @deprecated Use tags instead
@@ -4821,7 +5382,7 @@ structure TelemetryEventInput {
 }
 
 /// Describe options to be used when registered for text document change events.
-structure TextDocumentChangeRegistrationOptions {
+structure TextDocumentChangeRegistrationOptions with [TextDocumentRegistrationOptionsBase] {
     /// How documents are synced to the server.
     @required
     syncKind: TextDocumentSyncKind
@@ -5200,6 +5761,14 @@ structure TextDocumentIdentifier {
     uri: String
 }
 
+/// A literal to identify a text document in the client.
+@mixin
+structure TextDocumentIdentifierBase {
+    /// The text document's uri.
+    @required
+    uri: String
+}
+
 structure TextDocumentImplementationOpInput {
     @required
     params: ImplementationParams
@@ -5283,6 +5852,18 @@ structure TextDocumentPositionParams {
     position: Position
 }
 
+/// A parameter literal used in requests to pass a text document and a position inside that
+/// document.
+@mixin
+structure TextDocumentPositionParamsBase {
+    /// The text document.
+    @required
+    textDocument: TextDocumentIdentifier
+    /// The position inside the text document.
+    @required
+    position: Position
+}
+
 structure TextDocumentPrepareCallHierarchyOpInput {
     @required
     params: CallHierarchyPrepareParams
@@ -5341,6 +5922,15 @@ structure TextDocumentRegistrationOptions {
     documentSelector: DocumentSelectorOrNULL
 }
 
+/// General text document registration options.
+@mixin
+structure TextDocumentRegistrationOptionsBase {
+    /// A document selector to identify the scope of the registration. If set to null
+    /// the document selector provided on the client side will be used.
+    @required
+    documentSelector: DocumentSelectorOrNULL
+}
+
 structure TextDocumentRenameOpInput {
     @required
     params: RenameParams
@@ -5351,7 +5941,10 @@ structure TextDocumentRenameOpOutput {
 }
 
 /// Save registration options.
-structure TextDocumentSaveRegistrationOptions {}
+structure TextDocumentSaveRegistrationOptions with [
+    TextDocumentRegistrationOptionsBase
+    SaveOptionsBase
+] {}
 
 structure TextDocumentSelectionRangeOpInput {
     @required
@@ -5464,6 +6057,19 @@ structure TextEdit {
     newText: String
 }
 
+/// A text edit applicable to a text document.
+@mixin
+structure TextEditBase {
+    /// The range of the text document to be manipulated. To insert
+    /// text into a document create a range where start === end.
+    @required
+    range: Range
+    /// The string to be inserted. For delete operations use an
+    /// empty string.
+    @required
+    newText: String
+}
+
 @tuple()
 structure TupleOfIntegerInteger {
     @required
@@ -5486,9 +6092,20 @@ structure TypeDefinitionClientCapabilities {
 
 structure TypeDefinitionOptions with [WorkDoneProgressOptions] {}
 
-structure TypeDefinitionParams {}
+@mixin
+structure TypeDefinitionOptionsBase with [WorkDoneProgressOptions] {}
 
-structure TypeDefinitionRegistrationOptions {}
+structure TypeDefinitionParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+    TextDocumentPositionParamsBase
+] {}
+
+structure TypeDefinitionRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    TypeDefinitionOptionsBase
+] {}
 
 /// @since 3.17.0
 @since("3.17.0")
@@ -5537,17 +6154,31 @@ structure TypeHierarchyItem {
 @since("3.17.0")
 structure TypeHierarchyOptions with [WorkDoneProgressOptions] {}
 
+/// Type hierarchy options used during static registration.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure TypeHierarchyOptionsBase with [WorkDoneProgressOptions] {}
+
 /// The parameter of a `textDocument/prepareTypeHierarchy` request.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure TypeHierarchyPrepareParams {}
+structure TypeHierarchyPrepareParams with [
+    WorkDoneProgressParams
+    TextDocumentPositionParamsBase
+] {}
 
 /// Type hierarchy options used during static or dynamic registration.
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure TypeHierarchyRegistrationOptions {}
+structure TypeHierarchyRegistrationOptions with [
+    StaticRegistrationOptions
+    TextDocumentRegistrationOptionsBase
+    TypeHierarchyOptionsBase
+] {}
 
 structure TypeHierarchySubtypesOpInput {
     @required
@@ -5562,7 +6193,10 @@ structure TypeHierarchySubtypesOpOutput {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure TypeHierarchySubtypesParams {
+structure TypeHierarchySubtypesParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     @required
     item: TypeHierarchyItem
 }
@@ -5580,7 +6214,10 @@ structure TypeHierarchySupertypesOpOutput {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure TypeHierarchySupertypesParams {
+structure TypeHierarchySupertypesParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     @required
     item: TypeHierarchyItem
 }
@@ -5591,6 +6228,25 @@ structure TypeHierarchySupertypesParams {
 /// @since 3.17.0
 @since("3.17.0")
 structure UnchangedDocumentDiagnosticReport {
+    /// A document diagnostic report indicating
+    /// no changes to the last result. A server can
+    /// only return `unchanged` if result ids are
+    /// provided.
+    @required
+    kind: String
+    /// A result id which will be sent on the next
+    /// diagnostic request for the same document.
+    @required
+    resultId: String
+}
+
+/// A diagnostic report indicating that the last returned
+/// report is still accurate.
+/// 
+/// @since 3.17.0
+@mixin
+@since("3.17.0")
+structure UnchangedDocumentDiagnosticReportBase {
     /// A document diagnostic report indicating
     /// no changes to the last result. A server can
     /// only return `unchanged` if result ids are
@@ -5633,7 +6289,7 @@ structure VersionedNotebookDocumentIdentifier {
 }
 
 /// A text document identifier to denote a specific version of a text document.
-structure VersionedTextDocumentIdentifier {
+structure VersionedTextDocumentIdentifier with [TextDocumentIdentifierBase] {
     /// The version number of this document.
     @required
     version: Integer
@@ -5892,7 +6548,10 @@ structure WorkspaceDiagnosticOpOutput {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure WorkspaceDiagnosticParams {
+structure WorkspaceDiagnosticParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// The additional identifier provided during registration.
     identifier: String
     /// The currently known diagnostic reports with their
@@ -6063,6 +6722,19 @@ structure WorkspaceFoldersInitializeParams {
     workspaceFolders: ListOfWorkspaceFolderOrNULL
 }
 
+@mixin
+structure WorkspaceFoldersInitializeParamsBase {
+    /// The workspace folders configured in the client when the server starts.
+    /// 
+    /// This property is only available if the client supports workspace folders.
+    /// It can be `null` if the client supports workspace folders but none are
+    /// configured.
+    /// 
+    /// @since 3.6.0
+    @since("3.6.0")
+    workspaceFolders: ListOfWorkspaceFolderOrNULL
+}
+
 structure WorkspaceFoldersServerCapabilities {
     /// The server has support for workspace folders
     supported: Boolean
@@ -6080,7 +6752,7 @@ structure WorkspaceFoldersServerCapabilities {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure WorkspaceFullDocumentDiagnosticReport {
+structure WorkspaceFullDocumentDiagnosticReport with [FullDocumentDiagnosticReportBase] {
     /// The URI for which diagnostic information is reported.
     @required
     uri: String
@@ -6125,7 +6797,7 @@ structure WorkspaceSemanticTokensRefreshOpOutput {}
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure WorkspaceSymbol {
+structure WorkspaceSymbol with [BaseSymbolInformationBase] {
     /// The location of the symbol. Whether a server is allowed to
     /// return a location without a range depends on the client
     /// capability `workspace.symbol.resolveSupport`.
@@ -6178,8 +6850,22 @@ structure WorkspaceSymbolOptions with [WorkDoneProgressOptions] {
     resolveProvider: Boolean
 }
 
+/// Server capabilities for a {@link WorkspaceSymbolRequest}.
+@mixin
+structure WorkspaceSymbolOptionsBase with [WorkDoneProgressOptions] {
+    /// The server provides support to resolve additional
+    /// information for a workspace symbol.
+    /// 
+    /// @since 3.17.0
+    @since("3.17.0")
+    resolveProvider: Boolean
+}
+
 /// The parameters of a {@link WorkspaceSymbolRequest}.
-structure WorkspaceSymbolParams {
+structure WorkspaceSymbolParams with [
+    WorkDoneProgressParams
+    PartialResultParams
+] {
     /// A query string to filter symbols by. Clients may send an empty
     /// string here to request all symbols.
     /// 
@@ -6193,7 +6879,7 @@ structure WorkspaceSymbolParams {
 }
 
 /// Registration options for a {@link WorkspaceSymbolRequest}.
-structure WorkspaceSymbolRegistrationOptions {}
+structure WorkspaceSymbolRegistrationOptions with [WorkspaceSymbolOptionsBase] {}
 
 structure WorkspaceSymbolResolveOpInput {
     @required
@@ -6208,7 +6894,7 @@ structure WorkspaceSymbolResolveOpOutput {
 /// 
 /// @since 3.17.0
 @since("3.17.0")
-structure WorkspaceUnchangedDocumentDiagnosticReport {
+structure WorkspaceUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiagnosticReportBase] {
     /// The URI for which diagnostic information is reported.
     @required
     uri: String
