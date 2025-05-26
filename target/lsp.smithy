@@ -8,127 +8,127 @@ use jsonrpclib#jsonRequest
 
 @jsonRequest("callHierarchy/incomingCalls")
 operation CallHierarchyIncomingCallsOp {
-    input: CallHierarchyIncomingCallsOpInput
+    input: CallHierarchyIncomingCallsParams
     output: CallHierarchyIncomingCallsOpOutput
 }
 
 @jsonRequest("callHierarchy/outgoingCalls")
 operation CallHierarchyOutgoingCallsOp {
-    input: CallHierarchyOutgoingCallsOpInput
+    input: CallHierarchyOutgoingCallsParams
     output: CallHierarchyOutgoingCallsOpOutput
 }
 
 @jsonNotification("$/cancelRequest")
 operation CancelRequest {
-    input: CancelRequestInput
+    input: CancelParams
     output: Unit
 }
 
 @jsonRequest("client/registerCapability")
 operation ClientRegisterCapabilityOp {
-    input: ClientRegisterCapabilityOpInput
+    input: RegistrationParams
     output: ClientRegisterCapabilityOpOutput
 }
 
 @jsonRequest("client/unregisterCapability")
 operation ClientUnregisterCapabilityOp {
-    input: ClientUnregisterCapabilityOpInput
+    input: UnregistrationParams
     output: ClientUnregisterCapabilityOpOutput
 }
 
 @jsonRequest("codeAction/resolve")
 operation CodeActionResolveOp {
-    input: CodeActionResolveOpInput
+    input: CodeAction
     output: CodeActionResolveOpOutput
 }
 
 @jsonRequest("codeLens/resolve")
 operation CodeLensResolveOp {
-    input: CodeLensResolveOpInput
+    input: CodeLens
     output: CodeLensResolveOpOutput
 }
 
 @jsonRequest("completionItem/resolve")
 operation CompletionItemResolveOp {
-    input: CompletionItemResolveOpInput
+    input: CompletionItem
     output: CompletionItemResolveOpOutput
 }
 
 @jsonRequest("documentLink/resolve")
 operation DocumentLinkResolveOp {
-    input: DocumentLinkResolveOpInput
+    input: DocumentLink
     output: DocumentLinkResolveOpOutput
 }
 
 @jsonNotification("exit")
 operation Exit {
-    input: ExitInput
+    input: Unit
     output: Unit
 }
 
 @jsonNotification("initialized")
 operation Initialized {
-    input: InitializedInput
+    input: InitializedParams
     output: Unit
 }
 
 @jsonRequest("initialize")
 operation InitializeOp {
-    input: InitializeOpInput
+    input: InitializeParams
     output: InitializeOpOutput
 }
 
 @jsonRequest("inlayHint/resolve")
 operation InlayHintResolveOp {
-    input: InlayHintResolveOpInput
+    input: InlayHint
     output: InlayHintResolveOpOutput
 }
 
 @jsonNotification("$/logTrace")
 operation LogTrace {
-    input: LogTraceInput
+    input: LogTraceParams
     output: Unit
 }
 
 @jsonNotification("notebookDocument/didChange")
 operation NotebookDocumentDidChange {
-    input: NotebookDocumentDidChangeInput
+    input: DidChangeNotebookDocumentParams
     output: Unit
 }
 
 @jsonNotification("notebookDocument/didClose")
 operation NotebookDocumentDidClose {
-    input: NotebookDocumentDidCloseInput
+    input: DidCloseNotebookDocumentParams
     output: Unit
 }
 
 @jsonNotification("notebookDocument/didOpen")
 operation NotebookDocumentDidOpen {
-    input: NotebookDocumentDidOpenInput
+    input: DidOpenNotebookDocumentParams
     output: Unit
 }
 
 @jsonNotification("notebookDocument/didSave")
 operation NotebookDocumentDidSave {
-    input: NotebookDocumentDidSaveInput
+    input: DidSaveNotebookDocumentParams
     output: Unit
 }
 
 @jsonNotification("$/progress")
 operation Progress {
-    input: ProgressInput
+    input: ProgressParams
     output: Unit
 }
 
 @jsonNotification("$/setTrace")
 operation SetTrace {
-    input: SetTraceInput
+    input: SetTraceParams
     output: Unit
 }
 
 @jsonRequest("shutdown")
 operation ShutdownOp {
-    input: ShutdownOpInput
+    input: Unit
     output: ShutdownOpOutput
 }
 
@@ -140,409 +140,409 @@ operation TelemetryEvent {
 
 @jsonRequest("textDocument/codeAction")
 operation TextDocumentCodeActionOp {
-    input: TextDocumentCodeActionOpInput
+    input: CodeActionParams
     output: TextDocumentCodeActionOpOutput
 }
 
 @jsonRequest("textDocument/codeLens")
 operation TextDocumentCodeLensOp {
-    input: TextDocumentCodeLensOpInput
+    input: CodeLensParams
     output: TextDocumentCodeLensOpOutput
 }
 
 @jsonRequest("textDocument/colorPresentation")
 operation TextDocumentColorPresentationOp {
-    input: TextDocumentColorPresentationOpInput
+    input: ColorPresentationParams
     output: TextDocumentColorPresentationOpOutput
 }
 
 @jsonRequest("textDocument/completion")
 operation TextDocumentCompletionOp {
-    input: TextDocumentCompletionOpInput
+    input: CompletionParams
     output: TextDocumentCompletionOpOutput
 }
 
 @jsonRequest("textDocument/declaration")
 operation TextDocumentDeclarationOp {
-    input: TextDocumentDeclarationOpInput
+    input: DeclarationParams
     output: TextDocumentDeclarationOpOutput
 }
 
 @jsonRequest("textDocument/definition")
 operation TextDocumentDefinitionOp {
-    input: TextDocumentDefinitionOpInput
+    input: DefinitionParams
     output: TextDocumentDefinitionOpOutput
 }
 
 @jsonRequest("textDocument/diagnostic")
 operation TextDocumentDiagnosticOp {
-    input: TextDocumentDiagnosticOpInput
+    input: DocumentDiagnosticParams
     output: TextDocumentDiagnosticOpOutput
 }
 
 @jsonNotification("textDocument/didChange")
 operation TextDocumentDidChange {
-    input: TextDocumentDidChangeInput
+    input: DidChangeTextDocumentParams
     output: Unit
 }
 
 @jsonNotification("textDocument/didClose")
 operation TextDocumentDidClose {
-    input: TextDocumentDidCloseInput
+    input: DidCloseTextDocumentParams
     output: Unit
 }
 
 @jsonNotification("textDocument/didOpen")
 operation TextDocumentDidOpen {
-    input: TextDocumentDidOpenInput
+    input: DidOpenTextDocumentParams
     output: Unit
 }
 
 @jsonNotification("textDocument/didSave")
 operation TextDocumentDidSave {
-    input: TextDocumentDidSaveInput
+    input: DidSaveTextDocumentParams
     output: Unit
 }
 
 @jsonRequest("textDocument/documentColor")
 operation TextDocumentDocumentColorOp {
-    input: TextDocumentDocumentColorOpInput
+    input: DocumentColorParams
     output: TextDocumentDocumentColorOpOutput
 }
 
 @jsonRequest("textDocument/documentHighlight")
 operation TextDocumentDocumentHighlightOp {
-    input: TextDocumentDocumentHighlightOpInput
+    input: DocumentHighlightParams
     output: TextDocumentDocumentHighlightOpOutput
 }
 
 @jsonRequest("textDocument/documentLink")
 operation TextDocumentDocumentLinkOp {
-    input: TextDocumentDocumentLinkOpInput
+    input: DocumentLinkParams
     output: TextDocumentDocumentLinkOpOutput
 }
 
 @jsonRequest("textDocument/documentSymbol")
 operation TextDocumentDocumentSymbolOp {
-    input: TextDocumentDocumentSymbolOpInput
+    input: DocumentSymbolParams
     output: TextDocumentDocumentSymbolOpOutput
 }
 
 @jsonRequest("textDocument/foldingRange")
 operation TextDocumentFoldingRangeOp {
-    input: TextDocumentFoldingRangeOpInput
+    input: FoldingRangeParams
     output: TextDocumentFoldingRangeOpOutput
 }
 
 @jsonRequest("textDocument/formatting")
 operation TextDocumentFormattingOp {
-    input: TextDocumentFormattingOpInput
+    input: DocumentFormattingParams
     output: TextDocumentFormattingOpOutput
 }
 
 @jsonRequest("textDocument/hover")
 operation TextDocumentHoverOp {
-    input: TextDocumentHoverOpInput
+    input: HoverParams
     output: TextDocumentHoverOpOutput
 }
 
 @jsonRequest("textDocument/implementation")
 operation TextDocumentImplementationOp {
-    input: TextDocumentImplementationOpInput
+    input: ImplementationParams
     output: TextDocumentImplementationOpOutput
 }
 
 @jsonRequest("textDocument/inlayHint")
 operation TextDocumentInlayHintOp {
-    input: TextDocumentInlayHintOpInput
+    input: InlayHintParams
     output: TextDocumentInlayHintOpOutput
 }
 
 @jsonRequest("textDocument/inlineValue")
 operation TextDocumentInlineValueOp {
-    input: TextDocumentInlineValueOpInput
+    input: InlineValueParams
     output: TextDocumentInlineValueOpOutput
 }
 
 @jsonRequest("textDocument/linkedEditingRange")
 operation TextDocumentLinkedEditingRangeOp {
-    input: TextDocumentLinkedEditingRangeOpInput
+    input: LinkedEditingRangeParams
     output: TextDocumentLinkedEditingRangeOpOutput
 }
 
 @jsonRequest("textDocument/moniker")
 operation TextDocumentMonikerOp {
-    input: TextDocumentMonikerOpInput
+    input: MonikerParams
     output: TextDocumentMonikerOpOutput
 }
 
 @jsonRequest("textDocument/onTypeFormatting")
 operation TextDocumentOnTypeFormattingOp {
-    input: TextDocumentOnTypeFormattingOpInput
+    input: DocumentOnTypeFormattingParams
     output: TextDocumentOnTypeFormattingOpOutput
 }
 
 @jsonRequest("textDocument/prepareCallHierarchy")
 operation TextDocumentPrepareCallHierarchyOp {
-    input: TextDocumentPrepareCallHierarchyOpInput
+    input: CallHierarchyPrepareParams
     output: TextDocumentPrepareCallHierarchyOpOutput
 }
 
 @jsonRequest("textDocument/prepareRename")
 operation TextDocumentPrepareRenameOp {
-    input: TextDocumentPrepareRenameOpInput
+    input: PrepareRenameParams
     output: TextDocumentPrepareRenameOpOutput
 }
 
 @jsonRequest("textDocument/prepareTypeHierarchy")
 operation TextDocumentPrepareTypeHierarchyOp {
-    input: TextDocumentPrepareTypeHierarchyOpInput
+    input: TypeHierarchyPrepareParams
     output: TextDocumentPrepareTypeHierarchyOpOutput
 }
 
 @jsonNotification("textDocument/publishDiagnostics")
 operation TextDocumentPublishDiagnostics {
-    input: TextDocumentPublishDiagnosticsInput
+    input: PublishDiagnosticsParams
     output: Unit
 }
 
 @jsonRequest("textDocument/rangeFormatting")
 operation TextDocumentRangeFormattingOp {
-    input: TextDocumentRangeFormattingOpInput
+    input: DocumentRangeFormattingParams
     output: TextDocumentRangeFormattingOpOutput
 }
 
 @jsonRequest("textDocument/references")
 operation TextDocumentReferencesOp {
-    input: TextDocumentReferencesOpInput
+    input: ReferenceParams
     output: TextDocumentReferencesOpOutput
 }
 
 @jsonRequest("textDocument/rename")
 operation TextDocumentRenameOp {
-    input: TextDocumentRenameOpInput
+    input: RenameParams
     output: TextDocumentRenameOpOutput
 }
 
 @jsonRequest("textDocument/selectionRange")
 operation TextDocumentSelectionRangeOp {
-    input: TextDocumentSelectionRangeOpInput
+    input: SelectionRangeParams
     output: TextDocumentSelectionRangeOpOutput
 }
 
 @jsonRequest("textDocument/semanticTokens/full/delta")
 operation TextDocumentSemanticTokensFullDeltaOp {
-    input: TextDocumentSemanticTokensFullDeltaOpInput
+    input: SemanticTokensDeltaParams
     output: TextDocumentSemanticTokensFullDeltaOpOutput
 }
 
 @jsonRequest("textDocument/semanticTokens/full")
 operation TextDocumentSemanticTokensFullOp {
-    input: TextDocumentSemanticTokensFullOpInput
+    input: SemanticTokensParams
     output: TextDocumentSemanticTokensFullOpOutput
 }
 
 @jsonRequest("textDocument/semanticTokens/range")
 operation TextDocumentSemanticTokensRangeOp {
-    input: TextDocumentSemanticTokensRangeOpInput
+    input: SemanticTokensRangeParams
     output: TextDocumentSemanticTokensRangeOpOutput
 }
 
 @jsonRequest("textDocument/signatureHelp")
 operation TextDocumentSignatureHelpOp {
-    input: TextDocumentSignatureHelpOpInput
+    input: SignatureHelpParams
     output: TextDocumentSignatureHelpOpOutput
 }
 
 @jsonRequest("textDocument/typeDefinition")
 operation TextDocumentTypeDefinitionOp {
-    input: TextDocumentTypeDefinitionOpInput
+    input: TypeDefinitionParams
     output: TextDocumentTypeDefinitionOpOutput
 }
 
 @jsonNotification("textDocument/willSave")
 operation TextDocumentWillSave {
-    input: TextDocumentWillSaveInput
+    input: WillSaveTextDocumentParams
     output: Unit
 }
 
 @jsonRequest("textDocument/willSaveWaitUntil")
 operation TextDocumentWillSaveWaitUntilOp {
-    input: TextDocumentWillSaveWaitUntilOpInput
+    input: WillSaveTextDocumentParams
     output: TextDocumentWillSaveWaitUntilOpOutput
 }
 
 @jsonRequest("typeHierarchy/subtypes")
 operation TypeHierarchySubtypesOp {
-    input: TypeHierarchySubtypesOpInput
+    input: TypeHierarchySubtypesParams
     output: TypeHierarchySubtypesOpOutput
 }
 
 @jsonRequest("typeHierarchy/supertypes")
 operation TypeHierarchySupertypesOp {
-    input: TypeHierarchySupertypesOpInput
+    input: TypeHierarchySupertypesParams
     output: TypeHierarchySupertypesOpOutput
 }
 
 @jsonNotification("window/logMessage")
 operation WindowLogMessage {
-    input: WindowLogMessageInput
+    input: LogMessageParams
     output: Unit
 }
 
 @jsonRequest("window/showDocument")
 operation WindowShowDocumentOp {
-    input: WindowShowDocumentOpInput
+    input: ShowDocumentParams
     output: WindowShowDocumentOpOutput
 }
 
 @jsonNotification("window/showMessage")
 operation WindowShowMessage {
-    input: WindowShowMessageInput
+    input: ShowMessageParams
     output: Unit
 }
 
 @jsonRequest("window/showMessageRequest")
 operation WindowShowMessageRequestOp {
-    input: WindowShowMessageRequestOpInput
+    input: ShowMessageRequestParams
     output: WindowShowMessageRequestOpOutput
 }
 
 @jsonNotification("window/workDoneProgress/cancel")
 operation WindowWorkDoneProgressCancel {
-    input: WindowWorkDoneProgressCancelInput
+    input: WorkDoneProgressCancelParams
     output: Unit
 }
 
 @jsonRequest("window/workDoneProgress/create")
 operation WindowWorkDoneProgressCreateOp {
-    input: WindowWorkDoneProgressCreateOpInput
+    input: WorkDoneProgressCreateParams
     output: WindowWorkDoneProgressCreateOpOutput
 }
 
 @jsonRequest("workspace/applyEdit")
 operation WorkspaceApplyEditOp {
-    input: WorkspaceApplyEditOpInput
+    input: ApplyWorkspaceEditParams
     output: WorkspaceApplyEditOpOutput
 }
 
 @jsonRequest("workspace/codeLens/refresh")
 operation WorkspaceCodeLensRefreshOp {
-    input: WorkspaceCodeLensRefreshOpInput
+    input: Unit
     output: WorkspaceCodeLensRefreshOpOutput
 }
 
 @jsonRequest("workspace/configuration")
 operation WorkspaceConfigurationOp {
-    input: WorkspaceConfigurationOpInput
+    input: ConfigurationParams
     output: WorkspaceConfigurationOpOutput
 }
 
 @jsonRequest("workspace/diagnostic")
 operation WorkspaceDiagnosticOp {
-    input: WorkspaceDiagnosticOpInput
+    input: WorkspaceDiagnosticParams
     output: WorkspaceDiagnosticOpOutput
 }
 
 @jsonRequest("workspace/diagnostic/refresh")
 operation WorkspaceDiagnosticRefreshOp {
-    input: WorkspaceDiagnosticRefreshOpInput
+    input: Unit
     output: WorkspaceDiagnosticRefreshOpOutput
 }
 
 @jsonNotification("workspace/didChangeConfiguration")
 operation WorkspaceDidChangeConfiguration {
-    input: WorkspaceDidChangeConfigurationInput
+    input: DidChangeConfigurationParams
     output: Unit
 }
 
 @jsonNotification("workspace/didChangeWatchedFiles")
 operation WorkspaceDidChangeWatchedFiles {
-    input: WorkspaceDidChangeWatchedFilesInput
+    input: DidChangeWatchedFilesParams
     output: Unit
 }
 
 @jsonNotification("workspace/didChangeWorkspaceFolders")
 operation WorkspaceDidChangeWorkspaceFolders {
-    input: WorkspaceDidChangeWorkspaceFoldersInput
+    input: DidChangeWorkspaceFoldersParams
     output: Unit
 }
 
 @jsonNotification("workspace/didCreateFiles")
 operation WorkspaceDidCreateFiles {
-    input: WorkspaceDidCreateFilesInput
+    input: CreateFilesParams
     output: Unit
 }
 
 @jsonNotification("workspace/didDeleteFiles")
 operation WorkspaceDidDeleteFiles {
-    input: WorkspaceDidDeleteFilesInput
+    input: DeleteFilesParams
     output: Unit
 }
 
 @jsonNotification("workspace/didRenameFiles")
 operation WorkspaceDidRenameFiles {
-    input: WorkspaceDidRenameFilesInput
+    input: RenameFilesParams
     output: Unit
 }
 
 @jsonRequest("workspace/executeCommand")
 operation WorkspaceExecuteCommandOp {
-    input: WorkspaceExecuteCommandOpInput
+    input: ExecuteCommandParams
     output: WorkspaceExecuteCommandOpOutput
 }
 
 @jsonRequest("workspace/inlayHint/refresh")
 operation WorkspaceInlayHintRefreshOp {
-    input: WorkspaceInlayHintRefreshOpInput
+    input: Unit
     output: WorkspaceInlayHintRefreshOpOutput
 }
 
 @jsonRequest("workspace/inlineValue/refresh")
 operation WorkspaceInlineValueRefreshOp {
-    input: WorkspaceInlineValueRefreshOpInput
+    input: Unit
     output: WorkspaceInlineValueRefreshOpOutput
 }
 
 @jsonRequest("workspace/semanticTokens/refresh")
 operation WorkspaceSemanticTokensRefreshOp {
-    input: WorkspaceSemanticTokensRefreshOpInput
+    input: Unit
     output: WorkspaceSemanticTokensRefreshOpOutput
 }
 
 @jsonRequest("workspace/symbol")
 operation WorkspaceSymbolOp {
-    input: WorkspaceSymbolOpInput
+    input: WorkspaceSymbolParams
     output: WorkspaceSymbolOpOutput
 }
 
 @jsonRequest("workspaceSymbol/resolve")
 operation WorkspaceSymbolResolveOp {
-    input: WorkspaceSymbolResolveOpInput
+    input: WorkspaceSymbol
     output: WorkspaceSymbolResolveOpOutput
 }
 
 @jsonRequest("workspace/willCreateFiles")
 operation WorkspaceWillCreateFilesOp {
-    input: WorkspaceWillCreateFilesOpInput
+    input: CreateFilesParams
     output: WorkspaceWillCreateFilesOpOutput
 }
 
 @jsonRequest("workspace/willDeleteFiles")
 operation WorkspaceWillDeleteFilesOp {
-    input: WorkspaceWillDeleteFilesOpInput
+    input: DeleteFilesParams
     output: WorkspaceWillDeleteFilesOpOutput
 }
 
 @jsonRequest("workspace/willRenameFiles")
 operation WorkspaceWillRenameFilesOp {
-    input: WorkspaceWillRenameFilesOpInput
+    input: RenameFilesParams
     output: WorkspaceWillRenameFilesOpOutput
 }
 
 @jsonRequest("workspace/workspaceFolders")
 operation WorkspaceWorkspaceFoldersOp {
-    input: WorkspaceWorkspaceFoldersOpInput
+    input: Unit
     output: WorkspaceWorkspaceFoldersOpOutput
 }
 
@@ -740,11 +740,6 @@ structure CallHierarchyIncomingCall {
     fromRanges: ListOfRange
 }
 
-structure CallHierarchyIncomingCallsOpInput {
-    @required
-    params: CallHierarchyIncomingCallsParams
-}
-
 structure CallHierarchyIncomingCallsOpOutput {
     result: ListOfCallHierarchyIncomingCallOrNULL
 }
@@ -820,11 +815,6 @@ structure CallHierarchyOutgoingCall {
     fromRanges: ListOfRange
 }
 
-structure CallHierarchyOutgoingCallsOpInput {
-    @required
-    params: CallHierarchyOutgoingCallsParams
-}
-
 structure CallHierarchyOutgoingCallsOpOutput {
     result: ListOfCallHierarchyOutgoingCallOrNULL
 }
@@ -864,11 +854,6 @@ structure CancelParams {
     /// The request id to cancel.
     @required
     id: IntegerOrString
-}
-
-structure CancelRequestInput {
-    @required
-    params: CancelParams
 }
 
 /// Additional information that describes document changes.
@@ -1089,11 +1074,6 @@ structure ClientInlayHintResolveOptions {
     properties: ListOfString
 }
 
-structure ClientRegisterCapabilityOpInput {
-    @required
-    params: RegistrationParams
-}
-
 structure ClientRegisterCapabilityOpOutput {}
 
 /// @since 3.18.0
@@ -1180,11 +1160,6 @@ structure ClientSymbolTagOptions {
     /// The tags supported by the client.
     @required
     valueSet: ListOfSymbolTag
-}
-
-structure ClientUnregisterCapabilityOpInput {
-    @required
-    params: UnregistrationParams
 }
 
 structure ClientUnregisterCapabilityOpOutput {}
@@ -1386,11 +1361,6 @@ structure CodeActionRegistrationOptions with [
     CodeActionOptionsBase
 ] {}
 
-structure CodeActionResolveOpInput {
-    @required
-    params: CodeAction
-}
-
 structure CodeActionResolveOpOutput {
     result: CodeAction
 }
@@ -1469,11 +1439,6 @@ structure CodeLensRegistrationOptions with [
     TextDocumentRegistrationOptionsBase
     CodeLensOptionsBase
 ] {}
-
-structure CodeLensResolveOpInput {
-    @required
-    params: CodeLens
-}
 
 structure CodeLensResolveOpOutput {
     result: CodeLens
@@ -1846,11 +1811,6 @@ structure CompletionItemLabelDetails {
     /// An optional string which is rendered less prominently after {@link CompletionItem.detail}. Should be used
     /// for fully qualified names and file paths.
     description: String
-}
-
-structure CompletionItemResolveOpInput {
-    @required
-    params: CompletionItem
 }
 
 structure CompletionItemResolveOpOutput {
@@ -2742,11 +2702,6 @@ structure DocumentLinkRegistrationOptions with [
     DocumentLinkOptionsBase
 ] {}
 
-structure DocumentLinkResolveOpInput {
-    @required
-    params: DocumentLink
-}
-
 structure DocumentLinkResolveOpOutput {
     result: DocumentLink
 }
@@ -2986,8 +2941,6 @@ structure ExecutionSummary {
     /// not if known by the client.
     success: Boolean
 }
-
-structure ExitInput {}
 
 /// Represents information on a file/folder create.
 /// 
@@ -3391,11 +3344,6 @@ structure ImplementationRegistrationOptions with [
     ImplementationOptionsBase
 ] {}
 
-structure InitializedInput {
-    @required
-    params: InitializedParams
-}
-
 structure InitializedParams {}
 
 /// The data type of the ResponseError if the
@@ -3407,11 +3355,6 @@ structure InitializeError {
     /// (3) if user selected retry the initialize method is sent again.
     @required
     retry: Boolean
-}
-
-structure InitializeOpInput {
-    @required
-    params: InitializeParams
 }
 
 structure InitializeOpOutput {
@@ -3567,11 +3510,6 @@ structure InlayHintRegistrationOptions with [
     InlayHintOptionsBase
     TextDocumentRegistrationOptionsBase
 ] {}
-
-structure InlayHintResolveOpInput {
-    @required
-    params: InlayHint
-}
 
 structure InlayHintResolveOpOutput {
     result: InlayHint
@@ -3822,11 +3760,6 @@ structure LogMessageParams {
     /// The actual message.
     @required
     message: String
-}
-
-structure LogTraceInput {
-    @required
-    params: LogTraceParams
 }
 
 structure LogTraceParams {
@@ -4104,26 +4037,6 @@ structure NotebookDocumentClientCapabilities {
     synchronization: NotebookDocumentSyncClientCapabilities
 }
 
-structure NotebookDocumentDidChangeInput {
-    @required
-    params: DidChangeNotebookDocumentParams
-}
-
-structure NotebookDocumentDidCloseInput {
-    @required
-    params: DidCloseNotebookDocumentParams
-}
-
-structure NotebookDocumentDidOpenInput {
-    @required
-    params: DidOpenNotebookDocumentParams
-}
-
-structure NotebookDocumentDidSaveInput {
-    @required
-    params: DidSaveNotebookDocumentParams
-}
-
 /// A notebook document filter where `notebookType` is required field.
 /// 
 /// @since 3.18.0
@@ -4383,11 +4296,6 @@ structure PreviousResultId {
     /// The value of the previous result id.
     @required
     value: String
-}
-
-structure ProgressInput {
-    @required
-    params: ProgressParams
 }
 
 structure ProgressParams {
@@ -5094,11 +5002,6 @@ structure ServerInfo {
     version: String
 }
 
-structure SetTraceInput {
-    @required
-    params: SetTraceParams
-}
-
 structure SetTraceParams {
     @required
     value: TraceValue
@@ -5175,8 +5078,6 @@ structure ShowMessageRequestParams {
     /// The message action items to present.
     actions: ListOfMessageActionItem
 }
-
-structure ShutdownOpInput {}
 
 structure ShutdownOpOutput {}
 
@@ -5377,7 +5278,6 @@ structure SymbolInformation with [BaseSymbolInformationBase] {
 }
 
 structure TelemetryEventInput {
-    @required
     params: Document
 }
 
@@ -5500,36 +5400,16 @@ structure TextDocumentClientCapabilities {
     diagnostic: DiagnosticClientCapabilities
 }
 
-structure TextDocumentCodeActionOpInput {
-    @required
-    params: CodeActionParams
-}
-
 structure TextDocumentCodeActionOpOutput {
     result: ListOfOrNULL
-}
-
-structure TextDocumentCodeLensOpInput {
-    @required
-    params: CodeLensParams
 }
 
 structure TextDocumentCodeLensOpOutput {
     result: ListOfCodeLensOrNULL
 }
 
-structure TextDocumentColorPresentationOpInput {
-    @required
-    params: ColorPresentationParams
-}
-
 structure TextDocumentColorPresentationOpOutput {
     result: ListOfColorPresentation
-}
-
-structure TextDocumentCompletionOpInput {
-    @required
-    params: CompletionParams
 }
 
 structure TextDocumentCompletionOpOutput {
@@ -5559,83 +5439,28 @@ structure TextDocumentContentChangeWholeDocument {
     text: String
 }
 
-structure TextDocumentDeclarationOpInput {
-    @required
-    params: DeclarationParams
-}
-
 structure TextDocumentDeclarationOpOutput {
     result: DeclarationOrNULL
-}
-
-structure TextDocumentDefinitionOpInput {
-    @required
-    params: DefinitionParams
 }
 
 structure TextDocumentDefinitionOpOutput {
     result: DefinitionOrNULL
 }
 
-structure TextDocumentDiagnosticOpInput {
-    @required
-    params: DocumentDiagnosticParams
-}
-
 structure TextDocumentDiagnosticOpOutput {
     result: DocumentDiagnosticReport
-}
-
-structure TextDocumentDidChangeInput {
-    @required
-    params: DidChangeTextDocumentParams
-}
-
-structure TextDocumentDidCloseInput {
-    @required
-    params: DidCloseTextDocumentParams
-}
-
-structure TextDocumentDidOpenInput {
-    @required
-    params: DidOpenTextDocumentParams
-}
-
-structure TextDocumentDidSaveInput {
-    @required
-    params: DidSaveTextDocumentParams
-}
-
-structure TextDocumentDocumentColorOpInput {
-    @required
-    params: DocumentColorParams
 }
 
 structure TextDocumentDocumentColorOpOutput {
     result: ListOfColorInformation
 }
 
-structure TextDocumentDocumentHighlightOpInput {
-    @required
-    params: DocumentHighlightParams
-}
-
 structure TextDocumentDocumentHighlightOpOutput {
     result: ListOfDocumentHighlightOrNULL
 }
 
-structure TextDocumentDocumentLinkOpInput {
-    @required
-    params: DocumentLinkParams
-}
-
 structure TextDocumentDocumentLinkOpOutput {
     result: ListOfDocumentLinkOrNULL
-}
-
-structure TextDocumentDocumentSymbolOpInput {
-    @required
-    params: DocumentSymbolParams
 }
 
 structure TextDocumentDocumentSymbolOpOutput {
@@ -5727,27 +5552,12 @@ structure TextDocumentFilterScheme {
     pattern: GlobPattern
 }
 
-structure TextDocumentFoldingRangeOpInput {
-    @required
-    params: FoldingRangeParams
-}
-
 structure TextDocumentFoldingRangeOpOutput {
     result: ListOfFoldingRangeOrNULL
 }
 
-structure TextDocumentFormattingOpInput {
-    @required
-    params: DocumentFormattingParams
-}
-
 structure TextDocumentFormattingOpOutput {
     result: ListOfTextEditOrNULL
-}
-
-structure TextDocumentHoverOpInput {
-    @required
-    params: HoverParams
 }
 
 structure TextDocumentHoverOpOutput {
@@ -5769,27 +5579,12 @@ structure TextDocumentIdentifierBase {
     uri: String
 }
 
-structure TextDocumentImplementationOpInput {
-    @required
-    params: ImplementationParams
-}
-
 structure TextDocumentImplementationOpOutput {
     result: DefinitionOrNULL
 }
 
-structure TextDocumentInlayHintOpInput {
-    @required
-    params: InlayHintParams
-}
-
 structure TextDocumentInlayHintOpOutput {
     result: ListOfInlayHintOrNULL
-}
-
-structure TextDocumentInlineValueOpInput {
-    @required
-    params: InlineValueParams
 }
 
 structure TextDocumentInlineValueOpOutput {
@@ -5814,27 +5609,12 @@ structure TextDocumentItem {
     text: String
 }
 
-structure TextDocumentLinkedEditingRangeOpInput {
-    @required
-    params: LinkedEditingRangeParams
-}
-
 structure TextDocumentLinkedEditingRangeOpOutput {
     result: LinkedEditingRangesOrNULL
 }
 
-structure TextDocumentMonikerOpInput {
-    @required
-    params: MonikerParams
-}
-
 structure TextDocumentMonikerOpOutput {
     result: ListOfMonikerOrNULL
-}
-
-structure TextDocumentOnTypeFormattingOpInput {
-    @required
-    params: DocumentOnTypeFormattingParams
 }
 
 structure TextDocumentOnTypeFormattingOpOutput {
@@ -5864,50 +5644,20 @@ structure TextDocumentPositionParamsBase {
     position: Position
 }
 
-structure TextDocumentPrepareCallHierarchyOpInput {
-    @required
-    params: CallHierarchyPrepareParams
-}
-
 structure TextDocumentPrepareCallHierarchyOpOutput {
     result: ListOfCallHierarchyItemOrNULL
-}
-
-structure TextDocumentPrepareRenameOpInput {
-    @required
-    params: PrepareRenameParams
 }
 
 structure TextDocumentPrepareRenameOpOutput {
     result: PrepareRenameResultOrNULL
 }
 
-structure TextDocumentPrepareTypeHierarchyOpInput {
-    @required
-    params: TypeHierarchyPrepareParams
-}
-
 structure TextDocumentPrepareTypeHierarchyOpOutput {
     result: ListOfTypeHierarchyItemOrNULL
 }
 
-structure TextDocumentPublishDiagnosticsInput {
-    @required
-    params: PublishDiagnosticsParams
-}
-
-structure TextDocumentRangeFormattingOpInput {
-    @required
-    params: DocumentRangeFormattingParams
-}
-
 structure TextDocumentRangeFormattingOpOutput {
     result: ListOfTextEditOrNULL
-}
-
-structure TextDocumentReferencesOpInput {
-    @required
-    params: ReferenceParams
 }
 
 structure TextDocumentReferencesOpOutput {
@@ -5931,11 +5681,6 @@ structure TextDocumentRegistrationOptionsBase {
     documentSelector: DocumentSelectorOrNULL
 }
 
-structure TextDocumentRenameOpInput {
-    @required
-    params: RenameParams
-}
-
 structure TextDocumentRenameOpOutput {
     result: WorkspaceEditOrNULL
 }
@@ -5946,45 +5691,20 @@ structure TextDocumentSaveRegistrationOptions with [
     SaveOptionsBase
 ] {}
 
-structure TextDocumentSelectionRangeOpInput {
-    @required
-    params: SelectionRangeParams
-}
-
 structure TextDocumentSelectionRangeOpOutput {
     result: ListOfSelectionRangeOrNULL
-}
-
-structure TextDocumentSemanticTokensFullDeltaOpInput {
-    @required
-    params: SemanticTokensDeltaParams
 }
 
 structure TextDocumentSemanticTokensFullDeltaOpOutput {
     result: NULLOrSemanticTokens
 }
 
-structure TextDocumentSemanticTokensFullOpInput {
-    @required
-    params: SemanticTokensParams
-}
-
 structure TextDocumentSemanticTokensFullOpOutput {
     result: SemanticTokensOrNULL
 }
 
-structure TextDocumentSemanticTokensRangeOpInput {
-    @required
-    params: SemanticTokensRangeParams
-}
-
 structure TextDocumentSemanticTokensRangeOpOutput {
     result: SemanticTokensOrNULL
-}
-
-structure TextDocumentSignatureHelpOpInput {
-    @required
-    params: SignatureHelpParams
 }
 
 structure TextDocumentSignatureHelpOpOutput {
@@ -6022,23 +5742,8 @@ structure TextDocumentSyncOptions {
     save: BooleanOrSaveOptions
 }
 
-structure TextDocumentTypeDefinitionOpInput {
-    @required
-    params: TypeDefinitionParams
-}
-
 structure TextDocumentTypeDefinitionOpOutput {
     result: DefinitionOrNULL
-}
-
-structure TextDocumentWillSaveInput {
-    @required
-    params: WillSaveTextDocumentParams
-}
-
-structure TextDocumentWillSaveWaitUntilOpInput {
-    @required
-    params: WillSaveTextDocumentParams
 }
 
 structure TextDocumentWillSaveWaitUntilOpOutput {
@@ -6180,11 +5885,6 @@ structure TypeHierarchyRegistrationOptions with [
     TypeHierarchyOptionsBase
 ] {}
 
-structure TypeHierarchySubtypesOpInput {
-    @required
-    params: TypeHierarchySubtypesParams
-}
-
 structure TypeHierarchySubtypesOpOutput {
     result: ListOfTypeHierarchyItemOrNULL
 }
@@ -6199,11 +5899,6 @@ structure TypeHierarchySubtypesParams with [
 ] {
     @required
     item: TypeHierarchyItem
-}
-
-structure TypeHierarchySupertypesOpInput {
-    @required
-    params: TypeHierarchySupertypesParams
 }
 
 structure TypeHierarchySupertypesOpOutput {
@@ -6329,42 +6024,12 @@ structure WindowClientCapabilities {
     showDocument: ShowDocumentClientCapabilities
 }
 
-structure WindowLogMessageInput {
-    @required
-    params: LogMessageParams
-}
-
-structure WindowShowDocumentOpInput {
-    @required
-    params: ShowDocumentParams
-}
-
 structure WindowShowDocumentOpOutput {
     result: ShowDocumentResult
 }
 
-structure WindowShowMessageInput {
-    @required
-    params: ShowMessageParams
-}
-
-structure WindowShowMessageRequestOpInput {
-    @required
-    params: ShowMessageRequestParams
-}
-
 structure WindowShowMessageRequestOpOutput {
     result: MessageActionItemOrNULL
-}
-
-structure WindowWorkDoneProgressCancelInput {
-    @required
-    params: WorkDoneProgressCancelParams
-}
-
-structure WindowWorkDoneProgressCreateOpInput {
-    @required
-    params: WorkDoneProgressCreateParams
 }
 
 structure WindowWorkDoneProgressCreateOpOutput {}
@@ -6451,11 +6116,6 @@ structure WorkDoneProgressReport {
     percentage: Integer
 }
 
-structure WorkspaceApplyEditOpInput {
-    @required
-    params: ApplyWorkspaceEditParams
-}
-
 structure WorkspaceApplyEditOpOutput {
     result: ApplyWorkspaceEditResult
 }
@@ -6522,22 +6182,10 @@ structure WorkspaceClientCapabilities {
     diagnostics: DiagnosticWorkspaceClientCapabilities
 }
 
-structure WorkspaceCodeLensRefreshOpInput {}
-
 structure WorkspaceCodeLensRefreshOpOutput {}
-
-structure WorkspaceConfigurationOpInput {
-    @required
-    params: ConfigurationParams
-}
 
 structure WorkspaceConfigurationOpOutput {
     result: ListOfDocument
-}
-
-structure WorkspaceDiagnosticOpInput {
-    @required
-    params: WorkspaceDiagnosticParams
 }
 
 structure WorkspaceDiagnosticOpOutput {
@@ -6560,8 +6208,6 @@ structure WorkspaceDiagnosticParams with [
     previousResultIds: ListOfPreviousResultId
 }
 
-structure WorkspaceDiagnosticRefreshOpInput {}
-
 structure WorkspaceDiagnosticRefreshOpOutput {}
 
 /// A workspace diagnostic report.
@@ -6580,36 +6226,6 @@ structure WorkspaceDiagnosticReport {
 structure WorkspaceDiagnosticReportPartialResult {
     @required
     items: ListOfWorkspaceDocumentDiagnosticReport
-}
-
-structure WorkspaceDidChangeConfigurationInput {
-    @required
-    params: DidChangeConfigurationParams
-}
-
-structure WorkspaceDidChangeWatchedFilesInput {
-    @required
-    params: DidChangeWatchedFilesParams
-}
-
-structure WorkspaceDidChangeWorkspaceFoldersInput {
-    @required
-    params: DidChangeWorkspaceFoldersParams
-}
-
-structure WorkspaceDidCreateFilesInput {
-    @required
-    params: CreateFilesParams
-}
-
-structure WorkspaceDidDeleteFilesInput {
-    @required
-    params: DeleteFilesParams
-}
-
-structure WorkspaceDidRenameFilesInput {
-    @required
-    params: RenameFilesParams
 }
 
 /// A workspace edit represents changes to many resources managed in the workspace. The edit
@@ -6678,11 +6294,6 @@ structure WorkspaceEditClientCapabilities {
     /// @since 3.16.0
     @since("3.16.0")
     changeAnnotationSupport: ChangeAnnotationsSupportOptions
-}
-
-structure WorkspaceExecuteCommandOpInput {
-    @required
-    params: ExecuteCommandParams
 }
 
 structure WorkspaceExecuteCommandOpOutput {
@@ -6762,11 +6373,7 @@ structure WorkspaceFullDocumentDiagnosticReport with [FullDocumentDiagnosticRepo
     version: IntegerOrNULL
 }
 
-structure WorkspaceInlayHintRefreshOpInput {}
-
 structure WorkspaceInlayHintRefreshOpOutput {}
-
-structure WorkspaceInlineValueRefreshOpInput {}
 
 structure WorkspaceInlineValueRefreshOpOutput {}
 
@@ -6786,8 +6393,6 @@ structure WorkspaceOptions {
     @since("3.16.0")
     fileOperations: FileOperationOptions
 }
-
-structure WorkspaceSemanticTokensRefreshOpInput {}
 
 structure WorkspaceSemanticTokensRefreshOpOutput {}
 
@@ -6829,11 +6434,6 @@ structure WorkspaceSymbolClientCapabilities {
     /// @since 3.17.0
     @since("3.17.0")
     resolveSupport: ClientSymbolResolveOptions
-}
-
-structure WorkspaceSymbolOpInput {
-    @required
-    params: WorkspaceSymbolParams
 }
 
 structure WorkspaceSymbolOpOutput {
@@ -6881,11 +6481,6 @@ structure WorkspaceSymbolParams with [
 /// Registration options for a {@link WorkspaceSymbolRequest}.
 structure WorkspaceSymbolRegistrationOptions with [WorkspaceSymbolOptionsBase] {}
 
-structure WorkspaceSymbolResolveOpInput {
-    @required
-    params: WorkspaceSymbol
-}
-
 structure WorkspaceSymbolResolveOpOutput {
     result: WorkspaceSymbol
 }
@@ -6904,34 +6499,17 @@ structure WorkspaceUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiag
     version: IntegerOrNULL
 }
 
-structure WorkspaceWillCreateFilesOpInput {
-    @required
-    params: CreateFilesParams
-}
-
 structure WorkspaceWillCreateFilesOpOutput {
     result: WorkspaceEditOrNULL
-}
-
-structure WorkspaceWillDeleteFilesOpInput {
-    @required
-    params: DeleteFilesParams
 }
 
 structure WorkspaceWillDeleteFilesOpOutput {
     result: WorkspaceEditOrNULL
 }
 
-structure WorkspaceWillRenameFilesOpInput {
-    @required
-    params: RenameFilesParams
-}
-
 structure WorkspaceWillRenameFilesOpOutput {
     result: WorkspaceEditOrNULL
 }
-
-structure WorkspaceWorkspaceFoldersOpInput {}
 
 structure WorkspaceWorkspaceFoldersOpOutput {
     result: ListOfWorkspaceFolderOrNULL

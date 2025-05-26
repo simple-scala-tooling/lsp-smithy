@@ -365,9 +365,6 @@ object SmithyConverter:
       referencedAsExtends: Set[String],
   ): ShapeState[Unit] =
     structures.traverse { struct =>
-      if (struct.name.value == "InitializeParams") {
-        println(struct.`extends`)
-      }
       if (referencedAsExtends.contains(struct.name.value)) {
         val baseShape = createStructureShape(
           struct = struct.copy(name = StructureName(struct.name.value + "Base")),
@@ -390,8 +387,6 @@ object SmithyConverter:
       referencedAsMixin: Set[String],
       referencedAsExtends: Boolean,
   ) = {
-    println(s"create ${struct.name} $referencedAsExtends")
-
     def addMixinTrait(name: String)(b: StructureShape.Builder) =
       if referencedAsMixin.contains(name) || referencedAsExtends then b.addTrait(MixinTrait.builder().build())
       else b
@@ -417,7 +412,6 @@ object SmithyConverter:
           )
         )
         .map(_.toSet)
-      _ = println(s"extends ids: $extendIds")
       mixinIds <- struct.mixins
         .filterNot(_.isInstanceOf[Type.BaseType])
         .traverse(t => smithyType(t, namespace))
@@ -463,44 +457,29 @@ object SmithyConverter:
 
   private def structureFromParams(
       params: ParamsType,
-      shapeId: ShapeId,
       namespace: String,
   ): ShapeState[ShapeId] = {
-    val builder = StructureShape.builder().id(shapeId)
-
-    val inputStruct: ShapeState[StructureShape] = params match
+    val inputStruct: ShapeState[ShapeId] = params match
       case ParamsType.None =>
-        builder.build().pure
+        ShapeId.from("smithy.api#Unit").pure[ShapeState]
       case ParamsType.Single(tpe) =>
-        smithyType(tpe, namespace).map { target =>
-          builder
-            .addMember(
-              MemberShape
-                .builder()
-                .id(shapeId.withMember("params"))
-                .target(target)
-                .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-                .build()
-            )
-            .build()
-        }
+        smithyType(tpe, namespace)
       case ParamsType.Many(vs) =>
-        vs.zipWithIndex
-          .traverse { case (tpe, i) =>
-            smithyType(tpe, namespace).map { target =>
-              MemberShape
-                .builder()
-                .id(shapeId.withMember(s"param$i"))
-                .target(target)
-                .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-                .build()
-            }
-          }
-          .map(_.foldLeft(builder) { case (acc, item) => acc.addMember(item) }.build())
+        ??? // TODO how to represent it?
+        // vs.zipWithIndex
+        //   .traverse { case (tpe, i) =>
+        //     smithyType(tpe, namespace).map { target =>
+        //       MemberShape
+        //         .builder()
+        //         .id(shapeId.withMember(s"param$i"))
+        //         .target(target)
+        //         .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+        //         .build()
+        //     }
+        //   }
+        //   .map(_.foldLeft(builder) { case (acc, item) => acc.addMember(item) }.build())
 
-    inputStruct.flatMap { inputShape =>
-      State(shapes => (shapes + inputShape, inputShape.getId))
-    }
+    inputStruct
   }
 
   private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] = {
@@ -527,11 +506,28 @@ object SmithyConverter:
   def convertRequests(requests: Vector[Request]): ShapeState[Unit] =
     requests.traverse { req =>
       val opId          = ShapeId.fromParts(namespace, sanitizeMethodName(req.method) + "Op")
-      val inputShapeId  = ShapeId.fromParts(namespace, s"${opId.getName}Input")
       val outputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Output")
 
       for
-        inputShapeId   <- structureFromParams(req.params, inputShapeId, namespace)
+        inputShapeId <- structureFromParams(req.params, namespace)
+        inputTargetId <- State.apply[Set[Shape], ShapeId] { shapes =>
+          if inputShapeId != ShapeId.from("smithy.api#Document") then (shapes, inputShapeId)
+          else
+            val wrapperInputId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
+            val wrapperShape = StructureShape
+              .builder()
+              .id(wrapperInputId)
+              .addMember(
+                MemberShape
+                  .builder()
+                  .id(wrapperInputId.withMember("params"))
+                  .target(inputShapeId)
+                  .build()
+              )
+              .build()
+            (shapes + wrapperShape, wrapperInputId)
+        }
+
         outputTargetId <- smithyType(req.result, namespace)
         _ <- State.modify[Set[Shape]] { shapes =>
           val outputShape =
@@ -556,10 +552,11 @@ object SmithyConverter:
           val opShape = OperationShape
             .builder()
             .id(opId)
-            .input(inputShapeId)
+            .input(inputTargetId)
             .output(outputShapeId)
             .addTrait(new JsonRequestTrait.Provider().createTrait(JsonRequestTrait.ID, Node.from(req.method.value)))
             .build()
+
           shapes ++ Set(opShape, outputShape)
         }
       yield ()
@@ -567,21 +564,41 @@ object SmithyConverter:
 
   def convertNotifications(notifications: Vector[Notification]): ShapeState[Unit] =
     notifications.traverse { notif =>
-      val opId    = ShapeId.fromParts(namespace, sanitizeMethodName(notif.method))
-      val builder = OperationShape.builder().id(opId)
+      val opId = ShapeId.fromParts(namespace, sanitizeMethodName(notif.method))
 
-      // --- Input ---
-      val inputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
-      structureFromParams(notif.params, inputShapeId, namespace).flatMap { inputShapeId =>
-        builder.input(inputShapeId)
+      for {
+        inputShapeId <- structureFromParams(notif.params, namespace)
+        inputTargetId <- State.apply[Set[Shape], ShapeId] { shapes =>
+          if inputShapeId != ShapeId.from("smithy.api#Document") then (shapes, inputShapeId)
+          else
+            val wrapperInputId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
+            val wrapperShape = StructureShape
+              .builder()
+              .id(wrapperInputId)
+              .addMember(
+                MemberShape
+                  .builder()
+                  .id(wrapperInputId.withMember("params"))
+                  .target(inputShapeId)
+                  .build()
+              )
+              .build()
+            (shapes + wrapperShape, wrapperInputId)
+        }
+        _ <- State.modify[Set[Shape]] { shapes =>
+          val notifiShapeOp =
+            OperationShape
+              .builder()
+              .id(opId)
+              .input(inputTargetId)
+              .output(ShapeId.from("smithy.api#Unit"))
+              .addTrait(
+                new JsonNotificationTrait.Provider()
+                  .createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
+              )
+              .build()
 
-        builder.output(ShapeId.from("smithy.api#Unit"))
-        val notifiShapeOp = builder
-          .addTrait(
-            new JsonNotificationTrait.Provider().createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
-          )
-          .build()
-
-        State.modify(shapes => shapes + notifiShapeOp)
-      }
+          shapes + notifiShapeOp
+        }
+      } yield ()
     }.void
