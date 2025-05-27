@@ -10,7 +10,7 @@ import smithytraitcodegen.SmithyTraitCodegenPlugin
 
 import $meta._
 
-val jsonrpcVersion = "0.0.8+40-9365e40f-SNAPSHOT"
+val jsonrpcVersion = "0.0.7+44-caececf6-SNAPSHOT"
 
 trait CommonScalaModule extends ScalaModule with ScalafixModule {
   override def repositoriesTask: Task[Seq[Repository]] = T.task {
@@ -83,7 +83,8 @@ object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
     super.smithy4sInputDirs() ++ Seq(PathRef(millSourcePath / os.up / "target"))
   }
   override def ivyDeps = Agg(
-    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}"
+    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}",
+    ivy"tech.neander::jsonrpclib-smithy4s:$jsonrpcVersion"
   )
 }
 

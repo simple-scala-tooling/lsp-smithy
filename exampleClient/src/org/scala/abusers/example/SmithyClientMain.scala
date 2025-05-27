@@ -52,8 +52,23 @@ object SmithyClientMain extends IOApp.Simple {
       // Creating stubs to talk to the remote server
       server: ExampleLspServer[IO] = ClientStub(ExampleLspServer, fs2Channel)
       _ <- Stream(())
-        .concurrently(fs2Channel.output.evalTap(IO.println).through(lsp.encodeMessages).through(lsp.decodePayloads).evalTap(IO.println).through(lsp.encodePayloads).through(rp.stdin))
-        .concurrently(rp.stdout.through(lsp.decodeMessages).through(fs2Channel.inputOrBounce))
+        .concurrently(
+          fs2Channel.output
+            // .evalTap(IO.println)
+            .through(lsp.encodeMessages)
+            // .through(lsp.decodePayloads)
+            // .evalTap(IO.println)
+            // .through(lsp.encodePayloads)
+            .through(rp.stdin)
+        )
+        .concurrently(
+          rp.stdout
+            // .through(lsp.decodePayloads)
+            // .evalTap(IO.println(_))
+            // .through(lsp.encodePayloads)
+            .through(lsp.decodeMessages)
+            .through(fs2Channel.inputOrBounce)
+        )
         .concurrently(rp.stderr.through(fs2.io.stderr[IO]))
 
       ////////////////////////////////////////////////////////
@@ -63,7 +78,7 @@ object SmithyClientMain extends IOApp.Simple {
         server.initializeOp(
           InitializeParams(
             processId = IntegerOrNULL.case0(1),
-            rootUri = DocumentUriOrNULL.case1(),
+            rootUri = DocumentUriOrNULL.case0("/bin/"),
             capabilities = ClientCapabilities(),
           )
         )
