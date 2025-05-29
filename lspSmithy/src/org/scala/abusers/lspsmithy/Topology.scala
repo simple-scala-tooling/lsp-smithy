@@ -2,19 +2,6 @@ package org.scala.abusers
 
 import langoustine.meta.*
 
-def referencedStructureNames(t: Type): Set[String] = t match {
-  case Type.ReferenceType(name) => Set(name.value)
-  case Type.AndType(items)      => items.flatMap(referencedStructureNames).toSet
-  case Type.OrType(items)       => items.flatMap(referencedStructureNames).toSet
-  case Type.ArrayType(elem)     => referencedStructureNames(elem)
-  case Type.MapType(k, v)       => referencedStructureNames(k) ++ referencedStructureNames(v)
-  case Type.TupleType(items)    => items.flatMap(referencedStructureNames).toSet
-  case _                        => Set.empty
-}
-
-def structureDependencies(struct: Structure): Set[String] =
-  (struct.`extends` ++ struct.mixins).flatMap(referencedStructureNames).toSet
-
 def topologicalSort(structures: Vector[Structure]): Either[String, Vector[Structure]] = {
   val byName: Map[String, Structure] = structures.map(s => s.name.value -> s).toMap
 
@@ -49,4 +36,17 @@ def topologicalSort(structures: Vector[Structure]): Either[String, Vector[Struct
     Left("Cycle detected or unresolved dependencies")
   else
     Right(result.toList.flatMap(byName.get).toVector)
+}
+
+private def structureDependencies(struct: Structure): Set[String] =
+  (struct.`extends` ++ struct.mixins).flatMap(referencedStructureNames).toSet
+
+private def referencedStructureNames(t: Type): Set[String] = t match {
+  case Type.ReferenceType(name) => Set(name.value)
+  case Type.AndType(items)      => items.flatMap(referencedStructureNames).toSet
+  case Type.OrType(items)       => items.flatMap(referencedStructureNames).toSet
+  case Type.ArrayType(elem)     => referencedStructureNames(elem)
+  case Type.MapType(k, v)       => referencedStructureNames(k) ++ referencedStructureNames(v)
+  case Type.TupleType(items)    => items.flatMap(referencedStructureNames).toSet
+  case _                        => Set.empty
 }
