@@ -10,7 +10,7 @@ import smithytraitcodegen.SmithyTraitCodegenPlugin
 
 import $meta._
 
-val jsonrpcVersion = "0.0.7+44-caececf6-SNAPSHOT"
+val jsonrpcVersion = "0.0.8+41-0a28e99d-SNAPSHOT"
 
 trait CommonScalaModule extends ScalaModule with ScalafixModule {
   override def repositoriesTask: Task[Seq[Repository]] = T.task {
