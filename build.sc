@@ -5,8 +5,12 @@ import mill._
 import mill.define.Sources
 import mill.scalalib._
 import scalalib._
-import $meta._
+import smithy4s.codegen.mill._
 import smithytraitcodegen.SmithyTraitCodegenPlugin
+
+import $meta._
+
+val jsonrpcVersion = "0.0.8+39-109d210f-SNAPSHOT"
 
 trait CommonScalaModule extends ScalaModule with ScalafixModule {
   override def repositoriesTask: Task[Seq[Repository]] = T.task {
@@ -16,11 +20,11 @@ trait CommonScalaModule extends ScalaModule with ScalafixModule {
     ) ++ super.repositoriesTask()
   }
 
-  def scalaVersion = "3.7.0"
+  def scalaVersion = "3.3.6"
 }
 
 object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyTraitCodegenSettings {
-  def smithySourcesDir = T.source(PathRef(millSourcePath / "smithy"))
+  def smithySourcesDir = T.source(PathRef(millSourcePath / "resources"))
 
   def updateModelFiles = T.task {
     val version = "3.18"
@@ -30,7 +34,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
     val schemaFile = "metaModel.schema.json"
     val modelFile  = "metaModel.json"
 
-    val downloadDir = T.dest / "downloaded"
+    val downloadDir = resources().head.path
     val schemaPath  = downloadDir / schemaFile
     val modelPath   = downloadDir / modelFile
 
@@ -44,12 +48,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
   }
 
   override def forkEnv: T[Map[String, String]] = T {
-    Map("TARGET_PATH" -> (os.Path(sys.env("MILL_WORKSPACE_ROOT")) / "target").toString)
-  }
-
-  override def resources = T {
-    val downloaded = updateModelFiles()
-    Seq(PathRef(downloaded))
+    Map("TARGET_PATH" -> (os.pwd / "target").toString)
   }
 
   def mainClass = Some("org.scala.abusers.lspsmithy.main")
@@ -58,7 +57,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
     ivy"tech.neander::langoustine-meta::0.0.23",
     ivy"com.lihaoyi::os-lib:0.11.4",
     ivy"software.amazon.smithy:smithy-model:1.57.1",
-    ivy"tech.neander:jsonrpclib-smithy:0.0.8+28-1e49f02a-SNAPSHOT",
+    ivy"tech.neander:jsonrpclib-smithy:$jsonrpcVersion",
     ivy"com.disneystreaming.alloy:alloy-core:0.3.20",
   )
 
@@ -72,4 +71,42 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
     )
     def testFramework = "weaver.framework.CatsEffect"
   }
+}
+
+object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
+
+  override def smithy4sAllowedNamespaces: T[Option[Set[String]]] = T(Some(Set("lsp")))
+
+  override def moduleDeps: Seq[JavaModule] = Seq(lspSmithy)
+
+  def smithy4sInputDirs: Target[Seq[PathRef]] = T.sources {
+    super.smithy4sInputDirs() ++ Seq(PathRef(millSourcePath / os.up / "target"))
+  }
+  override def ivyDeps = Agg(
+    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}"
+  )
+}
+
+object exampleClient extends CommonScalaModule with Smithy4sModule {
+
+  override def moduleDeps: Seq[JavaModule] = Seq(exampleClientSmithy, lspSmithy)
+
+  override def ivyDeps = Agg(
+    ivy"tech.neander::jsonrpclib-smithy4s:$jsonrpcVersion",
+    ivy"tech.neander::jsonrpclib-fs2:$jsonrpcVersion",
+    ivy"co.fs2::fs2-io:3.12.0",
+  )
+
+  override def forkEnv: T[Map[String, String]] = T {
+    Map("SERVER_JAR" -> dummyServer.assembly().path.toString)
+  }
+
+}
+
+object dummyServer extends CommonScalaModule {
+  override def ivyDeps = Agg(
+    ivy"tech.neander::langoustine-lsp::0.0.24",
+    ivy"tech.neander::langoustine-app::0.0.24",
+  )
+
 }

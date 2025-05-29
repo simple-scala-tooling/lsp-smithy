@@ -11,7 +11,7 @@ import scala.io.Source
 import scala.jdk.CollectionConverters.*
 import scala.jdk.OptionConverters.*
 
-object SmithyConverterSpec extends SimpleIOSuite:
+object SmithyConverterSpec extends SimpleIOSuite {
 
   pureTest("Should produce valid smithy model") {
     val stream    = this.getClass.getResourceAsStream("/metaModel.json")
@@ -398,3 +398,4 @@ object SmithyConverterSpec extends SimpleIOSuite:
     val error  = result.getValidationEvents().asScala.find(_.getSeverity == Severity.ERROR)
     expect(error == None)
   }
+}

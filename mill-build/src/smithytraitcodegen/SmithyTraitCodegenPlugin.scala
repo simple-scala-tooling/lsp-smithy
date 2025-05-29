@@ -11,14 +11,24 @@ object SmithyTraitCodegenPlugin extends mill.define.ExternalModule {
     def smithySourcesDir: T[PathRef]
     def smithyDependencies: T[Seq[os.Path]] = T(Seq.empty[os.Path])
 
-    def generatedSources = Task {
+    def generateSmithy = T.task {
       val args = smithytraitcodegen.Args(
         targetDir = T.dest,
         smithySourcesDir = smithySourcesDir().path,
         dependencies = smithyDependencies(),
       )
       val output = smithytraitcodegen.SmithyTraitCodegenImpl.generate(args)
+      output
+    }
+
+    def generatedSources = T.task {
+      val output = generateSmithy()
       super.generatedSources() ++ Seq(PathRef(output.javaDir))
+    }
+
+    override def resources: T[Seq[PathRef]] = T {
+      val output = generateSmithy()
+      super.resources() ++ Seq(smithySourcesDir(), PathRef(output.metaDir))
     }
   }
 }
