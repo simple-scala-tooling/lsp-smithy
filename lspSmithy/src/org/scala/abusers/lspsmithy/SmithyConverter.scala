@@ -12,7 +12,9 @@ import org.scala.abusers.topologicalSort
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
+import software.amazon.smithy.model.traits.InputTrait
 import software.amazon.smithy.model.traits.MixinTrait
+import software.amazon.smithy.model.traits.OutputTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
@@ -476,6 +478,7 @@ object SmithyConverter:
                 .addTrait(new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode))
                 .build()
             )
+            .addTrait(new InputTrait())
             .build()
         }
         inputStruct.flatMap { inputShape =>
@@ -531,12 +534,14 @@ object SmithyConverter:
         inputTargetId  <- structureFromParams(req.params, inputShapeId, namespace)
         outputTargetId <- smithyType(req.result, namespace)
         _ <- State.modify[Set[Shape]] { shapes =>
-          val outputShape =
-            if outputTargetId != ShapeId.from("smithy.api#Unit") then
+          val outputShapeOpt =
+            Option.when(outputTargetId != ShapeId.from("smithy.api#Unit")) {
               StructureShape
                 .builder()
                 .id(outputShapeId)
                 .addMember(
+                  // todo: looks like we always wrap, even if the target is already a struct.
+                  // why not keep structs unwrapped?
                   MemberShape
                     .builder()
                     .id(outputShapeId.withMember("result"))
@@ -546,22 +551,20 @@ object SmithyConverter:
                     )
                     .build()
                 )
+                .addTrait(new OutputTrait)
                 .build()
-            else
-              StructureShape
-                .builder()
-                .id(outputShapeId)
-                .build()
+            }
 
           val opShape = OperationShape
             .builder()
             .id(opId)
             .input(inputTargetId)
-            .output(outputShapeId)
+            // todo: why doesn't outputTargetId simply work here?
+            .output(outputShapeOpt.map(_.getId).getOrElse(ShapeId.from("smithy.api#Unit")))
             .addTrait(new JsonRequestTrait.Provider().createTrait(JsonRequestTrait.ID, Node.from(req.method.value)))
             .build()
 
-          shapes ++ Set(opShape, outputShape)
+          shapes ++ Set(opShape) ++ outputShapeOpt
         }
       yield ()
     }.void
