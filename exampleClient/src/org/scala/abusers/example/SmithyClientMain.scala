@@ -38,7 +38,11 @@ object SmithyClientMain extends IOApp.Simple {
       rp <- Stream.resource(
         Processes[IO]
           .spawn(
-            fs2.io.process.ProcessBuilder("java", "-jar", serverJar)
+            fs2.io.process.ProcessBuilder(
+              "java",
+              "-jar",
+              serverJar,
+            )
           )
       )
       // Creating a channel that will be used to communicate to the server
@@ -48,8 +52,23 @@ object SmithyClientMain extends IOApp.Simple {
       // Creating stubs to talk to the remote server
       server: ExampleLspServer[IO] = ClientStub(ExampleLspServer, fs2Channel)
       _ <- Stream(())
-        .concurrently(fs2Channel.output.through(lsp.encodeMessages).through(rp.stdin))
-        .concurrently(rp.stdout.through(lsp.decodeMessages).through(fs2Channel.inputOrBounce))
+        .concurrently(
+          fs2Channel.output
+            // .evalTap(IO.println)
+            .through(lsp.encodeMessages)
+            // .through(lsp.decodePayloads)
+            // .evalTap(IO.println)
+            // .through(lsp.encodePayloads)
+            .through(rp.stdin)
+        )
+        .concurrently(
+          rp.stdout
+            // .through(lsp.decodePayloads)
+            // .evalTap(IO.println(_))
+            // .through(lsp.encodePayloads)
+            .through(lsp.decodeMessages)
+            .through(fs2Channel.inputOrBounce)
+        )
         .concurrently(rp.stderr.through(fs2.io.stderr[IO]))
 
       ////////////////////////////////////////////////////////
@@ -57,7 +76,11 @@ object SmithyClientMain extends IOApp.Simple {
       ////////////////////////////////////////////////////////
       result1 <- Stream.eval(
         server.initializeOp(
-          InitializeParams()
+          InitializeParams(
+            processId = IntegerOrNULL.case0(1),
+            rootUri = DocumentUriOrNULL.case0("/bin/"),
+            capabilities = ClientCapabilities(),
+          )
         )
       )
       _ <- log(s"Client received $result1")

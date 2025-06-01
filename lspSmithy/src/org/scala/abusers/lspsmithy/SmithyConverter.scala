@@ -4,13 +4,17 @@ import alloy.UntaggedUnionTrait
 import cats.data.State
 import cats.syntax.all.*
 import jsonrpclib.JsonNotificationTrait
+import jsonrpclib.JsonPayloadTrait
 import jsonrpclib.JsonRequestTrait
 import langoustine.meta.*
 import lsp.TupleTrait
+import org.scala.abusers.topologicalSort
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
+import software.amazon.smithy.model.traits.InputTrait
 import software.amazon.smithy.model.traits.MixinTrait
+import software.amazon.smithy.model.traits.OutputTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
@@ -24,26 +28,42 @@ object SmithyConverter:
 
   type ShapeState[A] = State[Set[Shape], A]
 
-  private val namespace: String = "lsp"
+  private val namespace: String    = "lsp"
+  private val UnitShapeId: ShapeId = ShapeId.from("smithy.api#Unit")
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val referencedAsMixin: Set[String] = meta.structures
       .flatMap(s =>
-        s.mixins.collect { // TODO add extendz?
-          case Type.ReferenceType(name) => name
+        s.mixins.collect { case Type.ReferenceType(name) =>
+          name
+        }
+      )
+      .map(_.value)
+      .toSet
+    val referencedAsExtends: Set[String] = meta.structures
+      .flatMap(s =>
+        s.extendz.collect { case Type.ReferenceType(name) =>
+          name
         }
       )
       .map(_.value)
       .toSet
     val shapes = (for
-      _ <- convertStructures(meta.structures.filterNot(_.proposed), referencedAsMixin)
+      _ <- convertStructures(
+        topologicalSort(meta.structures.filterNot(_.proposed)) match {
+          case Left(value) => sys.error(value)
+          case Right(v)    => v
+        },
+        referencedAsMixin,
+        referencedAsExtends,
+      )
       _ <- convertEnums(meta.enumerations.filterNot(_.proposed))
       _ <- convertRequests(meta.requests.filterNot(_.proposed))
       _ <- convertNotifications(meta.notifications.filterNot(_.proposed))
       _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed).filterNot(_.name.value == "LSPAny"))
     yield ()).run(Set.empty).value._1
 
-    val assembler = Model.assembler()
+    val assembler = Model.assembler().discoverModels()
     shapes.foreach(assembler.addShape)
     assembler.assemble()
 
@@ -147,7 +167,7 @@ object SmithyConverter:
       case BaseType(BaseTypes.uinteger) => ShapeId.from("smithy.api#Integer").pure
       case BaseType(BaseTypes.decimal)  => ShapeId.from("smithy.api#Float").pure
       case BaseType(BaseTypes.boolean)  => ShapeId.from("smithy.api#Boolean").pure
-      case BaseType(BaseTypes.NULL)     => ShapeId.from("smithy.api#Unit").pure
+      case BaseType(BaseTypes.NULL)     => UnitShapeId.pure
       case BaseType(_)                  => ShapeId.from("smithy.api#String").pure
 
       case ReferenceType(name) =>
@@ -261,7 +281,12 @@ object SmithyConverter:
           }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
-        val id = ShapeId.fromParts(namespace, s"InlineStruct${Math.abs(MurmurHash3.indexedSeqHash(properties, 0))}")
+        // unresolved types produce unstable hashes for some reason.
+        val hashInput = properties.map(p => p.name.value -> smithyType(p.tpe, namespace).run(Set.empty).value._2)
+        val id = ShapeId.fromParts(
+          namespace,
+          s"InlineStruct${Math.abs(MurmurHash3.indexedSeqHash(hashInput, 0))}",
+        )
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>
@@ -343,42 +368,77 @@ object SmithyConverter:
 
     }.void
 
-  def convertStructures(structures: Vector[Structure], referencedAsMixin: Set[String]): ShapeState[Unit] =
+  def convertStructures(
+      structures: Vector[Structure],
+      referencedAsMixin: Set[String],
+      referencedAsExtends: Set[String],
+  ): ShapeState[Unit] =
+    structures.traverse { struct =>
+      val justRegularStruct =
+        createStructureShape(struct = struct, referencedAsMixin = referencedAsMixin, referencedAsExtends = false)
+      if (referencedAsExtends.contains(struct.name.value)) {
+        val baseShape = createStructureShape(
+          struct = struct.copy(name = StructureName(struct.name.value + "Base")),
+          referencedAsMixin = referencedAsMixin,
+          referencedAsExtends = true,
+        )
+
+        baseShape *> justRegularStruct
+      } else {
+        justRegularStruct
+      }
+    }.void
+
+  private def createStructureShape(
+      struct: Structure,
+      referencedAsMixin: Set[String],
+      referencedAsExtends: Boolean,
+  ) = {
     def addMixinTrait(name: String)(b: StructureShape.Builder) =
-      if referencedAsMixin.contains(name) then b.addTrait(MixinTrait.builder().build())
+      if referencedAsMixin.contains(name) || referencedAsExtends then b.addTrait(MixinTrait.builder().build())
       else b
 
     def addMixins(shapes: Set[Shape], mixinIds: Set[ShapeId])(b: StructureShape.Builder) =
       val shapeMap = shapes.map(s => s.getId -> s).toMap
-      mixinIds.flatMap(shapeMap.get).foreach(b.addMixin)
+      mixinIds.flatMap(s => shapeMap.get(s).orElse(sys.error(s"couldn't find $s"))).foreach(b.addMixin)
       b
+    val shapeId = ShapeId.fromParts(namespace, struct.name.value)
 
-    structures.traverse { struct =>
-      val shapeId = ShapeId.fromParts(namespace, struct.name.value)
+    for
+      members <- structureMembers(shapeId, struct.properties)
+      extendIds <- struct.extendz
+        // .filterNot(_.isInstanceOf[Type.BaseType])
+        .traverse(t =>
+          smithyType(
+            t.traverse {
+              case Type.ReferenceType(name) =>
+                TypeTraversal.Replace(Type.ReferenceType(TypeName(name.value + "Base")))
+              case other => TypeTraversal.Skip
+            },
+            namespace,
+          )
+        )
+        .map(_.toSet)
+      mixinIds <- struct.mixins
+        .filterNot(_.isInstanceOf[Type.BaseType])
+        .traverse(t => smithyType(t, namespace))
+        .map(_.toSet)
 
-      for
-        members <- structureMembers(shapeId, struct.properties)
-        // mixins: both `extends` and `mixins`
-        mixinIds <- struct.mixins // TODO add exteds?
-          .filterNot(_.isInstanceOf[Type.BaseType])
-          .traverse(t => smithyType(t, namespace))
-          .map(_.toSet)
+      result <- State.apply[Set[Shape], ShapeId] { shapes =>
+        val shape =
+          StructureShape
+            .builder()
+            .id(shapeId)
+            .tap(maybeAddDocs(struct.documentation.toOption.map(_.value), struct.since.toOption))
+            .tap(addMixinTrait(struct.name.value))
+            .tap(addMixins(shapes, mixinIds ++ extendIds))
+            .tap(b => members.foreach(b.addMember))
+            .build()
 
-        result <- State.apply[Set[Shape], ShapeId] { shapes =>
-          val shape =
-            StructureShape
-              .builder()
-              .id(shapeId)
-              .tap(maybeAddDocs(struct.documentation.toOption.map(_.value), struct.since.toOption))
-              .tap(addMixinTrait(struct.name.value))
-              .tap(addMixins(shapes, mixinIds))
-              .tap(b => members.foreach(b.addMember))
-              .build()
-
-          (shapes + shape, shapeId)
-        }
-      yield result
-    }.void
+        (shapes + shape, shapeId)
+      }
+    yield result
+  }
 
   private def maybeAddDocs[B <: AbstractShapeBuilder[B, S], S <: Shape](
       text: Option[String],
@@ -406,27 +466,34 @@ object SmithyConverter:
       params: ParamsType,
       shapeId: ShapeId,
       namespace: String,
-  ): ShapeState[ShapeId] = {
-    val builder = StructureShape.builder().id(shapeId)
-
-    val inputStruct: ShapeState[StructureShape] = params match
+  ): ShapeState[ShapeId] =
+    params match
       case ParamsType.None =>
-        builder.build().pure
+        UnitShapeId.pure[ShapeState]
       case ParamsType.Single(tpe) =>
-        smithyType(tpe, namespace).map { target =>
-          builder
+        val inputStruct: ShapeState[StructureShape] = smithyType(tpe, namespace).map { target =>
+          StructureShape
+            .builder()
+            .id(shapeId)
             .addMember(
               MemberShape
                 .builder()
                 .id(shapeId.withMember("params"))
                 .target(target)
                 .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
+                .addTrait(new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode))
                 .build()
             )
+            .addTrait(new InputTrait())
             .build()
         }
+        inputStruct.flatMap { inputShape =>
+          State(shapes => (shapes + inputShape, inputShape.getId))
+        }
       case ParamsType.Many(vs) =>
-        vs.zipWithIndex
+        val builder = StructureShape.builder().id(shapeId)
+
+        val inputStruct: ShapeState[StructureShape] = vs.zipWithIndex
           .traverse { case (tpe, i) =>
             smithyType(tpe, namespace).map { target =>
               MemberShape
@@ -438,11 +505,9 @@ object SmithyConverter:
             }
           }
           .map(_.foldLeft(builder) { case (acc, item) => acc.addMember(item) }.build())
-
-    inputStruct.flatMap { inputShape =>
-      State(shapes => (shapes + inputShape, inputShape.getId))
-    }
-  }
+        inputStruct.flatMap { inputShape =>
+          State(shapes => (shapes + inputShape, inputShape.getId))
+        }
 
   private def structureMembers(id: ShapeId, properties: Vector[Property]): ShapeState[Vector[MemberShape]] = {
     def makeRequired(prop: Property): MemberShape.Builder => Unit =
@@ -467,62 +532,74 @@ object SmithyConverter:
 
   def convertRequests(requests: Vector[Request]): ShapeState[Unit] =
     requests.traverse { req =>
-      val opId          = ShapeId.fromParts(namespace, sanitizeMethodName(req.method) + "Op")
-      val inputShapeId  = ShapeId.fromParts(namespace, s"${opId.getName}Input")
-      val outputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Output")
+      val opId         = ShapeId.fromParts(namespace, sanitizeMethodName(req.method) + "Op")
+      val inputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
 
       for
-        inputShapeId   <- structureFromParams(req.params, inputShapeId, namespace)
-        outputTargetId <- smithyType(req.result, namespace)
+        inputTargetId <- structureFromParams(req.params, inputShapeId, namespace)
+        outputShape   <- createOperationOutput(opId, req)
         _ <- State.modify[Set[Shape]] { shapes =>
-          val outputShape =
-            if outputTargetId != ShapeId.from("smithy.api#Unit") then
-              StructureShape
-                .builder()
-                .id(outputShapeId)
-                .addMember(
-                  MemberShape
-                    .builder()
-                    .id(outputShapeId.withMember("result"))
-                    .target(outputTargetId)
-                    .build()
-                )
-                .build()
-            else
-              StructureShape
-                .builder()
-                .id(outputShapeId)
-                .build()
-
           val opShape = OperationShape
             .builder()
             .id(opId)
-            .input(inputShapeId)
-            .output(outputShapeId)
+            .input(inputTargetId)
+            .output(outputShape)
             .addTrait(new JsonRequestTrait.Provider().createTrait(JsonRequestTrait.ID, Node.from(req.method.value)))
             .build()
-          shapes ++ Set(opShape, outputShape)
+
+          shapes ++ Set(opShape)
         }
       yield ()
     }.void
 
+  private def createOperationOutput(opId: ShapeId, req: Request): ShapeState[ShapeId] = {
+    val outputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Output")
+    for {
+      outputTargetId <- smithyType(req.result, namespace)
+      outputShapeOpt =
+        Option.when(outputTargetId != UnitShapeId) {
+          StructureShape
+            .builder()
+            .id(outputShapeId)
+            .addMember(
+              MemberShape
+                .builder()
+                .id(outputShapeId.withMember("result"))
+                .target(outputTargetId)
+                .addTrait(
+                  new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode)
+                )
+                .build()
+            )
+            .addTrait(new OutputTrait)
+            .build()
+        }
+      id <- State[Set[Shape], ShapeId] { shapes =>
+        (shapes ++ outputShapeOpt, outputShapeOpt.map(_.getId).getOrElse(UnitShapeId))
+      }
+    } yield id
+  }
+
   def convertNotifications(notifications: Vector[Notification]): ShapeState[Unit] =
     notifications.traverse { notif =>
-      val opId    = ShapeId.fromParts(namespace, sanitizeMethodName(notif.method))
-      val builder = OperationShape.builder().id(opId)
-
-      // --- Input ---
+      val opId         = ShapeId.fromParts(namespace, sanitizeMethodName(notif.method))
       val inputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
-      structureFromParams(notif.params, inputShapeId, namespace).flatMap { inputShapeId =>
-        builder.input(inputShapeId)
 
-        builder.output(ShapeId.from("smithy.api#Unit"))
-        val notifiShapeOp = builder
-          .addTrait(
-            new JsonNotificationTrait.Provider().createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
-          )
-          .build()
+      for {
+        inputTargetId <- structureFromParams(notif.params, inputShapeId, namespace)
+        _ <- State.modify[Set[Shape]] { shapes =>
+          val notifiShapeOp =
+            OperationShape
+              .builder()
+              .id(opId)
+              .input(inputTargetId)
+              .addTrait(
+                new JsonNotificationTrait.Provider()
+                  .createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
+              )
+              .build()
 
-        State.modify(shapes => shapes + notifiShapeOp)
-      }
+          shapes + notifiShapeOp
+        }
+      } yield ()
     }.void

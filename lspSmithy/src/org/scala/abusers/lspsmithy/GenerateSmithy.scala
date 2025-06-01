@@ -5,6 +5,7 @@ import langoustine.meta.MetaModel
 import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
 import upickle.default.*
 
+import java.nio.file.Paths
 import scala.io.Source
 import scala.jdk.CollectionConverters.*
 
@@ -19,7 +20,8 @@ def main() = {
   val targetDir = os.Path(sys.env("TARGET_PATH"))
   os.remove.all(targetDir)
 
-  for (path, content) <- outputMap do
-    val outputPath = targetDir / path.toString
+  outputMap.get(Paths.get("lsp.smithy")).foreach { content =>
+    val outputPath = targetDir / "lsp.smithy"
     os.write.over(outputPath, content, createFolders = true)
+  }
 }
