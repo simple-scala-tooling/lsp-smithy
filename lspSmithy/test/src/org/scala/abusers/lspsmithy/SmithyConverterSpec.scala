@@ -661,7 +661,7 @@ object SmithyConverterSpec extends SimpleIOSuite {
   }
 
   def assertSmithyModelEquals(metaModel: MetaModel, expectedModel: String): Expectations = {
-    val actualModel = SmithyConverter(metaModel).unwrap()
+    val actualModel = SmithyConverter(preprocess(metaModel)).unwrap()
 
     val expected = Model
       .assembler()

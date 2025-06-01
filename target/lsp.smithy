@@ -1052,7 +1052,6 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// 
     /// Is `null` if the process has not been started by another process.
     /// If the parent process is not alive then the server should exit.
-    @required
     processId: Integer
     /// Information about the client
     /// 
@@ -1079,7 +1078,6 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// `rootUri` wins.
     /// 
     /// @deprecated in favour of workspaceFolders.
-    @required
     rootUri: String
     /// The capabilities provided by the client (editor or tool)
     @required
@@ -1098,7 +1096,6 @@ structure _InitializeParamsBase with [WorkDoneProgressParams] {
     /// 
     /// Is `null` if the process has not been started by another process.
     /// If the parent process is not alive then the server should exit.
-    @required
     processId: Integer
     /// Information about the client
     /// 
@@ -1125,7 +1122,6 @@ structure _InitializeParamsBase with [WorkDoneProgressParams] {
     /// `rootUri` wins.
     /// 
     /// @deprecated in favour of workspaceFolders.
-    @required
     rootUri: String
     /// The capabilities provided by the client (editor or tool)
     @required
@@ -4653,7 +4649,6 @@ structure OptionalVersionedTextDocumentIdentifier with [TextDocumentIdentifierBa
     /// (the server has not received an open notification before) the server can send
     /// `null` to indicate that the version is unknown and the content on disk is the
     /// truth (as specified with document content ownership).
-    @required
     version: Integer
 }
 
@@ -6025,7 +6020,6 @@ structure TextDocumentPositionParamsBase {
 structure TextDocumentRegistrationOptions {
     /// A document selector to identify the scope of the registration. If set to null
     /// the document selector provided on the client side will be used.
-    @required
     documentSelector: DocumentSelector
 }
 
@@ -6034,7 +6028,6 @@ structure TextDocumentRegistrationOptions {
 structure TextDocumentRegistrationOptionsBase {
     /// A document selector to identify the scope of the registration. If set to null
     /// the document selector provided on the client side will be used.
-    @required
     documentSelector: DocumentSelector
 }
 
@@ -6656,7 +6649,6 @@ structure WorkspaceFullDocumentDiagnosticReport with [FullDocumentDiagnosticRepo
     uri: String
     /// The version number for which the diagnostics are reported.
     /// If the document is not marked as open `null` can be provided.
-    @required
     version: Integer
 }
 
@@ -6768,7 +6760,6 @@ structure WorkspaceUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiag
     uri: String
     /// The version number for which the diagnostics are reported.
     /// If the document is not marked as open `null` can be provided.
-    @required
     version: Integer
 }
 
