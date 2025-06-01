@@ -294,7 +294,44 @@ object SmithyConverterSpec extends SimpleIOSuite {
         |
         |""".stripMargin
 
-    debug(metaModel)
+    assertSmithyModelEquals(metaModel, expected)
+  }
+
+  pureTest("single case union gets flattened") {
+    val metaModel = MetaModel(
+      typeAliases = Vector.empty,
+      structures = Vector(
+        Structure(
+          name = StructureName("A"),
+          properties = Vector(
+            Property(
+              name = PropertyName("u1"),
+              optional = IsOptional(true),
+              `type` = Type.OrType(
+                Vector(
+                  Type.BaseType(BaseTypes.boolean),
+                  Type.BaseType(BaseTypes.NULL),
+                )
+              ),
+            )
+          ),
+        )
+      ),
+      enumerations = Vector.empty,
+      requests = Vector.empty,
+      notifications = Vector.empty,
+    )
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |structure A {
+        |  u1: Boolean
+        |}
+        |
+        |""".stripMargin
 
     assertSmithyModelEquals(metaModel, expected)
   }

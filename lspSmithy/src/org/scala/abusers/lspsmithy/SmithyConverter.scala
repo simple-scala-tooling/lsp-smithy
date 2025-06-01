@@ -257,32 +257,36 @@ object SmithyConverter:
           case BaseType(BaseTypes.NULL) => None
           case other                    => Some(other)
         }.flatten
-        val id = ShapeId.fromParts(namespace, unionNameFor(itemsWithoutNull))
-        itemsWithoutNull.zipWithIndex
-          .traverse { case (tpe, idx) =>
-            smithyType(tpe, namespace).map { target =>
-              MemberShape
-                .builder()
-                .id(id.withMember(s"case$idx"))
-                .target(target)
-                .build()
+        if (itemsWithoutNull.size > 1) {
+          val id = ShapeId.fromParts(namespace, unionNameFor(itemsWithoutNull))
+          itemsWithoutNull.zipWithIndex
+            .traverse { case (tpe, idx) =>
+              smithyType(tpe, namespace).map { target =>
+                MemberShape
+                  .builder()
+                  .id(id.withMember(s"case$idx"))
+                  .target(target)
+                  .build()
+              }
             }
-          }
-          .map(
-            _.foldLeft(
-              UnionShape
-                .builder()
-                .id(id)
-                .addTrait(new UntaggedUnionTrait.Provider().createTrait(UntaggedUnionTrait.ID, Node.objectNode))
-            ) { case (acc, item) =>
-              // TODO: this shape gets filtered out as it is marked as proposed
-              if item.getTarget.toString == "lsp#SnippetTextEdit" then acc
-              else acc.addMember(item)
-            }.build()
-          )
-          .flatMap { unionShape =>
-            State(shapes => (shapes + unionShape, id))
-          }
+            .map(
+              _.foldLeft(
+                UnionShape
+                  .builder()
+                  .id(id)
+                  .addTrait(new UntaggedUnionTrait.Provider().createTrait(UntaggedUnionTrait.ID, Node.objectNode))
+              ) { case (acc, item) =>
+                // TODO: this shape gets filtered out as it is marked as proposed
+                if item.getTarget.toString == "lsp#SnippetTextEdit" then acc
+                else acc.addMember(item)
+              }.build()
+            )
+            .flatMap { unionShape =>
+              State(shapes => (shapes + unionShape, id))
+            }
+        } else {
+          smithyType(itemsWithoutNull.head, namespace)
+        }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
         // unresolved types produce unstable hashes for some reason.
