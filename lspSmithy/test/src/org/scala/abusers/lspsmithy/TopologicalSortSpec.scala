@@ -122,6 +122,24 @@ object TopologicalSortSpec extends SimpleIOSuite {
     }
   }
 
+  pureTest("detects mixed cycle via extends and mixins") {
+    val a = struct("A", "B") // A extends B
+    val b = Structure(
+      name = StructureName("B"),
+      mixins = Vector(Type.ReferenceType(TypeName("C"))),
+    )
+    val c = struct("C", "A") // C extends A → closes the cycle
+
+    val result = topologicalSort(Vector(a, b, c))
+
+    matches(result) {
+      case Left(error) =>
+        expect.same(error, "Cycle detected or unresolved dependencies")
+      case Right(_) =>
+        failure("Expected cycle detection")
+    }
+  }
+
   private def leftBeforeRight(left: String, right: String, list: Vector[String]): Boolean =
     list.indexOf(left) < list.indexOf(right)
 }
