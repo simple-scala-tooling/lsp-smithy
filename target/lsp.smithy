@@ -21,7 +21,7 @@ operation CallHierarchyIncomingCallsOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCallHierarchyIncomingCallOrNULL
+        result: ListOfCallHierarchyIncomingCallUnion
     }
 }
 
@@ -34,7 +34,7 @@ operation CallHierarchyOutgoingCallsOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCallHierarchyOutgoingCallOrNULL
+        result: ListOfCallHierarchyOutgoingCallUnion
     }
 }
 
@@ -257,7 +257,7 @@ operation TextDocumentCodeActionOp {
     }
     output := {
         @jsonPayload
-        result: ListOfOrNULL
+        result: ListOfUnion
     }
 }
 
@@ -270,7 +270,7 @@ operation TextDocumentCodeLensOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCodeLensOrNULL
+        result: ListOfCodeLensUnion
     }
 }
 
@@ -296,7 +296,7 @@ operation TextDocumentCompletionOp {
     }
     output := {
         @jsonPayload
-        result: ListCompletionOrNULL
+        result: ListCompletionUnion
     }
 }
 
@@ -309,7 +309,7 @@ operation TextDocumentDeclarationOp {
     }
     output := {
         @jsonPayload
-        result: DeclarationOrNULL
+        result: DeclarationOrListOfDeclarationLink
     }
 }
 
@@ -322,7 +322,7 @@ operation TextDocumentDefinitionOp {
     }
     output := {
         @jsonPayload
-        result: DefinitionOrNULL
+        result: DefinitionOrListOfDefinitionLink
     }
 }
 
@@ -401,7 +401,7 @@ operation TextDocumentDocumentHighlightOp {
     }
     output := {
         @jsonPayload
-        result: ListOfDocumentHighlightOrNULL
+        result: ListOfDocumentHighlightUnion
     }
 }
 
@@ -414,7 +414,7 @@ operation TextDocumentDocumentLinkOp {
     }
     output := {
         @jsonPayload
-        result: ListOfDocumentLinkOrNULL
+        result: ListOfDocumentLinkUnion
     }
 }
 
@@ -427,7 +427,7 @@ operation TextDocumentDocumentSymbolOp {
     }
     output := {
         @jsonPayload
-        result: ListOfSymbolOrNULL
+        result: ListOfSymbolUnion
     }
 }
 
@@ -440,7 +440,7 @@ operation TextDocumentFoldingRangeOp {
     }
     output := {
         @jsonPayload
-        result: ListOfFoldingRangeOrNULL
+        result: ListOfFoldingRangeUnion
     }
 }
 
@@ -453,7 +453,7 @@ operation TextDocumentFormattingOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEditUnion
     }
 }
 
@@ -466,7 +466,7 @@ operation TextDocumentHoverOp {
     }
     output := {
         @jsonPayload
-        result: HoverOrNULL
+        result: HoverUnion
     }
 }
 
@@ -479,7 +479,7 @@ operation TextDocumentImplementationOp {
     }
     output := {
         @jsonPayload
-        result: DefinitionOrNULL
+        result: DefinitionOrListOfDefinitionLink
     }
 }
 
@@ -492,7 +492,7 @@ operation TextDocumentInlayHintOp {
     }
     output := {
         @jsonPayload
-        result: ListOfInlayHintOrNULL
+        result: ListOfInlayHintUnion
     }
 }
 
@@ -505,7 +505,7 @@ operation TextDocumentInlineValueOp {
     }
     output := {
         @jsonPayload
-        result: ListOfInlineValueOrNULL
+        result: ListOfInlineValueUnion
     }
 }
 
@@ -518,7 +518,7 @@ operation TextDocumentLinkedEditingRangeOp {
     }
     output := {
         @jsonPayload
-        result: LinkedEditingRangesOrNULL
+        result: LinkedEditingRangesUnion
     }
 }
 
@@ -531,7 +531,7 @@ operation TextDocumentMonikerOp {
     }
     output := {
         @jsonPayload
-        result: ListOfMonikerOrNULL
+        result: ListOfMonikerUnion
     }
 }
 
@@ -544,7 +544,7 @@ operation TextDocumentOnTypeFormattingOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEditUnion
     }
 }
 
@@ -557,7 +557,7 @@ operation TextDocumentPrepareCallHierarchyOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCallHierarchyItemOrNULL
+        result: ListOfCallHierarchyItemUnion
     }
 }
 
@@ -570,7 +570,7 @@ operation TextDocumentPrepareRenameOp {
     }
     output := {
         @jsonPayload
-        result: PrepareRenameResultOrNULL
+        result: PrepareRenameResultUnion
     }
 }
 
@@ -583,7 +583,7 @@ operation TextDocumentPrepareTypeHierarchyOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTypeHierarchyItemOrNULL
+        result: ListOfTypeHierarchyItemUnion
     }
 }
 
@@ -606,7 +606,7 @@ operation TextDocumentRangeFormattingOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEditUnion
     }
 }
 
@@ -619,7 +619,7 @@ operation TextDocumentReferencesOp {
     }
     output := {
         @jsonPayload
-        result: ListOfLocationOrNULL
+        result: ListOfLocationUnion
     }
 }
 
@@ -632,7 +632,7 @@ operation TextDocumentRenameOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEditUnion
     }
 }
 
@@ -645,7 +645,7 @@ operation TextDocumentSelectionRangeOp {
     }
     output := {
         @jsonPayload
-        result: ListOfSelectionRangeOrNULL
+        result: ListOfSelectionRangeUnion
     }
 }
 
@@ -658,7 +658,7 @@ operation TextDocumentSemanticTokensFullDeltaOp {
     }
     output := {
         @jsonPayload
-        result: NULLOrSemanticTokens
+        result: SemanticTokensUnion
     }
 }
 
@@ -671,7 +671,7 @@ operation TextDocumentSemanticTokensFullOp {
     }
     output := {
         @jsonPayload
-        result: SemanticTokensOrNULL
+        result: SemanticTokensUnion
     }
 }
 
@@ -684,7 +684,7 @@ operation TextDocumentSemanticTokensRangeOp {
     }
     output := {
         @jsonPayload
-        result: SemanticTokensOrNULL
+        result: SemanticTokensUnion
     }
 }
 
@@ -697,7 +697,7 @@ operation TextDocumentSignatureHelpOp {
     }
     output := {
         @jsonPayload
-        result: SignatureHelpOrNULL
+        result: SignatureHelpUnion
     }
 }
 
@@ -710,7 +710,7 @@ operation TextDocumentTypeDefinitionOp {
     }
     output := {
         @jsonPayload
-        result: DefinitionOrNULL
+        result: DefinitionOrListOfDefinitionLink
     }
 }
 
@@ -733,7 +733,7 @@ operation TextDocumentWillSaveWaitUntilOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEditUnion
     }
 }
 
@@ -746,7 +746,7 @@ operation TypeHierarchySubtypesOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTypeHierarchyItemOrNULL
+        result: ListOfTypeHierarchyItemUnion
     }
 }
 
@@ -759,7 +759,7 @@ operation TypeHierarchySupertypesOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTypeHierarchyItemOrNULL
+        result: ListOfTypeHierarchyItemUnion
     }
 }
 
@@ -805,7 +805,7 @@ operation WindowShowMessageRequestOp {
     }
     output := {
         @jsonPayload
-        result: MessageActionItemOrNULL
+        result: MessageActionItemUnion
     }
 }
 
@@ -949,7 +949,7 @@ operation WorkspaceExecuteCommandOp {
     }
     output := {
         @jsonPayload
-        result: LSPAnyOrNULL
+        result: LSPAnyUnion
     }
 }
 
@@ -980,7 +980,7 @@ operation WorkspaceSymbolOp {
     }
     output := {
         @jsonPayload
-        result: ListOfSymbolOrNULL
+        result: ListOfSymbolUnion
     }
 }
 
@@ -1006,7 +1006,7 @@ operation WorkspaceWillCreateFilesOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEditUnion
     }
 }
 
@@ -1019,7 +1019,7 @@ operation WorkspaceWillDeleteFilesOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEditUnion
     }
 }
 
@@ -1032,7 +1032,7 @@ operation WorkspaceWillRenameFilesOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEditUnion
     }
 }
 
@@ -1041,7 +1041,7 @@ operation WorkspaceWorkspaceFoldersOp {
     input: Unit
     output := {
         @jsonPayload
-        result: ListOfWorkspaceFolderOrNULL
+        result: ListOfWorkspaceFolderUnion
     }
 }
 
@@ -1053,7 +1053,7 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// Is `null` if the process has not been started by another process.
     /// If the parent process is not alive then the server should exit.
     @required
-    processId: IntegerOrNULL
+    processId: IntegerUnion
     /// Information about the client
     /// 
     /// @since 3.15.0
@@ -1073,14 +1073,14 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// if no folder is open.
     /// 
     /// @deprecated in favour of rootUri.
-    rootPath: StringOrNULL
+    rootPath: StringUnion
     /// The rootUri of the workspace. Is null if no
     /// folder is open. If both `rootPath` and `rootUri` are set
     /// `rootUri` wins.
     /// 
     /// @deprecated in favour of workspaceFolders.
     @required
-    rootUri: DocumentUriOrNULL
+    rootUri: DocumentUriUnion
     /// The capabilities provided by the client (editor or tool)
     @required
     capabilities: ClientCapabilities
@@ -1099,7 +1099,7 @@ structure _InitializeParamsBase with [WorkDoneProgressParams] {
     /// Is `null` if the process has not been started by another process.
     /// If the parent process is not alive then the server should exit.
     @required
-    processId: IntegerOrNULL
+    processId: IntegerUnion
     /// Information about the client
     /// 
     /// @since 3.15.0
@@ -1119,14 +1119,14 @@ structure _InitializeParamsBase with [WorkDoneProgressParams] {
     /// if no folder is open.
     /// 
     /// @deprecated in favour of rootUri.
-    rootPath: StringOrNULL
+    rootPath: StringUnion
     /// The rootUri of the workspace. Is null if no
     /// folder is open. If both `rootPath` and `rootUri` are set
     /// `rootUri` wins.
     /// 
     /// @deprecated in favour of workspaceFolders.
     @required
-    rootUri: DocumentUriOrNULL
+    rootUri: DocumentUriUnion
     /// The capabilities provided by the client (editor or tool)
     @required
     capabilities: ClientCapabilities
@@ -4654,7 +4654,7 @@ structure OptionalVersionedTextDocumentIdentifier with [TextDocumentIdentifierBa
     /// `null` to indicate that the version is unknown and the content on disk is the
     /// truth (as specified with document content ownership).
     @required
-    version: IntegerOrNULL
+    version: IntegerUnion
 }
 
 /// Represents a parameter of a callable-signature. A parameter can
@@ -5575,7 +5575,7 @@ structure SignatureHelp {
     /// In future version of the protocol this property might become
     /// mandatory (but still nullable) to better express the active parameter if
     /// the active signature does have any.
-    activeParameter: UintegerOrNULL
+    activeParameter: UintegerUnion
 }
 
 /// Client Capabilities for a {@link SignatureHelpRequest}.
@@ -5693,7 +5693,7 @@ structure SignatureInformation {
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    activeParameter: UintegerOrNULL
+    activeParameter: UintegerUnion
 }
 
 /// @since 3.18.0
@@ -6026,7 +6026,7 @@ structure TextDocumentRegistrationOptions {
     /// A document selector to identify the scope of the registration. If set to null
     /// the document selector provided on the client side will be used.
     @required
-    documentSelector: DocumentSelectorOrNULL
+    documentSelector: DocumentSelectorUnion
 }
 
 /// General text document registration options.
@@ -6035,7 +6035,7 @@ structure TextDocumentRegistrationOptionsBase {
     /// A document selector to identify the scope of the registration. If set to null
     /// the document selector provided on the client side will be used.
     @required
-    documentSelector: DocumentSelectorOrNULL
+    documentSelector: DocumentSelectorUnion
 }
 
 /// Save registration options.
@@ -6617,7 +6617,7 @@ structure WorkspaceFoldersInitializeParams {
     /// 
     /// @since 3.6.0
     @since("3.6.0")
-    workspaceFolders: ListOfWorkspaceFolderOrNULL
+    workspaceFolders: ListOfWorkspaceFolderUnion
 }
 
 @mixin
@@ -6630,7 +6630,7 @@ structure WorkspaceFoldersInitializeParamsBase {
     /// 
     /// @since 3.6.0
     @since("3.6.0")
-    workspaceFolders: ListOfWorkspaceFolderOrNULL
+    workspaceFolders: ListOfWorkspaceFolderUnion
 }
 
 structure WorkspaceFoldersServerCapabilities {
@@ -6657,7 +6657,7 @@ structure WorkspaceFullDocumentDiagnosticReport with [FullDocumentDiagnosticRepo
     /// The version number for which the diagnostics are reported.
     /// If the document is not marked as open `null` can be provided.
     @required
-    version: IntegerOrNULL
+    version: IntegerUnion
 }
 
 /// Defines workspace specific capabilities of the server.
@@ -6769,7 +6769,7 @@ structure WorkspaceUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiag
     /// The version number for which the diagnostics are reported.
     /// If the document is not marked as open `null` can be provided.
     @required
-    version: IntegerOrNULL
+    version: IntegerUnion
 }
 
 @untagged
@@ -6953,10 +6953,9 @@ union Declaration {
 }
 
 @untagged
-union DeclarationOrNULL {
+union DeclarationOrListOfDeclarationLink {
     case0: Declaration
     case1: ListOfDeclarationLink
-    case2: Unit
 }
 
 @untagged
@@ -6966,10 +6965,9 @@ union Definition {
 }
 
 @untagged
-union DefinitionOrNULL {
+union DefinitionOrListOfDefinitionLink {
     case0: Definition
     case1: ListOfDefinitionLink
-    case2: Unit
 }
 
 @untagged
@@ -6997,15 +6995,13 @@ union DocumentFilter {
 }
 
 @untagged
-union DocumentSelectorOrNULL {
+union DocumentSelectorUnion {
     case0: DocumentSelector
-    case1: Unit
 }
 
 @untagged
-union DocumentUriOrNULL {
+union DocumentUriUnion {
     case0: String
-    case1: Unit
 }
 
 @untagged
@@ -7023,9 +7019,8 @@ union GlobPattern {
 }
 
 @untagged
-union HoverOrNULL {
+union HoverUnion {
     case0: Hover
-    case1: Unit
 }
 
 @untagged
@@ -7043,131 +7038,106 @@ union InlineValueUnion {
 }
 
 @untagged
-union IntegerOrNULL {
-    case0: Integer
-    case1: Unit
-}
-
-@untagged
 union IntegerOrString {
     case0: Integer
     case1: String
 }
 
 @untagged
-union LinkedEditingRangesOrNULL {
-    case0: LinkedEditingRanges
-    case1: Unit
+union IntegerUnion {
+    case0: Integer
 }
 
 @untagged
-union ListCompletionOrNULL {
+union LinkedEditingRangesUnion {
+    case0: LinkedEditingRanges
+}
+
+@untagged
+union ListCompletionUnion {
     case0: ListOfCompletionItem
     case1: CompletionList
-    case2: Unit
 }
 
 @untagged
-union ListOfCallHierarchyIncomingCallOrNULL {
+union ListOfCallHierarchyIncomingCallUnion {
     case0: ListOfCallHierarchyIncomingCall
-    case1: Unit
 }
 
 @untagged
-union ListOfCallHierarchyItemOrNULL {
+union ListOfCallHierarchyItemUnion {
     case0: ListOfCallHierarchyItem
-    case1: Unit
 }
 
 @untagged
-union ListOfCallHierarchyOutgoingCallOrNULL {
+union ListOfCallHierarchyOutgoingCallUnion {
     case0: ListOfCallHierarchyOutgoingCall
-    case1: Unit
 }
 
 @untagged
-union ListOfCodeLensOrNULL {
+union ListOfCodeLensUnion {
     case0: ListOfCodeLens
-    case1: Unit
 }
 
 @untagged
-union ListOfDocumentHighlightOrNULL {
+union ListOfDocumentHighlightUnion {
     case0: ListOfDocumentHighlight
-    case1: Unit
 }
 
 @untagged
-union ListOfDocumentLinkOrNULL {
+union ListOfDocumentLinkUnion {
     case0: ListOfDocumentLink
-    case1: Unit
 }
 
 @untagged
-union ListOfFoldingRangeOrNULL {
+union ListOfFoldingRangeUnion {
     case0: ListOfFoldingRange
-    case1: Unit
 }
 
 @untagged
-union ListOfInlayHintOrNULL {
+union ListOfInlayHintUnion {
     case0: ListOfInlayHint
-    case1: Unit
 }
 
 @untagged
-union ListOfInlineValueOrNULL {
+union ListOfInlineValueUnion {
     case0: ListOfInlineValue
-    case1: Unit
 }
 
 @untagged
-union ListOfLocationOrNULL {
+union ListOfLocationUnion {
     case0: ListOfLocation
-    case1: Unit
 }
 
 @untagged
-union ListOfMonikerOrNULL {
+union ListOfMonikerUnion {
     case0: ListOfMoniker
-    case1: Unit
 }
 
 @untagged
-union ListOfOrNULL {
-    case0: ListOfCommandOrCodeAction
-    case1: Unit
-}
-
-@untagged
-union ListOfSelectionRangeOrNULL {
+union ListOfSelectionRangeUnion {
     case0: ListOfSelectionRange
-    case1: Unit
 }
 
 @untagged
-union ListOfSymbolOrNULL {
+union ListOfSymbolUnion {
     case0: ListOfSymbolInformation
     case1: ListOfWorkspaceSymbol
-    case2: Unit
 }
 
 @untagged
-union ListOfTextEditOrNULL {
-    case0: ListOfTextEdit
-    case1: Unit
-}
-
-@untagged
-union ListOfTypeHierarchyItemOrNULL {
+union ListOfTypeHierarchyItemUnion {
     case0: ListOfTypeHierarchyItem
-    case1: Unit
 }
 
 @untagged
-union ListOfWorkspaceFolderOrNULL {
+union ListOfUnion {
+    case0: ListOfCommandOrCodeAction
+}
+
+@untagged
+union ListOfWorkspaceFolderUnion {
     case0: ListOfWorkspaceFolder
-    case1: Unit
 }
 
 @untagged
@@ -7183,9 +7153,8 @@ union LocationOrLocationUriOnly {
 }
 
 @untagged
-union LSPAnyOrNULL {
+union LSPAnyUnion {
     case0: Document
-    case1: Unit
 }
 
 @untagged
@@ -7202,9 +7171,8 @@ union MarkedStringOrMarkupContent {
 }
 
 @untagged
-union MessageActionItemOrNULL {
+union MessageActionItemUnion {
     case0: MessageActionItem
-    case1: Unit
 }
 
 @untagged
@@ -7234,13 +7202,6 @@ union NotebookDocumentSyncOptionsUnion {
 }
 
 @untagged
-union NULLOrSemanticTokens {
-    case0: SemanticTokens
-    case1: SemanticTokensDelta
-    case2: Unit
-}
-
-@untagged
 union PatternOrRelativePattern {
     case0: Pattern
     case1: RelativePattern
@@ -7261,9 +7222,8 @@ union PrepareRenameResult {
 }
 
 @untagged
-union PrepareRenameResultOrNULL {
+union PrepareRenameResultUnion {
     case0: PrepareRenameResult
-    case1: Unit
 }
 
 @untagged
@@ -7291,15 +7251,14 @@ union SemanticTokensOptionsUnion {
 }
 
 @untagged
-union SemanticTokensOrNULL {
+union SemanticTokensUnion {
     case0: SemanticTokens
-    case1: Unit
+    case1: SemanticTokensDelta
 }
 
 @untagged
-union SignatureHelpOrNULL {
+union SignatureHelpUnion {
     case0: SignatureHelp
-    case1: Unit
 }
 
 @untagged
@@ -7339,15 +7298,8 @@ union StringOrNotebookDocumentFilter {
 }
 
 @untagged
-union StringOrNULL {
-    case0: String
-    case1: Unit
-}
-
-@untagged
 union StringUnion {
     case0: String
-    case1: TupleOfIntegerInteger
 }
 
 @untagged
@@ -7395,9 +7347,8 @@ union TextEditUnion {
 }
 
 @untagged
-union UintegerOrNULL {
+union UintegerUnion {
     case0: Integer
-    case1: Unit
 }
 
 @untagged
@@ -7413,9 +7364,8 @@ union WorkspaceDocumentDiagnosticReportUnion {
 }
 
 @untagged
-union WorkspaceEditOrNULL {
+union WorkspaceEditUnion {
     case0: WorkspaceEdit
-    case1: Unit
 }
 
 @untagged

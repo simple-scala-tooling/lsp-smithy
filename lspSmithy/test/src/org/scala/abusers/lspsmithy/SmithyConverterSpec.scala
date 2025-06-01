@@ -247,6 +247,58 @@ object SmithyConverterSpec extends SimpleIOSuite {
     assertSmithyModelEquals(metaModel, expected)
   }
 
+  pureTest("base type null is filtered from union variants") {
+    val metaModel = MetaModel(
+      requests = Vector(
+        Request(
+          method = RequestMethod("ping"),
+          params = ParamsType.Single(Type.BaseType(BaseTypes.string)),
+          result = Type.OrType(
+            Vector(
+              Type.ReferenceType(TypeName("Hover")),
+              Type.BaseType(BaseTypes.NULL),
+              Type.ReferenceType(TypeName("Hover2")),
+            )
+          ),
+        )
+      ),
+      structures = Vector(Structure(name = StructureName("Hover")), Structure(name = StructureName("Hover2"))),
+      enumerations = Vector.empty,
+      typeAliases = Vector.empty,
+      notifications = Vector.empty,
+    )
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |operation PingOp {
+        |    input := {
+        |        @required
+        |        params: String
+        |    }
+        |    output := {
+        |        result: HoverOrHover2
+        |    }
+        |}
+        |
+        |structure Hover {}
+        |
+        |structure Hover2 {}
+        |
+        |union HoverOrHover2 {
+        |    case0: Hover
+        |    case1: Hover2
+        |}
+        |
+        |""".stripMargin
+
+    debug(metaModel)
+
+    assertSmithyModelEquals(metaModel, expected)
+  }
+
   pureTest("notification with input only compiles") {
     val metaModel = MetaModel(
       notifications = Vector(

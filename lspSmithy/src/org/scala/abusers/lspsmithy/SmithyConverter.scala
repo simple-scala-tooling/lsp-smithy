@@ -253,8 +253,12 @@ object SmithyConverter:
         yield result
 
       case OrType(items) =>
-        val id = ShapeId.fromParts(namespace, unionNameFor(items))
-        items.zipWithIndex
+        val itemsWithoutNull = items.collect {
+          case BaseType(BaseTypes.NULL) => None
+          case other                    => Some(other)
+        }.flatten
+        val id = ShapeId.fromParts(namespace, unionNameFor(itemsWithoutNull))
+        itemsWithoutNull.zipWithIndex
           .traverse { case (tpe, idx) =>
             smithyType(tpe, namespace).map { target =>
               MemberShape
@@ -407,7 +411,7 @@ object SmithyConverter:
     for
       members <- structureMembers(shapeId, struct.properties)
       extendIds <- struct.extendz
-        // .filterNot(_.isInstanceOf[Type.BaseType])
+        .filterNot(_.isInstanceOf[Type.BaseType])
         .traverse(t =>
           smithyType(
             t.traverse {
