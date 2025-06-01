@@ -1,12 +1,17 @@
 package org.scala.abusers.lspsmithy
 
+import cats.Show
 import langoustine.meta.*
 import langoustine.meta.json.given
-import software.amazon.smithy.model.shapes.ShapeId
+import software.amazon.smithy.diff.ModelDiff
+import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
 import software.amazon.smithy.model.validation.Severity
+import software.amazon.smithy.model.validation.ValidationEvent
+import software.amazon.smithy.model.Model
 import upickle.default.*
-import weaver.SimpleIOSuite
+import weaver.*
 
+import java.nio.file.Paths
 import scala.io.Source
 import scala.jdk.CollectionConverters.*
 import scala.jdk.OptionConverters.*
@@ -34,9 +39,14 @@ object SmithyConverterSpec extends SimpleIOSuite {
       notifications = Vector.empty,
     )
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    val expected = """$version: "2.0"
+                     |
+                     |namespace lsp
+                     |
+                     |string MyString
+                     |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("simple structure with single field compiles") {
@@ -58,16 +68,31 @@ object SmithyConverterSpec extends SimpleIOSuite {
       notifications = Vector.empty,
     )
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |structure MyStruct {
+        |    @required
+        |    id: Integer
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("structure using mixins and extends compiles") {
     val base = Structure(
       name = StructureName("BaseStruct"),
-      properties = Vector(Property(PropertyName("x"), `type` = Type.BaseType(BaseTypes.string))),
+      properties = Vector(
+        Property(
+          PropertyName("x"),
+          `type` = Type.BaseType(BaseTypes.string),
+        )
+      ),
     )
+
     val metaModel = MetaModel(
       structures = Vector(
         base,
@@ -75,7 +100,7 @@ object SmithyConverterSpec extends SimpleIOSuite {
           name = StructureName("ChildStruct"),
           `extends` = Vector(Type.ReferenceType(TypeName("BaseStruct"))),
           mixins = Vector(Type.ReferenceType(TypeName("BaseStruct"))),
-          properties = Vector(),
+          properties = Vector.empty,
         ),
       ),
       typeAliases = Vector.empty,
@@ -84,9 +109,32 @@ object SmithyConverterSpec extends SimpleIOSuite {
       notifications = Vector.empty,
     )
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |@mixin
+        |structure BaseStruct {
+        |    @required
+        |    x: String
+        |}
+        |
+        |@mixin
+        |structure BaseStructBase {
+        |    @required
+        |    x: String
+        |}
+        |
+        |structure ChildStruct with [
+        |    BaseStruct, 
+        |    BaseStructBase
+        |]{}
+        |
+        |apply ChildStruct$x @required
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("simple enumeration compiles") {
@@ -106,10 +154,18 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |enum Color {
+        |    RED = "red"
+        |    GREEN = "green"
+        |}
+        |""".stripMargin
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("union as alias compiles as full shape") {
@@ -134,9 +190,27 @@ object SmithyConverterSpec extends SimpleIOSuite {
       notifications = Vector.empty,
     )
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |structure A {}
+        |
+        |structure B {}
+        |
+        |union AOrB {
+        |    case0: A
+        |    case1: B
+        |}
+        |
+        |union MyUnion {
+        |    case0: A
+        |    case1: B
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("request with input and output compiles") {
@@ -154,9 +228,23 @@ object SmithyConverterSpec extends SimpleIOSuite {
       notifications = Vector.empty,
     )
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |operation PingOp {
+        |    input := {
+        |        @required
+        |        params: String
+        |    }
+        |    output := {
+        |        result: Boolean
+        |    }
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("notification with input only compiles") {
@@ -173,9 +261,20 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
     )
 
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.toList.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |operation Notify {
+        |    input := {
+        |        @required
+        |        params: String
+        |    }
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("enum with non-unique values gets deduplicated") {
@@ -195,9 +294,18 @@ object SmithyConverterSpec extends SimpleIOSuite {
       notifications = Vector.empty,
       typeAliases = Vector.empty,
     )
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |enum Status {
+        |    OK = "ok"
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("enum with empty value gets filtered out") {
@@ -217,54 +325,18 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
-  }
 
-  pureTest("enum with non-unique values gets deduplicated") {
-    val metaModel = MetaModel(
-      enumerations = Vector(
-        Enumeration(
-          name = EnumerationName("Status"),
-          `type` = EnumerationType("base", EnumerationTypeName.string),
-          values = Vector(
-            EnumerationEntry(EnumerationItemName("ok"), EnumerationItem("ok")),
-            EnumerationEntry(EnumerationItemName("success"), EnumerationItem("ok")),
-          ),
-        )
-      ),
-      structures = Vector.empty,
-      requests = Vector.empty,
-      notifications = Vector.empty,
-      typeAliases = Vector.empty,
-    )
-    val result      = SmithyConverter(metaModel)
-    val enumShape   = result.unwrap().expectShape(ShapeId.from("lsp#Status")).asEnumShape().asScala.get
-    val memberNames = enumShape.members().asScala.map(m => m.getMemberName).toSet
-    expect(memberNames == Set("OK"))
-  }
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |enum State {
+        |    VALID = "valid"
+        |}
+        |""".stripMargin
 
-  pureTest("enum with lowercase value gets uppercased") {
-    val metaModel = MetaModel(
-      enumerations = Vector(
-        Enumeration(
-          name = EnumerationName("InsertMode"),
-          `type` = EnumerationType("base", EnumerationTypeName.string),
-          values = Vector(
-            EnumerationEntry(EnumerationItemName("adjustIndentation"), EnumerationItem("adjustIndentation"))
-          ),
-        )
-      ),
-      structures = Vector.empty,
-      typeAliases = Vector.empty,
-      requests = Vector.empty,
-      notifications = Vector.empty,
-    )
-    val result      = SmithyConverter(metaModel)
-    val enumShape   = result.unwrap().expectShape(ShapeId.from("lsp#InsertMode")).asEnumShape().asScala.get
-    val memberNames = enumShape.members().asScala.map(m => m.getMemberName).toSet
-    expect(memberNames == Set("ADJUST_INDENTATION"))
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("LspAny type alias gets replaced with smithy.api#document") {
@@ -284,12 +356,19 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
-    val result        = SmithyConverter(metaModel)
-    val exampleStruct = result.unwrap().expectShape(ShapeId.from("lsp#Example")).asStructureShape().asScala.get
-    val dataMember    = exampleStruct.members().asScala.toSet.head
 
-    val documentType = ShapeId.from("smithy.api#Document")
-    expect(dataMember.getTarget == documentType)
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |structure Example {
+        |    @required
+        |    data: Document
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("StringLiteralType and BooleanLiteralType are replaced with base types") {
@@ -308,14 +387,22 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
-    val result        = SmithyConverter(metaModel)
-    val exampleStruct = result.unwrap().expectShape(ShapeId.from("lsp#LiteralWrapper")).asStructureShape().asScala.get
-    val strShape      = ShapeId.from("smithy.api#String")
-    val booleanShape  = ShapeId.from("smithy.api#Boolean")
 
-    expect(exampleStruct.getMember("str").get.getTarget == strShape) && expect(
-      exampleStruct.getMember("bool").get.getTarget == booleanShape
-    )
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |structure LiteralWrapper {
+        |    @required
+        |    str: String
+        |
+        |    @required
+        |    bool: Boolean
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("TupleType with homogeneous types compiles as list") {
@@ -341,9 +428,32 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |@trait(
+        |    selector: "structure:not(> member:not([trait|required]))"
+        |)
+        |structure tuple {}
+        |
+        |structure Pair {
+        |    @required
+        |    pair: TupleOfIntegerInteger
+        |}
+        |
+        |@tuple
+        |structure TupleOfIntegerInteger {
+        |    @required
+        |    first: Integer
+        |    @required
+        |    second: Integer
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("StructureLiteralType compiles as inline structure") {
@@ -357,7 +467,10 @@ object SmithyConverterSpec extends SimpleIOSuite {
               `type` = Type.StructureLiteralType(
                 StructureLiteral(
                   Vector(
-                    Property(PropertyName("a"), `type` = Type.BaseType(BaseTypes.integer))
+                    Property(
+                      PropertyName("a"),
+                      `type` = Type.BaseType(BaseTypes.integer),
+                    )
                   )
                 )
               ),
@@ -370,9 +483,29 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |@trait(
+        |    selector: "structure:not(> member:not([trait|required]))"
+        |)
+        |structure tuple {}
+        |
+        |structure InlineHolder {
+        |    @required
+        |    inline: InlineStruct2067068085
+        |}
+        |
+        |structure InlineStruct2067068085 {
+        |    @required
+        |    a: Integer
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
   }
 
   pureTest("ArrayType and MapType compile correctly") {
@@ -381,10 +514,16 @@ object SmithyConverterSpec extends SimpleIOSuite {
         Structure(
           name = StructureName("Complex"),
           properties = Vector(
-            Property(PropertyName("listOfStrings"), `type` = Type.ArrayType(Type.BaseType(BaseTypes.string))),
+            Property(
+              PropertyName("listOfStrings"),
+              `type` = Type.ArrayType(Type.BaseType(BaseTypes.string)),
+            ),
             Property(
               PropertyName("mapOfInts"),
-              `type` = Type.MapType(Type.BaseType(BaseTypes.string), Type.BaseType(BaseTypes.integer)),
+              `type` = Type.MapType(
+                Type.BaseType(BaseTypes.string),
+                Type.BaseType(BaseTypes.integer),
+              ),
             ),
           ),
         )
@@ -394,8 +533,75 @@ object SmithyConverterSpec extends SimpleIOSuite {
       requests = Vector.empty,
       notifications = Vector.empty,
     )
-    val result = SmithyConverter(metaModel)
-    val error  = result.getValidationEvents().asScala.find(_.getSeverity == Severity.ERROR)
-    expect(error == None)
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |@trait(
+        |    selector: "structure:not(> member:not([trait|required]))"
+        |)
+        |structure tuple {}
+        |
+        |structure Complex {
+        |    @required
+        |    listOfStrings: ListOfString
+        |    @required
+        |    mapOfInts: MapOfString2Integer
+        |}
+        |
+        |list ListOfString {
+        |    member: String
+        |}
+        |
+        |map MapOfString2Integer {
+        |    key: String
+        |    value: Integer
+        |}
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
+  }
+
+  // for debug purpose only
+  def debug(metaModel: MetaModel) = {
+    val smithyModel = SmithyConverter(metaModel)
+    val outputMap   = SmithyIdlModelSerializer.builder().build().serialize(smithyModel.unwrap()).asScala.toMap
+    println(outputMap(Paths.get("lsp.smithy")))
+  }
+
+  def assertSmithyModelEquals(metaModel: MetaModel, expectedModel: String): Expectations = {
+    val actualModel = SmithyConverter(metaModel).unwrap()
+
+    val expected = Model
+      .assembler()
+      .discoverModels()
+      .addUnparsedModel("test.smithy", expectedModel)
+      .assemble()
+      .unwrap()
+
+    val diff = ModelDiff
+      .compare(expected, actualModel)
+      .asScala
+      .toList
+      .filter(f =>
+        f.getSeverity() == Severity.DANGER || f.getSeverity() == Severity.ERROR || f.getSeverity() == Severity.WARNING
+      )
+      .filter(v => v.getShapeId().toScala.fold(true)(s => s.getNamespace() == "lsp"))
+
+    given Show[ValidationEvent] = Show[ValidationEvent] { ve =>
+      s"""
+         |id: ${ve.getId}
+         |msg: ${ve.getMessage}
+         |sId: ${ve.getShapeId}
+         |hint: ${ve.getHint()}
+         |loc: ${ve.getSourceLocation()}
+         |${ve.getSeverity()}
+         |##########
+         |""".stripMargin
+    }
+
+    expect.same(Nil, diff)
   }
 }

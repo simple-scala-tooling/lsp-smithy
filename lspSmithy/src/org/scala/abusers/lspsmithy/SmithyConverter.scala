@@ -63,7 +63,7 @@ object SmithyConverter:
       _ <- convertTypeAliases(meta.typeAliases.filterNot(_.proposed).filterNot(_.name.value == "LSPAny"))
     yield ()).run(Set.empty).value._1
 
-    val assembler = Model.assembler()
+    val assembler = Model.assembler().discoverModels()
     shapes.foreach(assembler.addShape)
     assembler.assemble()
 
@@ -281,7 +281,12 @@ object SmithyConverter:
           }
 
       case StructureLiteralType(StructureLiteral(properties, false)) =>
-        val id = ShapeId.fromParts(namespace, s"InlineStruct${Math.abs(MurmurHash3.indexedSeqHash(properties, 0))}")
+        // unresolved types produce unstable hashes for some reason.
+        val hashInput = properties.map(p => p.name.value -> smithyType(p.tpe, namespace).run(Set.empty).value._2)
+        val id = ShapeId.fromParts(
+          namespace,
+          s"InlineStruct${Math.abs(MurmurHash3.indexedSeqHash(hashInput, 0))}",
+        )
         structureMembers(id, properties)
           .map(_.foldLeft(StructureShape.builder().id(id)) { case (acc, item) => acc.addMember(item) }.build())
           .flatMap { structureShape =>

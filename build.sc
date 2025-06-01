@@ -10,7 +10,9 @@ import smithytraitcodegen.SmithyTraitCodegenPlugin
 
 import $meta._
 
-val jsonrpcVersion = "0.0.8+41-0a28e99d-SNAPSHOT"
+val jsonrpcVersion     = "0.0.8+41-0a28e99d-SNAPSHOT"
+val langoustineVersion = "0.0.24"
+val smithyVersion      = "1.57.1"
 
 trait CommonScalaModule extends ScalaModule with ScalafixModule {
   override def repositoriesTask: Task[Seq[Repository]] = T.task {
@@ -54,9 +56,10 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
   def mainClass = Some("org.scala.abusers.lspsmithy.main")
 
   def ivyDeps = Agg(
-    ivy"tech.neander::langoustine-meta::0.0.23",
+    ivy"tech.neander::langoustine-meta::$langoustineVersion",
     ivy"com.lihaoyi::os-lib:0.11.4",
-    ivy"software.amazon.smithy:smithy-model:1.57.1",
+    ivy"software.amazon.smithy:smithy-model:$smithyVersion",
+    ivy"software.amazon.smithy:smithy-diff:$smithyVersion",
     ivy"tech.neander:jsonrpclib-smithy:$jsonrpcVersion",
     ivy"com.disneystreaming.alloy:alloy-core:0.3.20",
   )
@@ -84,7 +87,7 @@ object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
   }
   override def ivyDeps = Agg(
     ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}",
-    ivy"tech.neander::jsonrpclib-smithy4s:$jsonrpcVersion"
+    ivy"tech.neander::jsonrpclib-smithy4s:$jsonrpcVersion",
   )
 }
 
@@ -106,8 +109,8 @@ object exampleClient extends CommonScalaModule with Smithy4sModule {
 
 object dummyServer extends CommonScalaModule {
   override def ivyDeps = Agg(
-    ivy"tech.neander::langoustine-lsp::0.0.24",
-    ivy"tech.neander::langoustine-app::0.0.24",
+    ivy"tech.neander::langoustine-lsp::$langoustineVersion",
+    ivy"tech.neander::langoustine-app::$langoustineVersion",
   )
 
 }
