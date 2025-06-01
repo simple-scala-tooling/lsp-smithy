@@ -77,8 +77,8 @@ object SmithyClientMain extends IOApp.Simple {
       result1 <- Stream.eval(
         server.initializeOp(
           InitializeParams(
-            processId = 1,
-            rootUri = "/bin/",
+            processId = Some(1),
+            rootUri = Some("/bin/"),
             capabilities = ClientCapabilities(),
           )
         )
