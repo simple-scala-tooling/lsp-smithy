@@ -7,15 +7,20 @@ use jsonrpclib#jsonNotification
 use jsonrpclib#jsonPayload
 use jsonrpclib#jsonRequest
 
+@trait(
+    selector: "structure:not(> member:not([trait|required]))"
+)
+structure tuple {}
+
 @jsonRequest("callHierarchy/incomingCalls")
 operation CallHierarchyIncomingCallsOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CallHierarchyIncomingCallsParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfCallHierarchyIncomingCallOrNULL
     }
 }
@@ -23,12 +28,12 @@ operation CallHierarchyIncomingCallsOp {
 @jsonRequest("callHierarchy/outgoingCalls")
 operation CallHierarchyOutgoingCallsOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CallHierarchyOutgoingCallsParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfCallHierarchyOutgoingCallOrNULL
     }
 }
@@ -36,7 +41,7 @@ operation CallHierarchyOutgoingCallsOp {
 @jsonNotification("$/cancelRequest")
 operation CancelRequest {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CancelParams
     }
@@ -46,7 +51,7 @@ operation CancelRequest {
 @jsonRequest("client/registerCapability")
 operation ClientRegisterCapabilityOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: RegistrationParams
     }
@@ -56,7 +61,7 @@ operation ClientRegisterCapabilityOp {
 @jsonRequest("client/unregisterCapability")
 operation ClientUnregisterCapabilityOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: UnregistrationParams
     }
@@ -66,12 +71,12 @@ operation ClientUnregisterCapabilityOp {
 @jsonRequest("codeAction/resolve")
 operation CodeActionResolveOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CodeAction
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: CodeAction
     }
 }
@@ -79,12 +84,12 @@ operation CodeActionResolveOp {
 @jsonRequest("codeLens/resolve")
 operation CodeLensResolveOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CodeLens
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: CodeLens
     }
 }
@@ -92,12 +97,12 @@ operation CodeLensResolveOp {
 @jsonRequest("completionItem/resolve")
 operation CompletionItemResolveOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CompletionItem
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: CompletionItem
     }
 }
@@ -105,12 +110,12 @@ operation CompletionItemResolveOp {
 @jsonRequest("documentLink/resolve")
 operation DocumentLinkResolveOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentLink
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: DocumentLink
     }
 }
@@ -124,7 +129,7 @@ operation Exit {
 @jsonNotification("initialized")
 operation Initialized {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: InitializedParams
     }
@@ -134,12 +139,12 @@ operation Initialized {
 @jsonRequest("initialize")
 operation InitializeOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: InitializeParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: InitializeResult
     }
 }
@@ -147,12 +152,12 @@ operation InitializeOp {
 @jsonRequest("inlayHint/resolve")
 operation InlayHintResolveOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: InlayHint
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: InlayHint
     }
 }
@@ -160,7 +165,7 @@ operation InlayHintResolveOp {
 @jsonNotification("$/logTrace")
 operation LogTrace {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: LogTraceParams
     }
@@ -170,7 +175,7 @@ operation LogTrace {
 @jsonNotification("notebookDocument/didChange")
 operation NotebookDocumentDidChange {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidChangeNotebookDocumentParams
     }
@@ -180,7 +185,7 @@ operation NotebookDocumentDidChange {
 @jsonNotification("notebookDocument/didClose")
 operation NotebookDocumentDidClose {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidCloseNotebookDocumentParams
     }
@@ -190,7 +195,7 @@ operation NotebookDocumentDidClose {
 @jsonNotification("notebookDocument/didOpen")
 operation NotebookDocumentDidOpen {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidOpenNotebookDocumentParams
     }
@@ -200,7 +205,7 @@ operation NotebookDocumentDidOpen {
 @jsonNotification("notebookDocument/didSave")
 operation NotebookDocumentDidSave {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidSaveNotebookDocumentParams
     }
@@ -210,7 +215,7 @@ operation NotebookDocumentDidSave {
 @jsonNotification("$/progress")
 operation Progress {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ProgressParams
     }
@@ -220,7 +225,7 @@ operation Progress {
 @jsonNotification("$/setTrace")
 operation SetTrace {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: SetTraceParams
     }
@@ -236,7 +241,7 @@ operation ShutdownOp {
 @jsonNotification("telemetry/event")
 operation TelemetryEvent {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: Document
     }
@@ -246,12 +251,12 @@ operation TelemetryEvent {
 @jsonRequest("textDocument/codeAction")
 operation TextDocumentCodeActionOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CodeActionParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfOrNULL
     }
 }
@@ -259,12 +264,12 @@ operation TextDocumentCodeActionOp {
 @jsonRequest("textDocument/codeLens")
 operation TextDocumentCodeLensOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CodeLensParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfCodeLensOrNULL
     }
 }
@@ -272,12 +277,12 @@ operation TextDocumentCodeLensOp {
 @jsonRequest("textDocument/colorPresentation")
 operation TextDocumentColorPresentationOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ColorPresentationParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfColorPresentation
     }
 }
@@ -285,12 +290,12 @@ operation TextDocumentColorPresentationOp {
 @jsonRequest("textDocument/completion")
 operation TextDocumentCompletionOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CompletionParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListCompletionOrNULL
     }
 }
@@ -298,12 +303,12 @@ operation TextDocumentCompletionOp {
 @jsonRequest("textDocument/declaration")
 operation TextDocumentDeclarationOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DeclarationParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: DeclarationOrNULL
     }
 }
@@ -311,12 +316,12 @@ operation TextDocumentDeclarationOp {
 @jsonRequest("textDocument/definition")
 operation TextDocumentDefinitionOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DefinitionParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: DefinitionOrNULL
     }
 }
@@ -324,12 +329,12 @@ operation TextDocumentDefinitionOp {
 @jsonRequest("textDocument/diagnostic")
 operation TextDocumentDiagnosticOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentDiagnosticParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: DocumentDiagnosticReport
     }
 }
@@ -337,7 +342,7 @@ operation TextDocumentDiagnosticOp {
 @jsonNotification("textDocument/didChange")
 operation TextDocumentDidChange {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidChangeTextDocumentParams
     }
@@ -347,7 +352,7 @@ operation TextDocumentDidChange {
 @jsonNotification("textDocument/didClose")
 operation TextDocumentDidClose {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidCloseTextDocumentParams
     }
@@ -357,7 +362,7 @@ operation TextDocumentDidClose {
 @jsonNotification("textDocument/didOpen")
 operation TextDocumentDidOpen {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidOpenTextDocumentParams
     }
@@ -367,7 +372,7 @@ operation TextDocumentDidOpen {
 @jsonNotification("textDocument/didSave")
 operation TextDocumentDidSave {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidSaveTextDocumentParams
     }
@@ -377,12 +382,12 @@ operation TextDocumentDidSave {
 @jsonRequest("textDocument/documentColor")
 operation TextDocumentDocumentColorOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentColorParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfColorInformation
     }
 }
@@ -390,12 +395,12 @@ operation TextDocumentDocumentColorOp {
 @jsonRequest("textDocument/documentHighlight")
 operation TextDocumentDocumentHighlightOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentHighlightParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfDocumentHighlightOrNULL
     }
 }
@@ -403,12 +408,12 @@ operation TextDocumentDocumentHighlightOp {
 @jsonRequest("textDocument/documentLink")
 operation TextDocumentDocumentLinkOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentLinkParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfDocumentLinkOrNULL
     }
 }
@@ -416,12 +421,12 @@ operation TextDocumentDocumentLinkOp {
 @jsonRequest("textDocument/documentSymbol")
 operation TextDocumentDocumentSymbolOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentSymbolParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfSymbolOrNULL
     }
 }
@@ -429,12 +434,12 @@ operation TextDocumentDocumentSymbolOp {
 @jsonRequest("textDocument/foldingRange")
 operation TextDocumentFoldingRangeOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: FoldingRangeParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfFoldingRangeOrNULL
     }
 }
@@ -442,12 +447,12 @@ operation TextDocumentFoldingRangeOp {
 @jsonRequest("textDocument/formatting")
 operation TextDocumentFormattingOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentFormattingParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTextEditOrNULL
     }
 }
@@ -455,12 +460,12 @@ operation TextDocumentFormattingOp {
 @jsonRequest("textDocument/hover")
 operation TextDocumentHoverOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: HoverParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: HoverOrNULL
     }
 }
@@ -468,12 +473,12 @@ operation TextDocumentHoverOp {
 @jsonRequest("textDocument/implementation")
 operation TextDocumentImplementationOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ImplementationParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: DefinitionOrNULL
     }
 }
@@ -481,12 +486,12 @@ operation TextDocumentImplementationOp {
 @jsonRequest("textDocument/inlayHint")
 operation TextDocumentInlayHintOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: InlayHintParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfInlayHintOrNULL
     }
 }
@@ -494,12 +499,12 @@ operation TextDocumentInlayHintOp {
 @jsonRequest("textDocument/inlineValue")
 operation TextDocumentInlineValueOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: InlineValueParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfInlineValueOrNULL
     }
 }
@@ -507,12 +512,12 @@ operation TextDocumentInlineValueOp {
 @jsonRequest("textDocument/linkedEditingRange")
 operation TextDocumentLinkedEditingRangeOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: LinkedEditingRangeParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: LinkedEditingRangesOrNULL
     }
 }
@@ -520,12 +525,12 @@ operation TextDocumentLinkedEditingRangeOp {
 @jsonRequest("textDocument/moniker")
 operation TextDocumentMonikerOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: MonikerParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfMonikerOrNULL
     }
 }
@@ -533,12 +538,12 @@ operation TextDocumentMonikerOp {
 @jsonRequest("textDocument/onTypeFormatting")
 operation TextDocumentOnTypeFormattingOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentOnTypeFormattingParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTextEditOrNULL
     }
 }
@@ -546,12 +551,12 @@ operation TextDocumentOnTypeFormattingOp {
 @jsonRequest("textDocument/prepareCallHierarchy")
 operation TextDocumentPrepareCallHierarchyOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CallHierarchyPrepareParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfCallHierarchyItemOrNULL
     }
 }
@@ -559,12 +564,12 @@ operation TextDocumentPrepareCallHierarchyOp {
 @jsonRequest("textDocument/prepareRename")
 operation TextDocumentPrepareRenameOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: PrepareRenameParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: PrepareRenameResultOrNULL
     }
 }
@@ -572,12 +577,12 @@ operation TextDocumentPrepareRenameOp {
 @jsonRequest("textDocument/prepareTypeHierarchy")
 operation TextDocumentPrepareTypeHierarchyOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: TypeHierarchyPrepareParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTypeHierarchyItemOrNULL
     }
 }
@@ -585,7 +590,7 @@ operation TextDocumentPrepareTypeHierarchyOp {
 @jsonNotification("textDocument/publishDiagnostics")
 operation TextDocumentPublishDiagnostics {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: PublishDiagnosticsParams
     }
@@ -595,12 +600,12 @@ operation TextDocumentPublishDiagnostics {
 @jsonRequest("textDocument/rangeFormatting")
 operation TextDocumentRangeFormattingOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DocumentRangeFormattingParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTextEditOrNULL
     }
 }
@@ -608,12 +613,12 @@ operation TextDocumentRangeFormattingOp {
 @jsonRequest("textDocument/references")
 operation TextDocumentReferencesOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ReferenceParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfLocationOrNULL
     }
 }
@@ -621,12 +626,12 @@ operation TextDocumentReferencesOp {
 @jsonRequest("textDocument/rename")
 operation TextDocumentRenameOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: RenameParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: WorkspaceEditOrNULL
     }
 }
@@ -634,12 +639,12 @@ operation TextDocumentRenameOp {
 @jsonRequest("textDocument/selectionRange")
 operation TextDocumentSelectionRangeOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: SelectionRangeParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfSelectionRangeOrNULL
     }
 }
@@ -647,12 +652,12 @@ operation TextDocumentSelectionRangeOp {
 @jsonRequest("textDocument/semanticTokens/full/delta")
 operation TextDocumentSemanticTokensFullDeltaOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: SemanticTokensDeltaParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: NULLOrSemanticTokens
     }
 }
@@ -660,12 +665,12 @@ operation TextDocumentSemanticTokensFullDeltaOp {
 @jsonRequest("textDocument/semanticTokens/full")
 operation TextDocumentSemanticTokensFullOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: SemanticTokensParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: SemanticTokensOrNULL
     }
 }
@@ -673,12 +678,12 @@ operation TextDocumentSemanticTokensFullOp {
 @jsonRequest("textDocument/semanticTokens/range")
 operation TextDocumentSemanticTokensRangeOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: SemanticTokensRangeParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: SemanticTokensOrNULL
     }
 }
@@ -686,12 +691,12 @@ operation TextDocumentSemanticTokensRangeOp {
 @jsonRequest("textDocument/signatureHelp")
 operation TextDocumentSignatureHelpOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: SignatureHelpParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: SignatureHelpOrNULL
     }
 }
@@ -699,12 +704,12 @@ operation TextDocumentSignatureHelpOp {
 @jsonRequest("textDocument/typeDefinition")
 operation TextDocumentTypeDefinitionOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: TypeDefinitionParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: DefinitionOrNULL
     }
 }
@@ -712,7 +717,7 @@ operation TextDocumentTypeDefinitionOp {
 @jsonNotification("textDocument/willSave")
 operation TextDocumentWillSave {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WillSaveTextDocumentParams
     }
@@ -722,12 +727,12 @@ operation TextDocumentWillSave {
 @jsonRequest("textDocument/willSaveWaitUntil")
 operation TextDocumentWillSaveWaitUntilOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WillSaveTextDocumentParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTextEditOrNULL
     }
 }
@@ -735,12 +740,12 @@ operation TextDocumentWillSaveWaitUntilOp {
 @jsonRequest("typeHierarchy/subtypes")
 operation TypeHierarchySubtypesOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: TypeHierarchySubtypesParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTypeHierarchyItemOrNULL
     }
 }
@@ -748,12 +753,12 @@ operation TypeHierarchySubtypesOp {
 @jsonRequest("typeHierarchy/supertypes")
 operation TypeHierarchySupertypesOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: TypeHierarchySupertypesParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfTypeHierarchyItemOrNULL
     }
 }
@@ -761,7 +766,7 @@ operation TypeHierarchySupertypesOp {
 @jsonNotification("window/logMessage")
 operation WindowLogMessage {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: LogMessageParams
     }
@@ -771,12 +776,12 @@ operation WindowLogMessage {
 @jsonRequest("window/showDocument")
 operation WindowShowDocumentOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ShowDocumentParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ShowDocumentResult
     }
 }
@@ -784,7 +789,7 @@ operation WindowShowDocumentOp {
 @jsonNotification("window/showMessage")
 operation WindowShowMessage {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ShowMessageParams
     }
@@ -794,12 +799,12 @@ operation WindowShowMessage {
 @jsonRequest("window/showMessageRequest")
 operation WindowShowMessageRequestOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ShowMessageRequestParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: MessageActionItemOrNULL
     }
 }
@@ -807,7 +812,7 @@ operation WindowShowMessageRequestOp {
 @jsonNotification("window/workDoneProgress/cancel")
 operation WindowWorkDoneProgressCancel {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WorkDoneProgressCancelParams
     }
@@ -817,7 +822,7 @@ operation WindowWorkDoneProgressCancel {
 @jsonRequest("window/workDoneProgress/create")
 operation WindowWorkDoneProgressCreateOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WorkDoneProgressCreateParams
     }
@@ -827,12 +832,12 @@ operation WindowWorkDoneProgressCreateOp {
 @jsonRequest("workspace/applyEdit")
 operation WorkspaceApplyEditOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ApplyWorkspaceEditParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ApplyWorkspaceEditResult
     }
 }
@@ -846,12 +851,12 @@ operation WorkspaceCodeLensRefreshOp {
 @jsonRequest("workspace/configuration")
 operation WorkspaceConfigurationOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ConfigurationParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfDocument
     }
 }
@@ -859,12 +864,12 @@ operation WorkspaceConfigurationOp {
 @jsonRequest("workspace/diagnostic")
 operation WorkspaceDiagnosticOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WorkspaceDiagnosticParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: WorkspaceDiagnosticReport
     }
 }
@@ -878,7 +883,7 @@ operation WorkspaceDiagnosticRefreshOp {
 @jsonNotification("workspace/didChangeConfiguration")
 operation WorkspaceDidChangeConfiguration {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidChangeConfigurationParams
     }
@@ -888,7 +893,7 @@ operation WorkspaceDidChangeConfiguration {
 @jsonNotification("workspace/didChangeWatchedFiles")
 operation WorkspaceDidChangeWatchedFiles {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidChangeWatchedFilesParams
     }
@@ -898,7 +903,7 @@ operation WorkspaceDidChangeWatchedFiles {
 @jsonNotification("workspace/didChangeWorkspaceFolders")
 operation WorkspaceDidChangeWorkspaceFolders {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DidChangeWorkspaceFoldersParams
     }
@@ -908,7 +913,7 @@ operation WorkspaceDidChangeWorkspaceFolders {
 @jsonNotification("workspace/didCreateFiles")
 operation WorkspaceDidCreateFiles {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CreateFilesParams
     }
@@ -918,7 +923,7 @@ operation WorkspaceDidCreateFiles {
 @jsonNotification("workspace/didDeleteFiles")
 operation WorkspaceDidDeleteFiles {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DeleteFilesParams
     }
@@ -928,7 +933,7 @@ operation WorkspaceDidDeleteFiles {
 @jsonNotification("workspace/didRenameFiles")
 operation WorkspaceDidRenameFiles {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: RenameFilesParams
     }
@@ -938,12 +943,12 @@ operation WorkspaceDidRenameFiles {
 @jsonRequest("workspace/executeCommand")
 operation WorkspaceExecuteCommandOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: ExecuteCommandParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: LSPAnyOrNULL
     }
 }
@@ -969,12 +974,12 @@ operation WorkspaceSemanticTokensRefreshOp {
 @jsonRequest("workspace/symbol")
 operation WorkspaceSymbolOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WorkspaceSymbolParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfSymbolOrNULL
     }
 }
@@ -982,12 +987,12 @@ operation WorkspaceSymbolOp {
 @jsonRequest("workspaceSymbol/resolve")
 operation WorkspaceSymbolResolveOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: WorkspaceSymbol
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: WorkspaceSymbol
     }
 }
@@ -995,12 +1000,12 @@ operation WorkspaceSymbolResolveOp {
 @jsonRequest("workspace/willCreateFiles")
 operation WorkspaceWillCreateFilesOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: CreateFilesParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: WorkspaceEditOrNULL
     }
 }
@@ -1008,12 +1013,12 @@ operation WorkspaceWillCreateFilesOp {
 @jsonRequest("workspace/willDeleteFiles")
 operation WorkspaceWillDeleteFilesOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: DeleteFilesParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: WorkspaceEditOrNULL
     }
 }
@@ -1021,12 +1026,12 @@ operation WorkspaceWillDeleteFilesOp {
 @jsonRequest("workspace/willRenameFiles")
 operation WorkspaceWillRenameFilesOp {
     input := {
-        @jsonPayload()
+        @jsonPayload
         @required
         params: RenameFilesParams
     }
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: WorkspaceEditOrNULL
     }
 }
@@ -1035,7 +1040,7 @@ operation WorkspaceWillRenameFilesOp {
 operation WorkspaceWorkspaceFoldersOp {
     input: Unit
     output := {
-        @jsonPayload()
+        @jsonPayload
         result: ListOfWorkspaceFolderOrNULL
     }
 }
@@ -6095,7 +6100,7 @@ structure TextEditBase {
     newText: String
 }
 
-@tuple()
+@tuple
 structure TupleOfIntegerInteger {
     @required
     first: Integer
@@ -6767,243 +6772,243 @@ structure WorkspaceUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiag
     version: IntegerOrNULL
 }
 
-@untagged()
+@untagged
 union BooleanOrCallHierarchyOptions {
     case0: Boolean
     case1: CallHierarchyOptions
     case2: CallHierarchyRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrClientSemanticTokensRequestFullDelta {
     case0: Boolean
     case1: ClientSemanticTokensRequestFullDelta
 }
 
-@untagged()
+@untagged
 union BooleanOrCodeActionOptions {
     case0: Boolean
     case1: CodeActionOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDeclarationOptions {
     case0: Boolean
     case1: DeclarationOptions
     case2: DeclarationRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDefinitionOptions {
     case0: Boolean
     case1: DefinitionOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDocumentColorOptions {
     case0: Boolean
     case1: DocumentColorOptions
     case2: DocumentColorRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDocumentFormattingOptions {
     case0: Boolean
     case1: DocumentFormattingOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDocumentHighlightOptions {
     case0: Boolean
     case1: DocumentHighlightOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDocumentRangeFormattingOptions {
     case0: Boolean
     case1: DocumentRangeFormattingOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrDocumentSymbolOptions {
     case0: Boolean
     case1: DocumentSymbolOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrFoldingRangeOptions {
     case0: Boolean
     case1: FoldingRangeOptions
     case2: FoldingRangeRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrHoverOptions {
     case0: Boolean
     case1: HoverOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrImplementationOptions {
     case0: Boolean
     case1: ImplementationOptions
     case2: ImplementationRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrInlayHintOptions {
     case0: Boolean
     case1: InlayHintOptions
     case2: InlayHintRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrInlineValueOptions {
     case0: Boolean
     case1: InlineValueOptions
     case2: InlineValueRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrLinkedEditingRangeOptions {
     case0: Boolean
     case1: LinkedEditingRangeOptions
     case2: LinkedEditingRangeRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrLiteral0 {
     case0: Boolean
     case1: InlineStruct0
 }
 
-@untagged()
+@untagged
 union BooleanOrMonikerOptions {
     case0: Boolean
     case1: MonikerOptions
     case2: MonikerRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrReferenceOptions {
     case0: Boolean
     case1: ReferenceOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrRenameOptions {
     case0: Boolean
     case1: RenameOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrSaveOptions {
     case0: Boolean
     case1: SaveOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrSelectionRangeOptions {
     case0: Boolean
     case1: SelectionRangeOptions
     case2: SelectionRangeRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrSemanticTokensFullDelta {
     case0: Boolean
     case1: SemanticTokensFullDelta
 }
 
-@untagged()
+@untagged
 union BooleanOrTypeDefinitionOptions {
     case0: Boolean
     case1: TypeDefinitionOptions
     case2: TypeDefinitionRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrTypeHierarchyOptions {
     case0: Boolean
     case1: TypeHierarchyOptions
     case2: TypeHierarchyRegistrationOptions
 }
 
-@untagged()
+@untagged
 union BooleanOrWorkspaceSymbolOptions {
     case0: Boolean
     case1: WorkspaceSymbolOptions
 }
 
-@untagged()
+@untagged
 union CommandOrCodeAction {
     case0: Command
     case1: CodeAction
 }
 
-@untagged()
+@untagged
 union Declaration {
     case0: Location
     case1: ListOfLocation
 }
 
-@untagged()
+@untagged
 union DeclarationOrNULL {
     case0: Declaration
     case1: ListOfDeclarationLink
     case2: Unit
 }
 
-@untagged()
+@untagged
 union Definition {
     case0: Location
     case1: ListOfLocation
 }
 
-@untagged()
+@untagged
 union DefinitionOrNULL {
     case0: Definition
     case1: ListOfDefinitionLink
     case2: Unit
 }
 
-@untagged()
+@untagged
 union DiagnosticOptionsUnion {
     case0: DiagnosticOptions
     case1: DiagnosticRegistrationOptions
 }
 
-@untagged()
+@untagged
 union DocumentDiagnosticReport {
     case0: RelatedFullDocumentDiagnosticReport
     case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
-@untagged()
+@untagged
 union DocumentDiagnosticReportUnion {
     case0: FullDocumentDiagnosticReport
     case1: UnchangedDocumentDiagnosticReport
 }
 
-@untagged()
+@untagged
 union DocumentFilter {
     case0: TextDocumentFilter
     case1: NotebookCellTextDocumentFilter
 }
 
-@untagged()
+@untagged
 union DocumentSelectorOrNULL {
     case0: DocumentSelector
     case1: Unit
 }
 
-@untagged()
+@untagged
 union DocumentUriOrNULL {
     case0: String
     case1: Unit
 }
 
-@untagged()
+@untagged
 union FileOrTextDocumentEdit {
     case0: TextDocumentEdit
     case1: CreateFile
@@ -7011,409 +7016,409 @@ union FileOrTextDocumentEdit {
     case3: DeleteFile
 }
 
-@untagged()
+@untagged
 union GlobPattern {
     case0: Pattern
     case1: RelativePattern
 }
 
-@untagged()
+@untagged
 union HoverOrNULL {
     case0: Hover
     case1: Unit
 }
 
-@untagged()
+@untagged
 union InlineValue {
     case0: InlineValueText
     case1: InlineValueVariableLookup
     case2: InlineValueEvaluatableExpression
 }
 
-@untagged()
+@untagged
 union InlineValueUnion {
     case0: InlineValueText
     case1: InlineValueVariableLookup
     case2: InlineValueEvaluatableExpression
 }
 
-@untagged()
+@untagged
 union IntegerOrNULL {
     case0: Integer
     case1: Unit
 }
 
-@untagged()
+@untagged
 union IntegerOrString {
     case0: Integer
     case1: String
 }
 
-@untagged()
+@untagged
 union LinkedEditingRangesOrNULL {
     case0: LinkedEditingRanges
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListCompletionOrNULL {
     case0: ListOfCompletionItem
     case1: CompletionList
     case2: Unit
 }
 
-@untagged()
+@untagged
 union ListOfCallHierarchyIncomingCallOrNULL {
     case0: ListOfCallHierarchyIncomingCall
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfCallHierarchyItemOrNULL {
     case0: ListOfCallHierarchyItem
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfCallHierarchyOutgoingCallOrNULL {
     case0: ListOfCallHierarchyOutgoingCall
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfCodeLensOrNULL {
     case0: ListOfCodeLens
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfDocumentHighlightOrNULL {
     case0: ListOfDocumentHighlight
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfDocumentLinkOrNULL {
     case0: ListOfDocumentLink
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfFoldingRangeOrNULL {
     case0: ListOfFoldingRange
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfInlayHintOrNULL {
     case0: ListOfInlayHint
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfInlineValueOrNULL {
     case0: ListOfInlineValue
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfLocationOrNULL {
     case0: ListOfLocation
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfMonikerOrNULL {
     case0: ListOfMoniker
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfOrNULL {
     case0: ListOfCommandOrCodeAction
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfSelectionRangeOrNULL {
     case0: ListOfSelectionRange
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfSymbolOrNULL {
     case0: ListOfSymbolInformation
     case1: ListOfWorkspaceSymbol
     case2: Unit
 }
 
-@untagged()
+@untagged
 union ListOfTextEditOrNULL {
     case0: ListOfTextEdit
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfTypeHierarchyItemOrNULL {
     case0: ListOfTypeHierarchyItem
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ListOfWorkspaceFolderOrNULL {
     case0: ListOfWorkspaceFolder
     case1: Unit
 }
 
-@untagged()
+@untagged
 union LocationOrListOfLocation {
     case0: Location
     case1: ListOfLocation
 }
 
-@untagged()
+@untagged
 union LocationOrLocationUriOnly {
     case0: Location
     case1: LocationUriOnly
 }
 
-@untagged()
+@untagged
 union LSPAnyOrNULL {
     case0: Document
     case1: Unit
 }
 
-@untagged()
+@untagged
 union MarkedString {
     case0: String
     case1: MarkedStringWithLanguage
 }
 
-@untagged()
+@untagged
 union MarkedStringOrMarkupContent {
     case0: MarkupContent
     case1: MarkedString
     case2: ListOfMarkedString
 }
 
-@untagged()
+@untagged
 union MessageActionItemOrNULL {
     case0: MessageActionItem
     case1: Unit
 }
 
-@untagged()
+@untagged
 union NotebookDocumentFilter {
     case0: NotebookDocumentFilterNotebookType
     case1: NotebookDocumentFilterScheme
     case2: NotebookDocumentFilterPattern
 }
 
-@untagged()
+@untagged
 union NotebookDocumentFilterUnion {
     case0: NotebookDocumentFilterNotebookType
     case1: NotebookDocumentFilterScheme
     case2: NotebookDocumentFilterPattern
 }
 
-@untagged()
+@untagged
 union NotebookDocumentFilterWithUnion {
     case0: NotebookDocumentFilterWithNotebook
     case1: NotebookDocumentFilterWithCells
 }
 
-@untagged()
+@untagged
 union NotebookDocumentSyncOptionsUnion {
     case0: NotebookDocumentSyncOptions
     case1: NotebookDocumentSyncRegistrationOptions
 }
 
-@untagged()
+@untagged
 union NULLOrSemanticTokens {
     case0: SemanticTokens
     case1: SemanticTokensDelta
     case2: Unit
 }
 
-@untagged()
+@untagged
 union PatternOrRelativePattern {
     case0: Pattern
     case1: RelativePattern
 }
 
-@untagged()
+@untagged
 union PrepareRenameOrRange {
     case0: Range
     case1: PrepareRenamePlaceholder
     case2: PrepareRenameDefaultBehavior
 }
 
-@untagged()
+@untagged
 union PrepareRenameResult {
     case0: Range
     case1: PrepareRenamePlaceholder
     case2: PrepareRenameDefaultBehavior
 }
 
-@untagged()
+@untagged
 union PrepareRenameResultOrNULL {
     case0: PrepareRenameResult
     case1: Unit
 }
 
-@untagged()
+@untagged
 union ProgressToken {
     case0: Integer
     case1: String
 }
 
-@untagged()
+@untagged
 union RangeOrEditRangeWithInsertReplace {
     case0: Range
     case1: EditRangeWithInsertReplace
 }
 
-@untagged()
+@untagged
 union RelatedDocumentDiagnosticReportUnion {
     case0: RelatedFullDocumentDiagnosticReport
     case1: RelatedUnchangedDocumentDiagnosticReport
 }
 
-@untagged()
+@untagged
 union SemanticTokensOptionsUnion {
     case0: SemanticTokensOptions
     case1: SemanticTokensRegistrationOptions
 }
 
-@untagged()
+@untagged
 union SemanticTokensOrNULL {
     case0: SemanticTokens
     case1: Unit
 }
 
-@untagged()
+@untagged
 union SignatureHelpOrNULL {
     case0: SignatureHelp
     case1: Unit
 }
 
-@untagged()
+@untagged
 union StringOrBoolean {
     case0: String
     case1: Boolean
 }
 
-@untagged()
+@untagged
 union StringOrListOfInlayHintLabelPart {
     case0: String
     case1: ListOfInlayHintLabelPart
 }
 
-@untagged()
+@untagged
 union StringOrListOfString {
     case0: String
     case1: ListOfString
 }
 
-@untagged()
+@untagged
 union StringOrMarkedStringWithLanguage {
     case0: String
     case1: MarkedStringWithLanguage
 }
 
-@untagged()
+@untagged
 union StringOrMarkupContent {
     case0: String
     case1: MarkupContent
 }
 
-@untagged()
+@untagged
 union StringOrNotebookDocumentFilter {
     case0: String
     case1: NotebookDocumentFilter
 }
 
-@untagged()
+@untagged
 union StringOrNULL {
     case0: String
     case1: Unit
 }
 
-@untagged()
+@untagged
 union StringUnion {
     case0: String
     case1: TupleOfIntegerInteger
 }
 
-@untagged()
+@untagged
 union TextDocumentContentChangeEvent {
     case0: TextDocumentContentChangePartial
     case1: TextDocumentContentChangeWholeDocument
 }
 
-@untagged()
+@untagged
 union TextDocumentContentChangeUnion {
     case0: TextDocumentContentChangePartial
     case1: TextDocumentContentChangeWholeDocument
 }
 
-@untagged()
+@untagged
 union TextDocumentFilter {
     case0: TextDocumentFilterLanguage
     case1: TextDocumentFilterScheme
     case2: TextDocumentFilterPattern
 }
 
-@untagged()
+@untagged
 union TextDocumentFilterUnion {
     case0: TextDocumentFilterLanguage
     case1: TextDocumentFilterScheme
     case2: TextDocumentFilterPattern
 }
 
-@untagged()
+@untagged
 union TextDocumentSyncUnion {
     case0: TextDocumentSyncOptions
     case1: TextDocumentSyncKind
 }
 
-@untagged()
+@untagged
 union TextEditOrInsertReplaceEdit {
     case0: TextEdit
     case1: InsertReplaceEdit
 }
 
-@untagged()
+@untagged
 union TextEditUnion {
     case0: TextEdit
     case1: AnnotatedTextEdit
 }
 
-@untagged()
+@untagged
 union UintegerOrNULL {
     case0: Integer
     case1: Unit
 }
 
-@untagged()
+@untagged
 union WorkspaceDocumentDiagnosticReport {
     case0: WorkspaceFullDocumentDiagnosticReport
     case1: WorkspaceUnchangedDocumentDiagnosticReport
 }
 
-@untagged()
+@untagged
 union WorkspaceDocumentDiagnosticReportUnion {
     case0: WorkspaceFullDocumentDiagnosticReport
     case1: WorkspaceUnchangedDocumentDiagnosticReport
 }
 
-@untagged()
+@untagged
 union WorkspaceEditOrNULL {
     case0: WorkspaceEdit
     case1: Unit
 }
 
-@untagged()
+@untagged
 union WorkspaceFolderOrUri {
     case0: WorkspaceFolder
     case1: String
