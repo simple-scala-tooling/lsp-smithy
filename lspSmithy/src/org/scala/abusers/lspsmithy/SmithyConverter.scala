@@ -12,7 +12,9 @@ import org.scala.abusers.topologicalSort
 import software.amazon.smithy.model.node.Node
 import software.amazon.smithy.model.shapes.*
 import software.amazon.smithy.model.traits.DocumentationTrait
+import software.amazon.smithy.model.traits.InputTrait
 import software.amazon.smithy.model.traits.MixinTrait
+import software.amazon.smithy.model.traits.OutputTrait
 import software.amazon.smithy.model.traits.RequiredTrait
 import software.amazon.smithy.model.traits.SinceTrait
 import software.amazon.smithy.model.validation.ValidatedResult
@@ -26,7 +28,8 @@ object SmithyConverter:
 
   type ShapeState[A] = State[Set[Shape], A]
 
-  private val namespace: String = "lsp"
+  private val namespace: String    = "lsp"
+  private val UnitShapeId: ShapeId = ShapeId.from("smithy.api#Unit")
 
   def apply(meta: MetaModel): ValidatedResult[Model] =
     val referencedAsMixin: Set[String] = meta.structures
@@ -164,7 +167,7 @@ object SmithyConverter:
       case BaseType(BaseTypes.uinteger) => ShapeId.from("smithy.api#Integer").pure
       case BaseType(BaseTypes.decimal)  => ShapeId.from("smithy.api#Float").pure
       case BaseType(BaseTypes.boolean)  => ShapeId.from("smithy.api#Boolean").pure
-      case BaseType(BaseTypes.NULL)     => ShapeId.from("smithy.api#Unit").pure
+      case BaseType(BaseTypes.NULL)     => UnitShapeId.pure
       case BaseType(_)                  => ShapeId.from("smithy.api#String").pure
 
       case ReferenceType(name) =>
@@ -461,7 +464,7 @@ object SmithyConverter:
   ): ShapeState[ShapeId] =
     params match
       case ParamsType.None =>
-        ShapeId.from("smithy.api#Unit").pure[ShapeState]
+        UnitShapeId.pure[ShapeState]
       case ParamsType.Single(tpe) =>
         val inputStruct: ShapeState[StructureShape] = smithyType(tpe, namespace).map { target =>
           StructureShape
@@ -476,6 +479,7 @@ object SmithyConverter:
                 .addTrait(new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode))
                 .build()
             )
+            .addTrait(new InputTrait())
             .build()
         }
         inputStruct.flatMap { inputShape =>
@@ -523,48 +527,53 @@ object SmithyConverter:
 
   def convertRequests(requests: Vector[Request]): ShapeState[Unit] =
     requests.traverse { req =>
-      val opId          = ShapeId.fromParts(namespace, sanitizeMethodName(req.method) + "Op")
-      val inputShapeId  = ShapeId.fromParts(namespace, s"${opId.getName}Input")
-      val outputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Output")
+      val opId         = ShapeId.fromParts(namespace, sanitizeMethodName(req.method) + "Op")
+      val inputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Input")
 
       for
-        inputTargetId  <- structureFromParams(req.params, inputShapeId, namespace)
-        outputTargetId <- smithyType(req.result, namespace)
+        inputTargetId <- structureFromParams(req.params, inputShapeId, namespace)
+        outputShape   <- createOperationOutput(opId, req)
         _ <- State.modify[Set[Shape]] { shapes =>
-          val outputShape =
-            if outputTargetId != ShapeId.from("smithy.api#Unit") then
-              StructureShape
-                .builder()
-                .id(outputShapeId)
-                .addMember(
-                  MemberShape
-                    .builder()
-                    .id(outputShapeId.withMember("result"))
-                    .target(outputTargetId)
-                    .addTrait(
-                      new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode)
-                    )
-                    .build()
-                )
-                .build()
-            else
-              StructureShape
-                .builder()
-                .id(outputShapeId)
-                .build()
-
           val opShape = OperationShape
             .builder()
             .id(opId)
             .input(inputTargetId)
-            .output(outputShapeId)
+            .output(outputShape)
             .addTrait(new JsonRequestTrait.Provider().createTrait(JsonRequestTrait.ID, Node.from(req.method.value)))
             .build()
 
-          shapes ++ Set(opShape, outputShape)
+          shapes ++ Set(opShape)
         }
       yield ()
     }.void
+
+  private def createOperationOutput(opId: ShapeId, req: Request): ShapeState[ShapeId] = {
+    val outputShapeId = ShapeId.fromParts(namespace, s"${opId.getName}Output")
+    for {
+      outputTargetId <- smithyType(req.result, namespace)
+      outputShapeOpt =
+        Option.when(outputTargetId != UnitShapeId) {
+          StructureShape
+            .builder()
+            .id(outputShapeId)
+            .addMember(
+              MemberShape
+                .builder()
+                .id(outputShapeId.withMember("result"))
+                .target(outputTargetId)
+                .addTrait(
+                  new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode)
+                )
+                .build()
+            )
+            .addTrait(new OutputTrait)
+            .build()
+        }
+      id <- State[Set[Shape], ShapeId] { shapes =>
+        (shapes ++ outputShapeOpt, outputShapeOpt.map(_.getId).getOrElse(UnitShapeId))
+      }
+    } yield id
+  }
 
   def convertNotifications(notifications: Vector[Notification]): ShapeState[Unit] =
     notifications.traverse { notif =>
@@ -579,7 +588,7 @@ object SmithyConverter:
               .builder()
               .id(opId)
               .input(inputTargetId)
-              .output(ShapeId.from("smithy.api#Unit"))
+              .output(UnitShapeId)
               .addTrait(
                 new JsonNotificationTrait.Provider()
                   .createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
