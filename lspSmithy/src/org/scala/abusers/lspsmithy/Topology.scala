@@ -6,7 +6,7 @@ def topologicalSort(structures: Vector[Structure]): Either[String, Vector[Struct
   val byName: Map[String, Structure] = structures.map(s => s.name.value -> s).toMap
 
   val deps: Map[String, Set[String]] = structures.map { s =>
-    s.name.value -> structureDependencies(s).intersect(byName.keySet) // tylko znane zależności
+    s.name.value -> structureDependencies(s).intersect(byName.keySet)
   }.toMap
 
   val reverseDeps: Map[String, Set[String]] =

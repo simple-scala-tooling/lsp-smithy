@@ -588,7 +588,6 @@ object SmithyConverter:
               .builder()
               .id(opId)
               .input(inputTargetId)
-              .output(UnitShapeId)
               .addTrait(
                 new JsonNotificationTrait.Provider()
                   .createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
