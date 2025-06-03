@@ -407,7 +407,7 @@ object SmithyConverter:
     for
       members <- structureMembers(shapeId, struct.properties)
       extendIds <- struct.extendz
-        // .filterNot(_.isInstanceOf[Type.BaseType])
+        .filterNot(_.isInstanceOf[Type.BaseType])
         .traverse(t =>
           smithyType(
             t.traverse {

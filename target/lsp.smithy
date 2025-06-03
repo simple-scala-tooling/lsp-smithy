@@ -21,7 +21,7 @@ operation CallHierarchyIncomingCallsOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCallHierarchyIncomingCallOrNULL
+        result: ListOfCallHierarchyIncomingCall
     }
 }
 
@@ -34,7 +34,7 @@ operation CallHierarchyOutgoingCallsOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCallHierarchyOutgoingCallOrNULL
+        result: ListOfCallHierarchyOutgoingCall
     }
 }
 
@@ -257,7 +257,7 @@ operation TextDocumentCodeActionOp {
     }
     output := {
         @jsonPayload
-        result: ListOfOrNULL
+        result: ListOfCommandOrCodeAction
     }
 }
 
@@ -270,7 +270,7 @@ operation TextDocumentCodeLensOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCodeLensOrNULL
+        result: ListOfCodeLens
     }
 }
 
@@ -296,7 +296,7 @@ operation TextDocumentCompletionOp {
     }
     output := {
         @jsonPayload
-        result: ListCompletionOrNULL
+        result: ListCompletionUnion
     }
 }
 
@@ -309,7 +309,7 @@ operation TextDocumentDeclarationOp {
     }
     output := {
         @jsonPayload
-        result: DeclarationOrNULL
+        result: DeclarationOrListOfDeclarationLink
     }
 }
 
@@ -322,7 +322,7 @@ operation TextDocumentDefinitionOp {
     }
     output := {
         @jsonPayload
-        result: DefinitionOrNULL
+        result: DefinitionOrListOfDefinitionLink
     }
 }
 
@@ -401,7 +401,7 @@ operation TextDocumentDocumentHighlightOp {
     }
     output := {
         @jsonPayload
-        result: ListOfDocumentHighlightOrNULL
+        result: ListOfDocumentHighlight
     }
 }
 
@@ -414,7 +414,7 @@ operation TextDocumentDocumentLinkOp {
     }
     output := {
         @jsonPayload
-        result: ListOfDocumentLinkOrNULL
+        result: ListOfDocumentLink
     }
 }
 
@@ -427,7 +427,7 @@ operation TextDocumentDocumentSymbolOp {
     }
     output := {
         @jsonPayload
-        result: ListOfSymbolOrNULL
+        result: ListOfSymbolUnion
     }
 }
 
@@ -440,7 +440,7 @@ operation TextDocumentFoldingRangeOp {
     }
     output := {
         @jsonPayload
-        result: ListOfFoldingRangeOrNULL
+        result: ListOfFoldingRange
     }
 }
 
@@ -453,7 +453,7 @@ operation TextDocumentFormattingOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEdit
     }
 }
 
@@ -466,7 +466,7 @@ operation TextDocumentHoverOp {
     }
     output := {
         @jsonPayload
-        result: HoverOrNULL
+        result: Hover
     }
 }
 
@@ -479,7 +479,7 @@ operation TextDocumentImplementationOp {
     }
     output := {
         @jsonPayload
-        result: DefinitionOrNULL
+        result: DefinitionOrListOfDefinitionLink
     }
 }
 
@@ -492,7 +492,7 @@ operation TextDocumentInlayHintOp {
     }
     output := {
         @jsonPayload
-        result: ListOfInlayHintOrNULL
+        result: ListOfInlayHint
     }
 }
 
@@ -505,7 +505,7 @@ operation TextDocumentInlineValueOp {
     }
     output := {
         @jsonPayload
-        result: ListOfInlineValueOrNULL
+        result: ListOfInlineValue
     }
 }
 
@@ -518,7 +518,7 @@ operation TextDocumentLinkedEditingRangeOp {
     }
     output := {
         @jsonPayload
-        result: LinkedEditingRangesOrNULL
+        result: LinkedEditingRanges
     }
 }
 
@@ -531,7 +531,7 @@ operation TextDocumentMonikerOp {
     }
     output := {
         @jsonPayload
-        result: ListOfMonikerOrNULL
+        result: ListOfMoniker
     }
 }
 
@@ -544,7 +544,7 @@ operation TextDocumentOnTypeFormattingOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEdit
     }
 }
 
@@ -557,7 +557,7 @@ operation TextDocumentPrepareCallHierarchyOp {
     }
     output := {
         @jsonPayload
-        result: ListOfCallHierarchyItemOrNULL
+        result: ListOfCallHierarchyItem
     }
 }
 
@@ -570,7 +570,7 @@ operation TextDocumentPrepareRenameOp {
     }
     output := {
         @jsonPayload
-        result: PrepareRenameResultOrNULL
+        result: PrepareRenameResult
     }
 }
 
@@ -583,7 +583,7 @@ operation TextDocumentPrepareTypeHierarchyOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTypeHierarchyItemOrNULL
+        result: ListOfTypeHierarchyItem
     }
 }
 
@@ -606,7 +606,7 @@ operation TextDocumentRangeFormattingOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEdit
     }
 }
 
@@ -619,7 +619,7 @@ operation TextDocumentReferencesOp {
     }
     output := {
         @jsonPayload
-        result: ListOfLocationOrNULL
+        result: ListOfLocation
     }
 }
 
@@ -632,7 +632,7 @@ operation TextDocumentRenameOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEdit
     }
 }
 
@@ -645,7 +645,7 @@ operation TextDocumentSelectionRangeOp {
     }
     output := {
         @jsonPayload
-        result: ListOfSelectionRangeOrNULL
+        result: ListOfSelectionRange
     }
 }
 
@@ -658,7 +658,7 @@ operation TextDocumentSemanticTokensFullDeltaOp {
     }
     output := {
         @jsonPayload
-        result: NULLOrSemanticTokens
+        result: SemanticTokensUnion
     }
 }
 
@@ -671,7 +671,7 @@ operation TextDocumentSemanticTokensFullOp {
     }
     output := {
         @jsonPayload
-        result: SemanticTokensOrNULL
+        result: SemanticTokens
     }
 }
 
@@ -684,7 +684,7 @@ operation TextDocumentSemanticTokensRangeOp {
     }
     output := {
         @jsonPayload
-        result: SemanticTokensOrNULL
+        result: SemanticTokens
     }
 }
 
@@ -697,7 +697,7 @@ operation TextDocumentSignatureHelpOp {
     }
     output := {
         @jsonPayload
-        result: SignatureHelpOrNULL
+        result: SignatureHelp
     }
 }
 
@@ -710,7 +710,7 @@ operation TextDocumentTypeDefinitionOp {
     }
     output := {
         @jsonPayload
-        result: DefinitionOrNULL
+        result: DefinitionOrListOfDefinitionLink
     }
 }
 
@@ -733,7 +733,7 @@ operation TextDocumentWillSaveWaitUntilOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTextEditOrNULL
+        result: ListOfTextEdit
     }
 }
 
@@ -746,7 +746,7 @@ operation TypeHierarchySubtypesOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTypeHierarchyItemOrNULL
+        result: ListOfTypeHierarchyItem
     }
 }
 
@@ -759,7 +759,7 @@ operation TypeHierarchySupertypesOp {
     }
     output := {
         @jsonPayload
-        result: ListOfTypeHierarchyItemOrNULL
+        result: ListOfTypeHierarchyItem
     }
 }
 
@@ -805,7 +805,7 @@ operation WindowShowMessageRequestOp {
     }
     output := {
         @jsonPayload
-        result: MessageActionItemOrNULL
+        result: MessageActionItem
     }
 }
 
@@ -949,7 +949,7 @@ operation WorkspaceExecuteCommandOp {
     }
     output := {
         @jsonPayload
-        result: LSPAnyOrNULL
+        result: Document
     }
 }
 
@@ -980,7 +980,7 @@ operation WorkspaceSymbolOp {
     }
     output := {
         @jsonPayload
-        result: ListOfSymbolOrNULL
+        result: ListOfSymbolUnion
     }
 }
 
@@ -1006,7 +1006,7 @@ operation WorkspaceWillCreateFilesOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEdit
     }
 }
 
@@ -1019,7 +1019,7 @@ operation WorkspaceWillDeleteFilesOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEdit
     }
 }
 
@@ -1032,7 +1032,7 @@ operation WorkspaceWillRenameFilesOp {
     }
     output := {
         @jsonPayload
-        result: WorkspaceEditOrNULL
+        result: WorkspaceEdit
     }
 }
 
@@ -1041,7 +1041,7 @@ operation WorkspaceWorkspaceFoldersOp {
     input: Unit
     output := {
         @jsonPayload
-        result: ListOfWorkspaceFolderOrNULL
+        result: ListOfWorkspaceFolder
     }
 }
 
@@ -1052,8 +1052,7 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// 
     /// Is `null` if the process has not been started by another process.
     /// If the parent process is not alive then the server should exit.
-    @required
-    processId: IntegerOrNULL
+    processId: Integer
     /// Information about the client
     /// 
     /// @since 3.15.0
@@ -1073,14 +1072,13 @@ structure _InitializeParams with [WorkDoneProgressParams] {
     /// if no folder is open.
     /// 
     /// @deprecated in favour of rootUri.
-    rootPath: StringOrNULL
+    rootPath: String
     /// The rootUri of the workspace. Is null if no
     /// folder is open. If both `rootPath` and `rootUri` are set
     /// `rootUri` wins.
     /// 
     /// @deprecated in favour of workspaceFolders.
-    @required
-    rootUri: DocumentUriOrNULL
+    rootUri: String
     /// The capabilities provided by the client (editor or tool)
     @required
     capabilities: ClientCapabilities
@@ -1098,8 +1096,7 @@ structure _InitializeParamsBase with [WorkDoneProgressParams] {
     /// 
     /// Is `null` if the process has not been started by another process.
     /// If the parent process is not alive then the server should exit.
-    @required
-    processId: IntegerOrNULL
+    processId: Integer
     /// Information about the client
     /// 
     /// @since 3.15.0
@@ -1119,14 +1116,13 @@ structure _InitializeParamsBase with [WorkDoneProgressParams] {
     /// if no folder is open.
     /// 
     /// @deprecated in favour of rootUri.
-    rootPath: StringOrNULL
+    rootPath: String
     /// The rootUri of the workspace. Is null if no
     /// folder is open. If both `rootPath` and `rootUri` are set
     /// `rootUri` wins.
     /// 
     /// @deprecated in favour of workspaceFolders.
-    @required
-    rootUri: DocumentUriOrNULL
+    rootUri: String
     /// The capabilities provided by the client (editor or tool)
     @required
     capabilities: ClientCapabilities
@@ -4653,8 +4649,7 @@ structure OptionalVersionedTextDocumentIdentifier with [TextDocumentIdentifierBa
     /// (the server has not received an open notification before) the server can send
     /// `null` to indicate that the version is unknown and the content on disk is the
     /// truth (as specified with document content ownership).
-    @required
-    version: IntegerOrNULL
+    version: Integer
 }
 
 /// Represents a parameter of a callable-signature. A parameter can
@@ -5575,7 +5570,7 @@ structure SignatureHelp {
     /// In future version of the protocol this property might become
     /// mandatory (but still nullable) to better express the active parameter if
     /// the active signature does have any.
-    activeParameter: UintegerOrNULL
+    activeParameter: Integer
 }
 
 /// Client Capabilities for a {@link SignatureHelpRequest}.
@@ -5693,7 +5688,7 @@ structure SignatureInformation {
     /// 
     /// @since 3.16.0
     @since("3.16.0")
-    activeParameter: UintegerOrNULL
+    activeParameter: Integer
 }
 
 /// @since 3.18.0
@@ -6025,8 +6020,7 @@ structure TextDocumentPositionParamsBase {
 structure TextDocumentRegistrationOptions {
     /// A document selector to identify the scope of the registration. If set to null
     /// the document selector provided on the client side will be used.
-    @required
-    documentSelector: DocumentSelectorOrNULL
+    documentSelector: DocumentSelector
 }
 
 /// General text document registration options.
@@ -6034,8 +6028,7 @@ structure TextDocumentRegistrationOptions {
 structure TextDocumentRegistrationOptionsBase {
     /// A document selector to identify the scope of the registration. If set to null
     /// the document selector provided on the client side will be used.
-    @required
-    documentSelector: DocumentSelectorOrNULL
+    documentSelector: DocumentSelector
 }
 
 /// Save registration options.
@@ -6617,7 +6610,7 @@ structure WorkspaceFoldersInitializeParams {
     /// 
     /// @since 3.6.0
     @since("3.6.0")
-    workspaceFolders: ListOfWorkspaceFolderOrNULL
+    workspaceFolders: ListOfWorkspaceFolder
 }
 
 @mixin
@@ -6630,7 +6623,7 @@ structure WorkspaceFoldersInitializeParamsBase {
     /// 
     /// @since 3.6.0
     @since("3.6.0")
-    workspaceFolders: ListOfWorkspaceFolderOrNULL
+    workspaceFolders: ListOfWorkspaceFolder
 }
 
 structure WorkspaceFoldersServerCapabilities {
@@ -6656,8 +6649,7 @@ structure WorkspaceFullDocumentDiagnosticReport with [FullDocumentDiagnosticRepo
     uri: String
     /// The version number for which the diagnostics are reported.
     /// If the document is not marked as open `null` can be provided.
-    @required
-    version: IntegerOrNULL
+    version: Integer
 }
 
 /// Defines workspace specific capabilities of the server.
@@ -6768,8 +6760,7 @@ structure WorkspaceUnchangedDocumentDiagnosticReport with [UnchangedDocumentDiag
     uri: String
     /// The version number for which the diagnostics are reported.
     /// If the document is not marked as open `null` can be provided.
-    @required
-    version: IntegerOrNULL
+    version: Integer
 }
 
 @untagged
@@ -6953,10 +6944,9 @@ union Declaration {
 }
 
 @untagged
-union DeclarationOrNULL {
+union DeclarationOrListOfDeclarationLink {
     case0: Declaration
     case1: ListOfDeclarationLink
-    case2: Unit
 }
 
 @untagged
@@ -6966,10 +6956,9 @@ union Definition {
 }
 
 @untagged
-union DefinitionOrNULL {
+union DefinitionOrListOfDefinitionLink {
     case0: Definition
     case1: ListOfDefinitionLink
-    case2: Unit
 }
 
 @untagged
@@ -6997,18 +6986,6 @@ union DocumentFilter {
 }
 
 @untagged
-union DocumentSelectorOrNULL {
-    case0: DocumentSelector
-    case1: Unit
-}
-
-@untagged
-union DocumentUriOrNULL {
-    case0: String
-    case1: Unit
-}
-
-@untagged
 union FileOrTextDocumentEdit {
     case0: TextDocumentEdit
     case1: CreateFile
@@ -7020,12 +6997,6 @@ union FileOrTextDocumentEdit {
 union GlobPattern {
     case0: Pattern
     case1: RelativePattern
-}
-
-@untagged
-union HoverOrNULL {
-    case0: Hover
-    case1: Unit
 }
 
 @untagged
@@ -7043,131 +7014,21 @@ union InlineValueUnion {
 }
 
 @untagged
-union IntegerOrNULL {
-    case0: Integer
-    case1: Unit
-}
-
-@untagged
 union IntegerOrString {
     case0: Integer
     case1: String
 }
 
 @untagged
-union LinkedEditingRangesOrNULL {
-    case0: LinkedEditingRanges
-    case1: Unit
-}
-
-@untagged
-union ListCompletionOrNULL {
+union ListCompletionUnion {
     case0: ListOfCompletionItem
     case1: CompletionList
-    case2: Unit
 }
 
 @untagged
-union ListOfCallHierarchyIncomingCallOrNULL {
-    case0: ListOfCallHierarchyIncomingCall
-    case1: Unit
-}
-
-@untagged
-union ListOfCallHierarchyItemOrNULL {
-    case0: ListOfCallHierarchyItem
-    case1: Unit
-}
-
-@untagged
-union ListOfCallHierarchyOutgoingCallOrNULL {
-    case0: ListOfCallHierarchyOutgoingCall
-    case1: Unit
-}
-
-@untagged
-union ListOfCodeLensOrNULL {
-    case0: ListOfCodeLens
-    case1: Unit
-}
-
-@untagged
-union ListOfDocumentHighlightOrNULL {
-    case0: ListOfDocumentHighlight
-    case1: Unit
-}
-
-@untagged
-union ListOfDocumentLinkOrNULL {
-    case0: ListOfDocumentLink
-    case1: Unit
-}
-
-@untagged
-union ListOfFoldingRangeOrNULL {
-    case0: ListOfFoldingRange
-    case1: Unit
-}
-
-@untagged
-union ListOfInlayHintOrNULL {
-    case0: ListOfInlayHint
-    case1: Unit
-}
-
-@untagged
-union ListOfInlineValueOrNULL {
-    case0: ListOfInlineValue
-    case1: Unit
-}
-
-@untagged
-union ListOfLocationOrNULL {
-    case0: ListOfLocation
-    case1: Unit
-}
-
-@untagged
-union ListOfMonikerOrNULL {
-    case0: ListOfMoniker
-    case1: Unit
-}
-
-@untagged
-union ListOfOrNULL {
-    case0: ListOfCommandOrCodeAction
-    case1: Unit
-}
-
-@untagged
-union ListOfSelectionRangeOrNULL {
-    case0: ListOfSelectionRange
-    case1: Unit
-}
-
-@untagged
-union ListOfSymbolOrNULL {
+union ListOfSymbolUnion {
     case0: ListOfSymbolInformation
     case1: ListOfWorkspaceSymbol
-    case2: Unit
-}
-
-@untagged
-union ListOfTextEditOrNULL {
-    case0: ListOfTextEdit
-    case1: Unit
-}
-
-@untagged
-union ListOfTypeHierarchyItemOrNULL {
-    case0: ListOfTypeHierarchyItem
-    case1: Unit
-}
-
-@untagged
-union ListOfWorkspaceFolderOrNULL {
-    case0: ListOfWorkspaceFolder
-    case1: Unit
 }
 
 @untagged
@@ -7183,12 +7044,6 @@ union LocationOrLocationUriOnly {
 }
 
 @untagged
-union LSPAnyOrNULL {
-    case0: Document
-    case1: Unit
-}
-
-@untagged
 union MarkedString {
     case0: String
     case1: MarkedStringWithLanguage
@@ -7199,12 +7054,6 @@ union MarkedStringOrMarkupContent {
     case0: MarkupContent
     case1: MarkedString
     case2: ListOfMarkedString
-}
-
-@untagged
-union MessageActionItemOrNULL {
-    case0: MessageActionItem
-    case1: Unit
 }
 
 @untagged
@@ -7234,13 +7083,6 @@ union NotebookDocumentSyncOptionsUnion {
 }
 
 @untagged
-union NULLOrSemanticTokens {
-    case0: SemanticTokens
-    case1: SemanticTokensDelta
-    case2: Unit
-}
-
-@untagged
 union PatternOrRelativePattern {
     case0: Pattern
     case1: RelativePattern
@@ -7258,12 +7100,6 @@ union PrepareRenameResult {
     case0: Range
     case1: PrepareRenamePlaceholder
     case2: PrepareRenameDefaultBehavior
-}
-
-@untagged
-union PrepareRenameResultOrNULL {
-    case0: PrepareRenameResult
-    case1: Unit
 }
 
 @untagged
@@ -7291,15 +7127,9 @@ union SemanticTokensOptionsUnion {
 }
 
 @untagged
-union SemanticTokensOrNULL {
+union SemanticTokensUnion {
     case0: SemanticTokens
-    case1: Unit
-}
-
-@untagged
-union SignatureHelpOrNULL {
-    case0: SignatureHelp
-    case1: Unit
+    case1: SemanticTokensDelta
 }
 
 @untagged
@@ -7336,12 +7166,6 @@ union StringOrMarkupContent {
 union StringOrNotebookDocumentFilter {
     case0: String
     case1: NotebookDocumentFilter
-}
-
-@untagged
-union StringOrNULL {
-    case0: String
-    case1: Unit
 }
 
 @untagged
@@ -7395,12 +7219,6 @@ union TextEditUnion {
 }
 
 @untagged
-union UintegerOrNULL {
-    case0: Integer
-    case1: Unit
-}
-
-@untagged
 union WorkspaceDocumentDiagnosticReport {
     case0: WorkspaceFullDocumentDiagnosticReport
     case1: WorkspaceUnchangedDocumentDiagnosticReport
@@ -7410,12 +7228,6 @@ union WorkspaceDocumentDiagnosticReport {
 union WorkspaceDocumentDiagnosticReportUnion {
     case0: WorkspaceFullDocumentDiagnosticReport
     case1: WorkspaceUnchangedDocumentDiagnosticReport
-}
-
-@untagged
-union WorkspaceEditOrNULL {
-    case0: WorkspaceEdit
-    case1: Unit
 }
 
 @untagged

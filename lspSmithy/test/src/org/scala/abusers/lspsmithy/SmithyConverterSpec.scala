@@ -247,6 +247,95 @@ object SmithyConverterSpec extends SimpleIOSuite {
     assertSmithyModelEquals(metaModel, expected)
   }
 
+  pureTest("base type null is filtered from union variants") {
+    val metaModel = MetaModel(
+      requests = Vector(
+        Request(
+          method = RequestMethod("ping"),
+          params = ParamsType.Single(Type.BaseType(BaseTypes.string)),
+          result = Type.OrType(
+            Vector(
+              Type.ReferenceType(TypeName("Hover")),
+              Type.BaseType(BaseTypes.NULL),
+              Type.ReferenceType(TypeName("Hover2")),
+            )
+          ),
+        )
+      ),
+      structures = Vector(Structure(name = StructureName("Hover")), Structure(name = StructureName("Hover2"))),
+      enumerations = Vector.empty,
+      typeAliases = Vector.empty,
+      notifications = Vector.empty,
+    )
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |operation PingOp {
+        |    input := {
+        |        @required
+        |        params: String
+        |    }
+        |    output := {
+        |        result: HoverOrHover2
+        |    }
+        |}
+        |
+        |structure Hover {}
+        |
+        |structure Hover2 {}
+        |
+        |union HoverOrHover2 {
+        |    case0: Hover
+        |    case1: Hover2
+        |}
+        |
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
+  }
+
+  pureTest("single case union gets flattened") {
+    val metaModel = MetaModel(
+      typeAliases = Vector.empty,
+      structures = Vector(
+        Structure(
+          name = StructureName("A"),
+          properties = Vector(
+            Property(
+              name = PropertyName("u1"),
+              optional = IsOptional(true),
+              `type` = Type.OrType(
+                Vector(
+                  Type.BaseType(BaseTypes.boolean),
+                  Type.BaseType(BaseTypes.NULL),
+                )
+              ),
+            )
+          ),
+        )
+      ),
+      enumerations = Vector.empty,
+      requests = Vector.empty,
+      notifications = Vector.empty,
+    )
+
+    val expected =
+      """$version: "2.0"
+        |
+        |namespace lsp
+        |
+        |structure A {
+        |  u1: Boolean
+        |}
+        |
+        |""".stripMargin
+
+    assertSmithyModelEquals(metaModel, expected)
+  }
+
   pureTest("notification with input only compiles") {
     val metaModel = MetaModel(
       notifications = Vector(
@@ -572,7 +661,7 @@ object SmithyConverterSpec extends SimpleIOSuite {
   }
 
   def assertSmithyModelEquals(metaModel: MetaModel, expectedModel: String): Expectations = {
-    val actualModel = SmithyConverter(metaModel).unwrap()
+    val actualModel = SmithyConverter(preprocess(metaModel)).unwrap()
 
     val expected = Model
       .assembler()
