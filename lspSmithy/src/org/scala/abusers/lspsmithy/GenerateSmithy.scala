@@ -24,6 +24,8 @@ def main() = {
     val outputPath = targetDir / "lsp.smithy"
     os.write.over(outputPath, content, createFolders = true)
   }
+  val manifestContent = "lsp.smithy"
+  os.write.over(targetDir / "manifest", manifestContent, createFolders = true)
 }
 
 private[lspsmithy] def preprocess(metaModel: MetaModel): MetaModel =
