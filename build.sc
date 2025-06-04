@@ -76,7 +76,8 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
 
   object test extends ScalaTests {
     def ivyDeps = Agg(
-      ivy"com.disneystreaming::weaver-cats:0.8.4"
+      ivy"com.disneystreaming::weaver-cats:0.8.4",
+      ivy"software.amazon.smithy:smithy-diff:$smithyVersion",
     )
     def testFramework = "weaver.framework.CatsEffect"
   }
