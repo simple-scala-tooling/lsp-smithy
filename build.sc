@@ -26,7 +26,7 @@ trait CommonScalaModule extends ScalaModule with ScalafixModule {
 }
 
 object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyTraitCodegenSettings {
-  def smithySourcesDir = T.source(PathRef(millSourcePath / "resources"))
+  def smithySourcesDir = T.source(PathRef(moduleDir / "resources"))
 
   def updateModelFiles = T.task {
     val version = "3.18"
@@ -55,7 +55,7 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
 
   def mainClass = Some("org.scala.abusers.lspsmithy.main")
 
-  def ivyDeps = Agg(
+  def ivyDeps: Target[Agg[Dep]] = Agg(
     ivy"tech.neander::langoustine-meta::$langoustineVersion",
     ivy"com.lihaoyi::os-lib:0.11.4",
     ivy"software.amazon.smithy:smithy-model:$smithyVersion",
@@ -83,7 +83,7 @@ object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
   override def moduleDeps: Seq[JavaModule] = Seq(lspSmithy)
 
   def smithy4sInputDirs: Target[Seq[PathRef]] = T.sources {
-    super.smithy4sInputDirs() ++ Seq(PathRef(millSourcePath / os.up / "target"))
+    super.smithy4sInputDirs() ++ Seq(PathRef(moduleDir / os.up / "target"))
   }
   override def ivyDeps = Agg(
     ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}",
