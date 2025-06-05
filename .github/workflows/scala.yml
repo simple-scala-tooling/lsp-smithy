@@ -50,5 +50,6 @@ jobs:
 
       - run: ./mill mill.scalalib.SonatypeCentralPublishModule/
         env:
+          MILL_PGP_SECRET_BASE64: ${{ secrets.PGP_SECRET }}
           MILL_SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           MILL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
