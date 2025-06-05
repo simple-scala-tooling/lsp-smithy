@@ -83,9 +83,9 @@ object lspSmithy extends CommonScalaModule with SmithyTraitCodegenPlugin.SmithyT
   }
 }
 
-object lspSmithyDefinition extends CommonJavaModule with SonatypeCentralPublishModule with GitVersionedPublishModule {
+object lspSmithyDefinitions extends CommonJavaModule with SonatypeCentralPublishModule with GitVersionedPublishModule {
 
-  def moduleName = "lsp-smithy-definitions"
+  def artifactName = "lsp-smithy-definitions"
 
   def pomSettings = PomSettings(
     description = "Smithy definitions for Language Server Protocol",
@@ -120,7 +120,7 @@ object exampleClientSmithy extends CommonScalaModule with Smithy4sModule {
 
   override def smithy4sAllowedNamespaces: T[Option[Set[String]]] = T(Some(Set("lsp")))
 
-  override def moduleDeps: Seq[JavaModule] = Seq(lspSmithyDefinition)
+  override def moduleDeps: Seq[JavaModule] = Seq(lspSmithyDefinitions)
 
   def smithy4sInputDirs: Target[Seq[PathRef]] = T.sources {
     super.smithy4sInputDirs() ++ Seq(PathRef(moduleDir / os.up / "target"))
