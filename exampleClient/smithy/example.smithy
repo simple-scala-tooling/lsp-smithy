@@ -2,17 +2,22 @@ $version: "2.0"
 
 namespace example
 
-use jsonrpclib#jsonRPC
+use jsonrpclib#jsonRpc
 use lsp#InitializeOp
 use lsp#Initialized
 use lsp#TextDocumentDidOpen
 
-@jsonRPC
+@jsonRpc
 service ExampleLspClient {
-    operations: [Initialized]
+    operations: [
+        Initialized
+    ]
 }
 
-@jsonRPC
+@jsonRpc
 service ExampleLspServer {
-    operations: [InitializeOp, TextDocumentDidOpen]
+    operations: [
+        InitializeOp
+        TextDocumentDidOpen
+    ]
 }

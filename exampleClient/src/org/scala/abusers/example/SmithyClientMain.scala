@@ -48,9 +48,13 @@ object SmithyClientMain extends IOApp.Simple {
       // Creating a channel that will be used to communicate to the server
       fs2Channel <- FS2Channel.stream[IO](cancelTemplate = cancelEndpoint.some)
       // Mounting our implementation of the generated interface onto the channel
-      _ <- fs2Channel.withEndpointsStream(ServerEndpoints(Client))
+      _ <- fs2Channel.withEndpointsStream(
+        ServerEndpoints(Client).toOption.getOrElse(sys.error("Couldn't create ServerEndpoints"))
+      )
       // Creating stubs to talk to the remote server
-      server: ExampleLspServer[IO] = ClientStub(ExampleLspServer, fs2Channel)
+      server: ExampleLspServer[IO] = ClientStub(ExampleLspServer, fs2Channel).toOption.getOrElse(
+        sys.error("Couldn't create ClientStub")
+      )
       _ <- Stream(())
         .concurrently(
           fs2Channel.output
