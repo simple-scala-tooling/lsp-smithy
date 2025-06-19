@@ -13,7 +13,7 @@ import smithytraitcodegen.SmithyTraitCodegenPlugin
 
 import $meta._
 
-val jsonrpcVersion     = "0.0.8+41-0a28e99d-SNAPSHOT"
+val jsonrpcVersion     = "0.0.8+51-32e30ec0-SNAPSHOT"
 val langoustineVersion = "0.0.24"
 val smithyVersion      = "1.57.1"
 

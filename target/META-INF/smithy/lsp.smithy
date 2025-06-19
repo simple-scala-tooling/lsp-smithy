@@ -3,1044 +3,1044 @@ $version: "2.0"
 namespace lsp
 
 use alloy#untagged
-use jsonrpclib#jsonNotification
-use jsonrpclib#jsonPayload
-use jsonrpclib#jsonRequest
+use jsonrpclib#jsonRpcNotification
+use jsonrpclib#jsonRpcPayload
+use jsonrpclib#jsonRpcRequest
 
 @trait(
     selector: "structure:not(> member:not([trait|required]))"
 )
 structure tuple {}
 
-@jsonRequest("callHierarchy/incomingCalls")
+@jsonRpcRequest("callHierarchy/incomingCalls")
 operation CallHierarchyIncomingCallsOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CallHierarchyIncomingCallsParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfCallHierarchyIncomingCall
     }
 }
 
-@jsonRequest("callHierarchy/outgoingCalls")
+@jsonRpcRequest("callHierarchy/outgoingCalls")
 operation CallHierarchyOutgoingCallsOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CallHierarchyOutgoingCallsParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfCallHierarchyOutgoingCall
     }
 }
 
-@jsonNotification("$/cancelRequest")
+@jsonRpcNotification("$/cancelRequest")
 operation CancelRequest {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CancelParams
     }
     output: Unit
 }
 
-@jsonRequest("client/registerCapability")
+@jsonRpcRequest("client/registerCapability")
 operation ClientRegisterCapabilityOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: RegistrationParams
     }
     output: Unit
 }
 
-@jsonRequest("client/unregisterCapability")
+@jsonRpcRequest("client/unregisterCapability")
 operation ClientUnregisterCapabilityOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: UnregistrationParams
     }
     output: Unit
 }
 
-@jsonRequest("codeAction/resolve")
+@jsonRpcRequest("codeAction/resolve")
 operation CodeActionResolveOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CodeAction
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: CodeAction
     }
 }
 
-@jsonRequest("codeLens/resolve")
+@jsonRpcRequest("codeLens/resolve")
 operation CodeLensResolveOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CodeLens
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: CodeLens
     }
 }
 
-@jsonRequest("completionItem/resolve")
+@jsonRpcRequest("completionItem/resolve")
 operation CompletionItemResolveOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CompletionItem
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: CompletionItem
     }
 }
 
-@jsonRequest("documentLink/resolve")
+@jsonRpcRequest("documentLink/resolve")
 operation DocumentLinkResolveOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentLink
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: DocumentLink
     }
 }
 
-@jsonNotification("exit")
+@jsonRpcNotification("exit")
 operation Exit {
     input: Unit
     output: Unit
 }
 
-@jsonNotification("initialized")
+@jsonRpcNotification("initialized")
 operation Initialized {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: InitializedParams
     }
     output: Unit
 }
 
-@jsonRequest("initialize")
+@jsonRpcRequest("initialize")
 operation InitializeOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: InitializeParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: InitializeResult
     }
 }
 
-@jsonRequest("inlayHint/resolve")
+@jsonRpcRequest("inlayHint/resolve")
 operation InlayHintResolveOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: InlayHint
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: InlayHint
     }
 }
 
-@jsonNotification("$/logTrace")
+@jsonRpcNotification("$/logTrace")
 operation LogTrace {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: LogTraceParams
     }
     output: Unit
 }
 
-@jsonNotification("notebookDocument/didChange")
+@jsonRpcNotification("notebookDocument/didChange")
 operation NotebookDocumentDidChange {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidChangeNotebookDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("notebookDocument/didClose")
+@jsonRpcNotification("notebookDocument/didClose")
 operation NotebookDocumentDidClose {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidCloseNotebookDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("notebookDocument/didOpen")
+@jsonRpcNotification("notebookDocument/didOpen")
 operation NotebookDocumentDidOpen {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidOpenNotebookDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("notebookDocument/didSave")
+@jsonRpcNotification("notebookDocument/didSave")
 operation NotebookDocumentDidSave {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidSaveNotebookDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("$/progress")
+@jsonRpcNotification("$/progress")
 operation Progress {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ProgressParams
     }
     output: Unit
 }
 
-@jsonNotification("$/setTrace")
+@jsonRpcNotification("$/setTrace")
 operation SetTrace {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: SetTraceParams
     }
     output: Unit
 }
 
-@jsonRequest("shutdown")
+@jsonRpcRequest("shutdown")
 operation ShutdownOp {
     input: Unit
     output: Unit
 }
 
-@jsonNotification("telemetry/event")
+@jsonRpcNotification("telemetry/event")
 operation TelemetryEvent {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: Document
     }
     output: Unit
 }
 
-@jsonRequest("textDocument/codeAction")
+@jsonRpcRequest("textDocument/codeAction")
 operation TextDocumentCodeActionOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CodeActionParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfCommandOrCodeAction
     }
 }
 
-@jsonRequest("textDocument/codeLens")
+@jsonRpcRequest("textDocument/codeLens")
 operation TextDocumentCodeLensOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CodeLensParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfCodeLens
     }
 }
 
-@jsonRequest("textDocument/colorPresentation")
+@jsonRpcRequest("textDocument/colorPresentation")
 operation TextDocumentColorPresentationOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ColorPresentationParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfColorPresentation
     }
 }
 
-@jsonRequest("textDocument/completion")
+@jsonRpcRequest("textDocument/completion")
 operation TextDocumentCompletionOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CompletionParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListCompletionUnion
     }
 }
 
-@jsonRequest("textDocument/declaration")
+@jsonRpcRequest("textDocument/declaration")
 operation TextDocumentDeclarationOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DeclarationParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: DeclarationOrListOfDeclarationLink
     }
 }
 
-@jsonRequest("textDocument/definition")
+@jsonRpcRequest("textDocument/definition")
 operation TextDocumentDefinitionOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DefinitionParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: DefinitionOrListOfDefinitionLink
     }
 }
 
-@jsonRequest("textDocument/diagnostic")
+@jsonRpcRequest("textDocument/diagnostic")
 operation TextDocumentDiagnosticOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentDiagnosticParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: DocumentDiagnosticReport
     }
 }
 
-@jsonNotification("textDocument/didChange")
+@jsonRpcNotification("textDocument/didChange")
 operation TextDocumentDidChange {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidChangeTextDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("textDocument/didClose")
+@jsonRpcNotification("textDocument/didClose")
 operation TextDocumentDidClose {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidCloseTextDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("textDocument/didOpen")
+@jsonRpcNotification("textDocument/didOpen")
 operation TextDocumentDidOpen {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidOpenTextDocumentParams
     }
     output: Unit
 }
 
-@jsonNotification("textDocument/didSave")
+@jsonRpcNotification("textDocument/didSave")
 operation TextDocumentDidSave {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidSaveTextDocumentParams
     }
     output: Unit
 }
 
-@jsonRequest("textDocument/documentColor")
+@jsonRpcRequest("textDocument/documentColor")
 operation TextDocumentDocumentColorOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentColorParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfColorInformation
     }
 }
 
-@jsonRequest("textDocument/documentHighlight")
+@jsonRpcRequest("textDocument/documentHighlight")
 operation TextDocumentDocumentHighlightOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentHighlightParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfDocumentHighlight
     }
 }
 
-@jsonRequest("textDocument/documentLink")
+@jsonRpcRequest("textDocument/documentLink")
 operation TextDocumentDocumentLinkOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentLinkParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfDocumentLink
     }
 }
 
-@jsonRequest("textDocument/documentSymbol")
+@jsonRpcRequest("textDocument/documentSymbol")
 operation TextDocumentDocumentSymbolOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentSymbolParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfSymbolUnion
     }
 }
 
-@jsonRequest("textDocument/foldingRange")
+@jsonRpcRequest("textDocument/foldingRange")
 operation TextDocumentFoldingRangeOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: FoldingRangeParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfFoldingRange
     }
 }
 
-@jsonRequest("textDocument/formatting")
+@jsonRpcRequest("textDocument/formatting")
 operation TextDocumentFormattingOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentFormattingParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTextEdit
     }
 }
 
-@jsonRequest("textDocument/hover")
+@jsonRpcRequest("textDocument/hover")
 operation TextDocumentHoverOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: HoverParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: Hover
     }
 }
 
-@jsonRequest("textDocument/implementation")
+@jsonRpcRequest("textDocument/implementation")
 operation TextDocumentImplementationOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ImplementationParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: DefinitionOrListOfDefinitionLink
     }
 }
 
-@jsonRequest("textDocument/inlayHint")
+@jsonRpcRequest("textDocument/inlayHint")
 operation TextDocumentInlayHintOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: InlayHintParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfInlayHint
     }
 }
 
-@jsonRequest("textDocument/inlineValue")
+@jsonRpcRequest("textDocument/inlineValue")
 operation TextDocumentInlineValueOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: InlineValueParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfInlineValue
     }
 }
 
-@jsonRequest("textDocument/linkedEditingRange")
+@jsonRpcRequest("textDocument/linkedEditingRange")
 operation TextDocumentLinkedEditingRangeOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: LinkedEditingRangeParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: LinkedEditingRanges
     }
 }
 
-@jsonRequest("textDocument/moniker")
+@jsonRpcRequest("textDocument/moniker")
 operation TextDocumentMonikerOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: MonikerParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfMoniker
     }
 }
 
-@jsonRequest("textDocument/onTypeFormatting")
+@jsonRpcRequest("textDocument/onTypeFormatting")
 operation TextDocumentOnTypeFormattingOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentOnTypeFormattingParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTextEdit
     }
 }
 
-@jsonRequest("textDocument/prepareCallHierarchy")
+@jsonRpcRequest("textDocument/prepareCallHierarchy")
 operation TextDocumentPrepareCallHierarchyOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CallHierarchyPrepareParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfCallHierarchyItem
     }
 }
 
-@jsonRequest("textDocument/prepareRename")
+@jsonRpcRequest("textDocument/prepareRename")
 operation TextDocumentPrepareRenameOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: PrepareRenameParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: PrepareRenameResult
     }
 }
 
-@jsonRequest("textDocument/prepareTypeHierarchy")
+@jsonRpcRequest("textDocument/prepareTypeHierarchy")
 operation TextDocumentPrepareTypeHierarchyOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: TypeHierarchyPrepareParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTypeHierarchyItem
     }
 }
 
-@jsonNotification("textDocument/publishDiagnostics")
+@jsonRpcNotification("textDocument/publishDiagnostics")
 operation TextDocumentPublishDiagnostics {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: PublishDiagnosticsParams
     }
     output: Unit
 }
 
-@jsonRequest("textDocument/rangeFormatting")
+@jsonRpcRequest("textDocument/rangeFormatting")
 operation TextDocumentRangeFormattingOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DocumentRangeFormattingParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTextEdit
     }
 }
 
-@jsonRequest("textDocument/references")
+@jsonRpcRequest("textDocument/references")
 operation TextDocumentReferencesOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ReferenceParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfLocation
     }
 }
 
-@jsonRequest("textDocument/rename")
+@jsonRpcRequest("textDocument/rename")
 operation TextDocumentRenameOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: RenameParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: WorkspaceEdit
     }
 }
 
-@jsonRequest("textDocument/selectionRange")
+@jsonRpcRequest("textDocument/selectionRange")
 operation TextDocumentSelectionRangeOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: SelectionRangeParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfSelectionRange
     }
 }
 
-@jsonRequest("textDocument/semanticTokens/full/delta")
+@jsonRpcRequest("textDocument/semanticTokens/full/delta")
 operation TextDocumentSemanticTokensFullDeltaOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: SemanticTokensDeltaParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: SemanticTokensUnion
     }
 }
 
-@jsonRequest("textDocument/semanticTokens/full")
+@jsonRpcRequest("textDocument/semanticTokens/full")
 operation TextDocumentSemanticTokensFullOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: SemanticTokensParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: SemanticTokens
     }
 }
 
-@jsonRequest("textDocument/semanticTokens/range")
+@jsonRpcRequest("textDocument/semanticTokens/range")
 operation TextDocumentSemanticTokensRangeOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: SemanticTokensRangeParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: SemanticTokens
     }
 }
 
-@jsonRequest("textDocument/signatureHelp")
+@jsonRpcRequest("textDocument/signatureHelp")
 operation TextDocumentSignatureHelpOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: SignatureHelpParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: SignatureHelp
     }
 }
 
-@jsonRequest("textDocument/typeDefinition")
+@jsonRpcRequest("textDocument/typeDefinition")
 operation TextDocumentTypeDefinitionOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: TypeDefinitionParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: DefinitionOrListOfDefinitionLink
     }
 }
 
-@jsonNotification("textDocument/willSave")
+@jsonRpcNotification("textDocument/willSave")
 operation TextDocumentWillSave {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WillSaveTextDocumentParams
     }
     output: Unit
 }
 
-@jsonRequest("textDocument/willSaveWaitUntil")
+@jsonRpcRequest("textDocument/willSaveWaitUntil")
 operation TextDocumentWillSaveWaitUntilOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WillSaveTextDocumentParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTextEdit
     }
 }
 
-@jsonRequest("typeHierarchy/subtypes")
+@jsonRpcRequest("typeHierarchy/subtypes")
 operation TypeHierarchySubtypesOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: TypeHierarchySubtypesParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTypeHierarchyItem
     }
 }
 
-@jsonRequest("typeHierarchy/supertypes")
+@jsonRpcRequest("typeHierarchy/supertypes")
 operation TypeHierarchySupertypesOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: TypeHierarchySupertypesParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfTypeHierarchyItem
     }
 }
 
-@jsonNotification("window/logMessage")
+@jsonRpcNotification("window/logMessage")
 operation WindowLogMessage {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: LogMessageParams
     }
     output: Unit
 }
 
-@jsonRequest("window/showDocument")
+@jsonRpcRequest("window/showDocument")
 operation WindowShowDocumentOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ShowDocumentParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ShowDocumentResult
     }
 }
 
-@jsonNotification("window/showMessage")
+@jsonRpcNotification("window/showMessage")
 operation WindowShowMessage {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ShowMessageParams
     }
     output: Unit
 }
 
-@jsonRequest("window/showMessageRequest")
+@jsonRpcRequest("window/showMessageRequest")
 operation WindowShowMessageRequestOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ShowMessageRequestParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: MessageActionItem
     }
 }
 
-@jsonNotification("window/workDoneProgress/cancel")
+@jsonRpcNotification("window/workDoneProgress/cancel")
 operation WindowWorkDoneProgressCancel {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WorkDoneProgressCancelParams
     }
     output: Unit
 }
 
-@jsonRequest("window/workDoneProgress/create")
+@jsonRpcRequest("window/workDoneProgress/create")
 operation WindowWorkDoneProgressCreateOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WorkDoneProgressCreateParams
     }
     output: Unit
 }
 
-@jsonRequest("workspace/applyEdit")
+@jsonRpcRequest("workspace/applyEdit")
 operation WorkspaceApplyEditOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ApplyWorkspaceEditParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ApplyWorkspaceEditResult
     }
 }
 
-@jsonRequest("workspace/codeLens/refresh")
+@jsonRpcRequest("workspace/codeLens/refresh")
 operation WorkspaceCodeLensRefreshOp {
     input: Unit
     output: Unit
 }
 
-@jsonRequest("workspace/configuration")
+@jsonRpcRequest("workspace/configuration")
 operation WorkspaceConfigurationOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ConfigurationParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfDocument
     }
 }
 
-@jsonRequest("workspace/diagnostic")
+@jsonRpcRequest("workspace/diagnostic")
 operation WorkspaceDiagnosticOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WorkspaceDiagnosticParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: WorkspaceDiagnosticReport
     }
 }
 
-@jsonRequest("workspace/diagnostic/refresh")
+@jsonRpcRequest("workspace/diagnostic/refresh")
 operation WorkspaceDiagnosticRefreshOp {
     input: Unit
     output: Unit
 }
 
-@jsonNotification("workspace/didChangeConfiguration")
+@jsonRpcNotification("workspace/didChangeConfiguration")
 operation WorkspaceDidChangeConfiguration {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidChangeConfigurationParams
     }
     output: Unit
 }
 
-@jsonNotification("workspace/didChangeWatchedFiles")
+@jsonRpcNotification("workspace/didChangeWatchedFiles")
 operation WorkspaceDidChangeWatchedFiles {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidChangeWatchedFilesParams
     }
     output: Unit
 }
 
-@jsonNotification("workspace/didChangeWorkspaceFolders")
+@jsonRpcNotification("workspace/didChangeWorkspaceFolders")
 operation WorkspaceDidChangeWorkspaceFolders {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DidChangeWorkspaceFoldersParams
     }
     output: Unit
 }
 
-@jsonNotification("workspace/didCreateFiles")
+@jsonRpcNotification("workspace/didCreateFiles")
 operation WorkspaceDidCreateFiles {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CreateFilesParams
     }
     output: Unit
 }
 
-@jsonNotification("workspace/didDeleteFiles")
+@jsonRpcNotification("workspace/didDeleteFiles")
 operation WorkspaceDidDeleteFiles {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DeleteFilesParams
     }
     output: Unit
 }
 
-@jsonNotification("workspace/didRenameFiles")
+@jsonRpcNotification("workspace/didRenameFiles")
 operation WorkspaceDidRenameFiles {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: RenameFilesParams
     }
     output: Unit
 }
 
-@jsonRequest("workspace/executeCommand")
+@jsonRpcRequest("workspace/executeCommand")
 operation WorkspaceExecuteCommandOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: ExecuteCommandParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: Document
     }
 }
 
-@jsonRequest("workspace/inlayHint/refresh")
+@jsonRpcRequest("workspace/inlayHint/refresh")
 operation WorkspaceInlayHintRefreshOp {
     input: Unit
     output: Unit
 }
 
-@jsonRequest("workspace/inlineValue/refresh")
+@jsonRpcRequest("workspace/inlineValue/refresh")
 operation WorkspaceInlineValueRefreshOp {
     input: Unit
     output: Unit
 }
 
-@jsonRequest("workspace/semanticTokens/refresh")
+@jsonRpcRequest("workspace/semanticTokens/refresh")
 operation WorkspaceSemanticTokensRefreshOp {
     input: Unit
     output: Unit
 }
 
-@jsonRequest("workspace/symbol")
+@jsonRpcRequest("workspace/symbol")
 operation WorkspaceSymbolOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WorkspaceSymbolParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfSymbolUnion
     }
 }
 
-@jsonRequest("workspaceSymbol/resolve")
+@jsonRpcRequest("workspaceSymbol/resolve")
 operation WorkspaceSymbolResolveOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: WorkspaceSymbol
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: WorkspaceSymbol
     }
 }
 
-@jsonRequest("workspace/willCreateFiles")
+@jsonRpcRequest("workspace/willCreateFiles")
 operation WorkspaceWillCreateFilesOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: CreateFilesParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: WorkspaceEdit
     }
 }
 
-@jsonRequest("workspace/willDeleteFiles")
+@jsonRpcRequest("workspace/willDeleteFiles")
 operation WorkspaceWillDeleteFilesOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: DeleteFilesParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: WorkspaceEdit
     }
 }
 
-@jsonRequest("workspace/willRenameFiles")
+@jsonRpcRequest("workspace/willRenameFiles")
 operation WorkspaceWillRenameFilesOp {
     input := {
-        @jsonPayload
+        @jsonRpcPayload
         @required
         params: RenameFilesParams
     }
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: WorkspaceEdit
     }
 }
 
-@jsonRequest("workspace/workspaceFolders")
+@jsonRpcRequest("workspace/workspaceFolders")
 operation WorkspaceWorkspaceFoldersOp {
     input: Unit
     output := {
-        @jsonPayload
+        @jsonRpcPayload
         result: ListOfWorkspaceFolder
     }
 }

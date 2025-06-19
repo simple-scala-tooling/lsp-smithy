@@ -3,9 +3,9 @@ package org.scala.abusers.lspsmithy
 import alloy.UntaggedUnionTrait
 import cats.data.State
 import cats.syntax.all.*
-import jsonrpclib.JsonNotificationTrait
-import jsonrpclib.JsonPayloadTrait
-import jsonrpclib.JsonRequestTrait
+import jsonrpclib.JsonRpcNotificationTrait
+import jsonrpclib.JsonRpcPayloadTrait
+import jsonrpclib.JsonRpcRequestTrait
 import langoustine.meta.*
 import lsp.TupleTrait
 import org.scala.abusers.topologicalSort
@@ -481,7 +481,7 @@ object SmithyConverter:
                 .id(shapeId.withMember("params"))
                 .target(target)
                 .addTrait(new RequiredTrait.Provider().createTrait(RequiredTrait.ID, Node.objectNode))
-                .addTrait(new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode))
+                .addTrait(new JsonRpcPayloadTrait.Provider().createTrait(JsonRpcPayloadTrait.ID, Node.objectNode))
                 .build()
             )
             .addTrait(new InputTrait())
@@ -544,7 +544,9 @@ object SmithyConverter:
             .id(opId)
             .input(inputTargetId)
             .output(outputShape)
-            .addTrait(new JsonRequestTrait.Provider().createTrait(JsonRequestTrait.ID, Node.from(req.method.value)))
+            .addTrait(
+              new JsonRpcRequestTrait.Provider().createTrait(JsonRpcRequestTrait.ID, Node.from(req.method.value))
+            )
             .build()
 
           shapes ++ Set(opShape)
@@ -567,7 +569,7 @@ object SmithyConverter:
                 .id(outputShapeId.withMember("result"))
                 .target(outputTargetId)
                 .addTrait(
-                  new JsonPayloadTrait.Provider().createTrait(JsonPayloadTrait.ID, Node.objectNode)
+                  new JsonRpcPayloadTrait.Provider().createTrait(JsonRpcPayloadTrait.ID, Node.objectNode)
                 )
                 .build()
             )
@@ -594,8 +596,8 @@ object SmithyConverter:
               .id(opId)
               .input(inputTargetId)
               .addTrait(
-                new JsonNotificationTrait.Provider()
-                  .createTrait(JsonNotificationTrait.ID, Node.from(notif.method.value))
+                new JsonRpcNotificationTrait.Provider()
+                  .createTrait(JsonRpcNotificationTrait.ID, Node.from(notif.method.value))
               )
               .build()
 
