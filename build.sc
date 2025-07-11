@@ -9,7 +9,7 @@ import mill.scalalib._
 import mill.scalalib.SonatypeCentralPublishModule
 import scalalib._
 import smithy4s.codegen.mill._
-import smithytraitcodegen.SmithyTraitCodegenPlugin
+import org.scala.abusers.SmithyTraitCodegenPlugin
 
 import $meta._
 
