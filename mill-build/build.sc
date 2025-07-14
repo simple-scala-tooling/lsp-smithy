@@ -14,7 +14,6 @@ object `package` extends MillBuildRootModule {
     // hardcoding mill version instead of using the dynamically resolved one
     // due to the following bug in 0.12 series: https://github.com/com-lihaoyi/mill/issues/4390
     ivy"com.disneystreaming.smithy4s::smithy4s-mill-codegen-plugin_mill0.12:0.18.37",
-    ivy"io.github.simple-scala-tooling::smithy-trait-codegen-mill::0.0.1"
   )
 
 }
