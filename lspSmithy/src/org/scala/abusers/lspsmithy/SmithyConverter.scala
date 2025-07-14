@@ -1,5 +1,6 @@
 package org.scala.abusers.lspsmithy
 
+import alloy.OpenEnumTrait
 import alloy.UntaggedUnionTrait
 import cats.data.State
 import cats.syntax.all.*
@@ -135,18 +136,26 @@ object SmithyConverter:
             .build()
         case _: String =>
           val builder = EnumShape.builder().id(shapeId)
+
+          val hasEmptyValues = enum_.values.exists(_.value.stringValue.isEmpty)
+
+          // workaround to support the CodeActionKind type having an empty string value
+          if (hasEmptyValues) builder.addTrait(new OpenEnumTrait())
+
           enum_.values
             .distinctBy(_.value)
             .filterNot(_.proposed)
             // Smithy doesn't allow enum values: https://github.com/smithy-lang/smithy/issues/2626
             .filter(_.value.stringValue.nonEmpty)
-            .foldLeft(builder) { case (acc, entry) =>
-              acc.addMember(
+            .foreach { entry =>
+              builder.addMember(
                 toUpperSnakeCase(entry.name.value),
                 entry.value.stringValue,
                 _.tap(maybeAddDocs(entry.documentation.toOption.map(_.value), entry.since.toOption)),
               )
             }
+
+          builder
             .build()
 
       enumShape

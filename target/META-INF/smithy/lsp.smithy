@@ -2,6 +2,7 @@ $version: "2.0"
 
 namespace lsp
 
+use alloy#openEnum
 use alloy#untagged
 use jsonrpclib#jsonRpcNotification
 use jsonrpclib#jsonRpcPayload
@@ -7571,6 +7572,7 @@ intEnum ApplyKind {
 
 string ChangeAnnotationIdentifier
 
+@openEnum
 enum CodeActionKind {
     /// Base kind for quickfix actions: 'quickfix'
     QUICK_FIX = "quickfix"
