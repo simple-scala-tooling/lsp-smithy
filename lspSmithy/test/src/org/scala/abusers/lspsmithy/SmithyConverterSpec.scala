@@ -239,6 +239,7 @@ object SmithyConverterSpec extends SimpleIOSuite {
         |        params: String
         |    }
         |    output := {
+        |        @required
         |        result: Boolean
         |    }
         |}
@@ -279,6 +280,7 @@ object SmithyConverterSpec extends SimpleIOSuite {
         |        params: String
         |    }
         |    output := {
+        |        @required
         |        result: HoverOrHover2
         |    }
         |}
