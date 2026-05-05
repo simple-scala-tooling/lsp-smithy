@@ -2,7 +2,7 @@
 //| mvnDeps:
 //| - com.goyeau::mill-git::0.3.2
 //| - com.goyeau::mill-scalafix::0.6.0
-//| - com.disneystreaming.smithy4s::smithy4s-mill-codegen-plugin::0.18.52
+//| - com.disneystreaming.smithy4s::smithy4s-mill-codegen-plugin::0.19.7
 //| - io.github.simple-scala-tooling::smithy-trait-codegen-mill::0.2.0
 
 package build
@@ -16,7 +16,7 @@ import mill.scalalib._
 import org.scala.abusers.SmithyTraitCodegenPlugin
 import smithy4s.codegen.mill._
 
-val jsonrpcVersion     = "0.1.0"
+val jsonrpcVersion     = "0.2.0"
 val langoustineVersion = "0.1.0"
 val smithyVersion      = "1.70.0"
 
