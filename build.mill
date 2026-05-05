@@ -3,7 +3,7 @@
 //| - com.goyeau::mill-git::0.3.2
 //| - com.goyeau::mill-scalafix::0.6.0
 //| - com.disneystreaming.smithy4s::smithy4s-mill-codegen-plugin::0.18.52
-//| - io.github.simple-scala-tooling::smithy-trait-codegen-mill::0.1.0-6-4b975fd
+//| - io.github.simple-scala-tooling::smithy-trait-codegen-mill::0.2.0
 
 package build
 
