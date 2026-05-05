@@ -580,7 +580,6 @@ object SmithyConverter:
                 .addTrait(
                   JsonRpcPayloadTrait.builder().build()
                 )
-                // Q: should jsonrpclib require this on payloads?
                 .addTrait(new RequiredTrait())
                 .build()
             )
