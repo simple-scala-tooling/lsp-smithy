@@ -1,9 +1,9 @@
 package org.scala.abusers.lspsmithy
 
+import io.circe.parser.decode
 import langoustine.meta.*
-import langoustine.meta.json.given
+import langoustine.meta.given
 import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
-import upickle.default.*
 
 import java.nio.file.Paths
 import scala.io.Source
@@ -13,7 +13,7 @@ import scala.jdk.CollectionConverters.*
 def main() = {
   val stream      = this.getClass.getResourceAsStream("/metaModel.json")
   val jsonStr     = Source.fromInputStream(stream).mkString
-  val metaModel   = read[MetaModel](jsonStr)
+  val metaModel   = decode[MetaModel](jsonStr).toTry.get
   val smithyModel = SmithyConverter(preprocess(metaModel))
   val outputMap   = SmithyIdlModelSerializer.builder().build().serialize(smithyModel.unwrap()).asScala.toMap
 
@@ -24,7 +24,7 @@ def main() = {
     val outputPath = targetDir / "lsp.smithy"
     os.write.over(outputPath, content, createFolders = true)
   }
-  val manifestContent = "lsp.smithy"
+  val manifestContent = "lsp.smithy\n"
   os.write.over(targetDir / "manifest", manifestContent, createFolders = true)
 }
 

@@ -1,14 +1,14 @@
 package org.scala.abusers.lspsmithy
 
 import cats.Show
+import io.circe.parser.decode
 import langoustine.meta.*
-import langoustine.meta.json.given
+import langoustine.meta.given
 import software.amazon.smithy.diff.ModelDiff
 import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
 import software.amazon.smithy.model.validation.Severity
 import software.amazon.smithy.model.validation.ValidationEvent
 import software.amazon.smithy.model.Model
-import upickle.default.*
 import weaver.*
 
 import java.nio.file.Paths
@@ -21,7 +21,7 @@ object SmithyConverterSpec extends SimpleIOSuite {
   pureTest("Should produce valid smithy model") {
     val stream    = this.getClass.getResourceAsStream("/metaModel.json")
     val jsonStr   = Source.fromInputStream(stream).mkString
-    val metaModel = read[MetaModel](jsonStr)
+    val metaModel = decode[MetaModel](jsonStr).toTry.get
     val result    = SmithyConverter.apply(metaModel)
     val error = result.getValidationEvents().asScala.toList.filter(ve => ve.getSeverity == Severity.ERROR).headOption
 
