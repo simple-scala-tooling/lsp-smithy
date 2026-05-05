@@ -578,8 +578,9 @@ object SmithyConverter:
                 .id(outputShapeId.withMember("result"))
                 .target(outputTargetId)
                 .addTrait(
-                  new JsonRpcPayloadTrait.Provider().createTrait(JsonRpcPayloadTrait.ID, Node.objectNode)
+                  JsonRpcPayloadTrait.builder().build()
                 )
+                .addTrait(new RequiredTrait())
                 .build()
             )
             .addTrait(new OutputTrait)
