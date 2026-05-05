@@ -24,7 +24,7 @@ def main() = {
     val outputPath = targetDir / "lsp.smithy"
     os.write.over(outputPath, content, createFolders = true)
   }
-  val manifestContent = "lsp.smithy"
+  val manifestContent = "lsp.smithy\n"
   os.write.over(targetDir / "manifest", manifestContent, createFolders = true)
 }
 
