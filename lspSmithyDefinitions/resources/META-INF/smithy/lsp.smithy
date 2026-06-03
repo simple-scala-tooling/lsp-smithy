@@ -22,6 +22,7 @@ operation CallHierarchyIncomingCallsOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfCallHierarchyIncomingCall
     }
 }
@@ -35,6 +36,7 @@ operation CallHierarchyOutgoingCallsOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfCallHierarchyOutgoingCall
     }
 }
@@ -78,6 +80,7 @@ operation CodeActionResolveOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: CodeAction
     }
 }
@@ -91,6 +94,7 @@ operation CodeLensResolveOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: CodeLens
     }
 }
@@ -104,6 +108,7 @@ operation CompletionItemResolveOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: CompletionItem
     }
 }
@@ -117,6 +122,7 @@ operation DocumentLinkResolveOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: DocumentLink
     }
 }
@@ -146,6 +152,7 @@ operation InitializeOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: InitializeResult
     }
 }
@@ -159,6 +166,7 @@ operation InlayHintResolveOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: InlayHint
     }
 }
@@ -258,6 +266,7 @@ operation TextDocumentCodeActionOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfCommandOrCodeAction
     }
 }
@@ -271,6 +280,7 @@ operation TextDocumentCodeLensOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfCodeLens
     }
 }
@@ -284,6 +294,7 @@ operation TextDocumentColorPresentationOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfColorPresentation
     }
 }
@@ -297,6 +308,7 @@ operation TextDocumentCompletionOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListCompletionUnion
     }
 }
@@ -310,6 +322,7 @@ operation TextDocumentDeclarationOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: DeclarationOrListOfDeclarationLink
     }
 }
@@ -323,6 +336,7 @@ operation TextDocumentDefinitionOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: DefinitionOrListOfDefinitionLink
     }
 }
@@ -336,6 +350,7 @@ operation TextDocumentDiagnosticOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: DocumentDiagnosticReport
     }
 }
@@ -389,6 +404,7 @@ operation TextDocumentDocumentColorOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfColorInformation
     }
 }
@@ -402,6 +418,7 @@ operation TextDocumentDocumentHighlightOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfDocumentHighlight
     }
 }
@@ -415,6 +432,7 @@ operation TextDocumentDocumentLinkOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfDocumentLink
     }
 }
@@ -428,6 +446,7 @@ operation TextDocumentDocumentSymbolOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfSymbolUnion
     }
 }
@@ -441,6 +460,7 @@ operation TextDocumentFoldingRangeOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfFoldingRange
     }
 }
@@ -454,6 +474,7 @@ operation TextDocumentFormattingOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTextEdit
     }
 }
@@ -467,6 +488,7 @@ operation TextDocumentHoverOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: Hover
     }
 }
@@ -480,6 +502,7 @@ operation TextDocumentImplementationOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: DefinitionOrListOfDefinitionLink
     }
 }
@@ -493,6 +516,7 @@ operation TextDocumentInlayHintOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfInlayHint
     }
 }
@@ -506,6 +530,7 @@ operation TextDocumentInlineValueOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfInlineValue
     }
 }
@@ -519,6 +544,7 @@ operation TextDocumentLinkedEditingRangeOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: LinkedEditingRanges
     }
 }
@@ -532,6 +558,7 @@ operation TextDocumentMonikerOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfMoniker
     }
 }
@@ -545,6 +572,7 @@ operation TextDocumentOnTypeFormattingOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTextEdit
     }
 }
@@ -558,6 +586,7 @@ operation TextDocumentPrepareCallHierarchyOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfCallHierarchyItem
     }
 }
@@ -571,6 +600,7 @@ operation TextDocumentPrepareRenameOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: PrepareRenameResult
     }
 }
@@ -584,6 +614,7 @@ operation TextDocumentPrepareTypeHierarchyOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTypeHierarchyItem
     }
 }
@@ -607,6 +638,7 @@ operation TextDocumentRangeFormattingOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTextEdit
     }
 }
@@ -620,6 +652,7 @@ operation TextDocumentReferencesOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfLocation
     }
 }
@@ -633,6 +666,7 @@ operation TextDocumentRenameOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: WorkspaceEdit
     }
 }
@@ -646,6 +680,7 @@ operation TextDocumentSelectionRangeOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfSelectionRange
     }
 }
@@ -659,6 +694,7 @@ operation TextDocumentSemanticTokensFullDeltaOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: SemanticTokensUnion
     }
 }
@@ -672,6 +708,7 @@ operation TextDocumentSemanticTokensFullOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: SemanticTokens
     }
 }
@@ -685,6 +722,7 @@ operation TextDocumentSemanticTokensRangeOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: SemanticTokens
     }
 }
@@ -698,6 +736,7 @@ operation TextDocumentSignatureHelpOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: SignatureHelp
     }
 }
@@ -711,6 +750,7 @@ operation TextDocumentTypeDefinitionOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: DefinitionOrListOfDefinitionLink
     }
 }
@@ -734,6 +774,7 @@ operation TextDocumentWillSaveWaitUntilOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTextEdit
     }
 }
@@ -747,6 +788,7 @@ operation TypeHierarchySubtypesOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTypeHierarchyItem
     }
 }
@@ -760,6 +802,7 @@ operation TypeHierarchySupertypesOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfTypeHierarchyItem
     }
 }
@@ -783,6 +826,7 @@ operation WindowShowDocumentOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ShowDocumentResult
     }
 }
@@ -806,6 +850,7 @@ operation WindowShowMessageRequestOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: MessageActionItem
     }
 }
@@ -839,6 +884,7 @@ operation WorkspaceApplyEditOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ApplyWorkspaceEditResult
     }
 }
@@ -858,6 +904,7 @@ operation WorkspaceConfigurationOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfDocument
     }
 }
@@ -871,6 +918,7 @@ operation WorkspaceDiagnosticOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: WorkspaceDiagnosticReport
     }
 }
@@ -950,6 +998,7 @@ operation WorkspaceExecuteCommandOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: Document
     }
 }
@@ -981,6 +1030,7 @@ operation WorkspaceSymbolOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfSymbolUnion
     }
 }
@@ -994,6 +1044,7 @@ operation WorkspaceSymbolResolveOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: WorkspaceSymbol
     }
 }
@@ -1007,6 +1058,7 @@ operation WorkspaceWillCreateFilesOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: WorkspaceEdit
     }
 }
@@ -1020,6 +1072,7 @@ operation WorkspaceWillDeleteFilesOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: WorkspaceEdit
     }
 }
@@ -1033,6 +1086,7 @@ operation WorkspaceWillRenameFilesOp {
     }
     output := {
         @jsonRpcPayload
+        @required
         result: WorkspaceEdit
     }
 }
@@ -1042,6 +1096,7 @@ operation WorkspaceWorkspaceFoldersOp {
     input: Unit
     output := {
         @jsonRpcPayload
+        @required
         result: ListOfWorkspaceFolder
     }
 }
